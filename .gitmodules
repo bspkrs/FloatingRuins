@@ -1,3 +1,6 @@
 [submodule "bspkrs.floatingruins"]
 	path = bspkrs.floatingruins
 	url = https://github.com/bspkrs/bspkrs.floatingruins.git
+[submodule "bspkrs.fml.util"]
+	path = bspkrs.fml.util
+	url = https://github.com/bspkrs/bspkrs.fml.util.git
