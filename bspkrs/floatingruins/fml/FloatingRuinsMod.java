@@ -37,17 +37,17 @@ public class FloatingRuinsMod
 
     public ModMetadata metadata;
     
-	@PreInit
-	public void preInit(FMLPreInitializationEvent event)
-	{
-    	metadata = event.getModMetadata();
-    	metadata.version = "FML " + FloatingRuins.versionNumber;
-    	versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
+    @PreInit
+    public void preInit(FMLPreInitializationEvent event)
+    {
+        metadata = event.getModMetadata();
+        metadata.version = "FML " + FloatingRuins.versionNumber;
+        versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
         versionChecker.checkVersionWithLogging();
 
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 
-		config.load();
+        config.load();
         FloatingRuins.allowUpdateCheck = Config.getBoolean(config, "allowUpdateCheck", Configuration.CATEGORY_GENERAL, FloatingRuins.allowUpdateCheck, FloatingRuins.allowUpdateCheckDesc);
         FloatingRuins.allowInSuperFlat = Config.getBoolean(config, "allowInSuperFlat", Configuration.CATEGORY_GENERAL, FloatingRuins.allowInSuperFlat, FloatingRuins.allowInSuperFlatDesc);
         FloatingRuins.rarity = Config.getInt(config, "rarity", Configuration.CATEGORY_GENERAL, FloatingRuins.rarity, 1, Integer.MAX_VALUE, FloatingRuins.rarityDesc);
@@ -72,37 +72,37 @@ public class FloatingRuinsMod
         FloatingRuins.spawnerRiver = Config.getString(config, "spawnerRiver", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerRiver, FloatingRuins.spawnerRiverDesc);
         FloatingRuins.spawnerSwampland = Config.getString(config, "spawnerSwampland", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerSwampland, FloatingRuins.spawnerSwamplandDesc);
         FloatingRuins.spawnerTaiga = Config.getString(config, "spawnerTaiga", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerTaiga, FloatingRuins.spawnerTaigaDesc);
-		config.save();
-	}
+        config.save();
+    }
 
     @Init
     public void init(FMLInitializationEvent event)
     {
-    	if(event.getSide().equals(Side.CLIENT))
-    	{
-			TickRegistry.registerTickHandler(new FloatingRuinsTicker(EnumSet.of(TickType.CLIENT)), Side.CLIENT);
-			this.mcClient = FMLClientHandler.instance().getClient();
-    	}	
-    	
-    	GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator());
+        if(event.getSide().equals(Side.CLIENT))
+        {
+            TickRegistry.registerTickHandler(new FloatingRuinsTicker(EnumSet.of(TickType.CLIENT)), Side.CLIENT);
+            this.mcClient = FMLClientHandler.instance().getClient();
+        }    
+        
+        GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator());
     }
 
     @SideOnly(Side.CLIENT)
-	public static boolean onTick(TickType tick, boolean isStart)
-	{
-		if (isStart) {
-			return true;
-		}
+    public static boolean onTick(TickType tick, boolean isStart)
+    {
+        if (isStart) {
+            return true;
+        }
 
-		if (mcClient != null && mcClient.thePlayer != null)
-		{
-			if(FloatingRuins.allowUpdateCheck)
-				if(!versionChecker.isCurrentVersion())
-					for(String msg : versionChecker.getInGameMessage())
-						mcClient.thePlayer.addChatMessage(msg);
-			return false;
-		}
+        if (mcClient != null && mcClient.thePlayer != null)
+        {
+            if(FloatingRuins.allowUpdateCheck)
+                if(!versionChecker.isCurrentVersion())
+                    for(String msg : versionChecker.getInGameMessage())
+                        mcClient.thePlayer.addChatMessage(msg);
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 }
