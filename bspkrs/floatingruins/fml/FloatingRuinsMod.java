@@ -24,12 +24,12 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(name="FloatingRuins", modid="FloatingRuins", version="FML 1.4.2.r01", useMetadata=true)
+@Mod(name="FloatingRuins", modid="FloatingRuins", version="Forge 1.4.4.r01", useMetadata=true)
 @NetworkMod(clientSideRequired=false, serverSideRequired=false)
 public class FloatingRuinsMod
 {
     private static ModVersionChecker versionChecker;
-    private String versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.2/floatingRuinsFML.version";
+    private String versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.4/floatingRuinsForge.version";
     private String mcfTopic = "http://www.minecraftforum.net/topic/1009577-";
 
     @SideOnly(Side.CLIENT)
@@ -41,7 +41,7 @@ public class FloatingRuinsMod
     public void preInit(FMLPreInitializationEvent event)
     {
         metadata = event.getModMetadata();
-        metadata.version = "FML " + FloatingRuins.versionNumber;
+        metadata.version = "Forge " + FloatingRuins.versionNumber;
         versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
         versionChecker.checkVersionWithLogging();
 
