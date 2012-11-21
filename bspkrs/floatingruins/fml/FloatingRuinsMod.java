@@ -1,22 +1,20 @@
 package bspkrs.floatingruins.fml;
 
 import java.util.EnumSet;
-import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.Configuration;
-import bspkrs.fml.util.Config;
 import bspkrs.floatingruins.FloatingRuins;
+import bspkrs.fml.util.Config;
 import bspkrs.util.ModVersionChecker;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
-import cpw.mods.fml.common.Mod.Init;
-import cpw.mods.fml.common.Mod.Metadata;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.asm.SideOnly;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -24,18 +22,18 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(name="FloatingRuins", modid="FloatingRuins", version="Forge 1.4.4.r01", useMetadata=true)
-@NetworkMod(clientSideRequired=false, serverSideRequired=false)
+@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge 1.4.5.r01", useMetadata = true)
+@NetworkMod(clientSideRequired = false, serverSideRequired = false)
 public class FloatingRuinsMod
 {
     private static ModVersionChecker versionChecker;
-    private String versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.4/floatingRuinsForge.version";
-    private String mcfTopic = "http://www.minecraftforum.net/topic/1009577-";
-
+    private final String             versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.5/floatingRuinsForge.version";
+    private final String             mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
+    
     @SideOnly(Side.CLIENT)
-    public static Minecraft mcClient;
-
-    public ModMetadata metadata;
+    public static Minecraft          mcClient;
+    
+    public ModMetadata               metadata;
     
     @PreInit
     public void preInit(FMLPreInitializationEvent event)
@@ -44,9 +42,9 @@ public class FloatingRuinsMod
         metadata.version = "Forge " + FloatingRuins.versionNumber;
         versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
         versionChecker.checkVersionWithLogging();
-
+        
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-
+        
         config.load();
         FloatingRuins.allowUpdateCheck = Config.getBoolean(config, "allowUpdateCheck", Configuration.CATEGORY_GENERAL, FloatingRuins.allowUpdateCheck, FloatingRuins.allowUpdateCheckDesc);
         FloatingRuins.allowInSuperFlat = Config.getBoolean(config, "allowInSuperFlat", Configuration.CATEGORY_GENERAL, FloatingRuins.allowInSuperFlat, FloatingRuins.allowInSuperFlatDesc);
@@ -74,35 +72,36 @@ public class FloatingRuinsMod
         FloatingRuins.spawnerTaiga = Config.getString(config, "spawnerTaiga", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerTaiga, FloatingRuins.spawnerTaigaDesc);
         config.save();
     }
-
+    
     @Init
     public void init(FMLInitializationEvent event)
     {
-        if(event.getSide().equals(Side.CLIENT))
+        if (event.getSide().equals(Side.CLIENT))
         {
             TickRegistry.registerTickHandler(new FloatingRuinsTicker(EnumSet.of(TickType.CLIENT)), Side.CLIENT);
             this.mcClient = FMLClientHandler.instance().getClient();
-        }    
+        }
         
         GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator());
     }
-
+    
     @SideOnly(Side.CLIENT)
     public static boolean onTick(TickType tick, boolean isStart)
     {
-        if (isStart) {
+        if (isStart)
+        {
             return true;
         }
-
+        
         if (mcClient != null && mcClient.thePlayer != null)
         {
-            if(FloatingRuins.allowUpdateCheck)
-                if(!versionChecker.isCurrentVersion())
-                    for(String msg : versionChecker.getInGameMessage())
+            if (FloatingRuins.allowUpdateCheck)
+                if (!versionChecker.isCurrentVersion())
+                    for (String msg : versionChecker.getInGameMessage())
                         mcClient.thePlayer.addChatMessage(msg);
             return false;
         }
-
+        
         return true;
     }
 }
