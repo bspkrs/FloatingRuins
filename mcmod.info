@@ -2,7 +2,7 @@
 {
   "modid" : "FloatingRuins",
   "name" : "FloatingRuins",
-  "version" : "Forge 1.4.4.r01",
+  "version" : "Forge 1.4.5.r01",
   "url" : "http://www.minecraftforum.net/topic/1009577-",
   "credits": "Original by DaftPVF, currently maintained by bspkrs",
   "authors": [
@@ -11,7 +11,7 @@
   ],
   "description": "Raises large hunks of terrain up into the sky and tops with a dungeon.",
   "logoFile" : "",
-  "updateUrl" : "https://dl.dropbox.com/u/20748481/Minecraft/1.4.4/floatingRuinsForge.version",
+  "updateUrl" : "https://dl.dropbox.com/u/20748481/Minecraft/1.4.5/floatingRuinsForge.version",
   "parent" : "",
   "screenshots": [
   ]
