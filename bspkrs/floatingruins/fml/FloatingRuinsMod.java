@@ -1,39 +1,32 @@
 package bspkrs.floatingruins.fml;
 
-import java.util.EnumSet;
-
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.Configuration;
 import bspkrs.floatingruins.FloatingRuins;
 import bspkrs.fml.util.Config;
 import bspkrs.util.ModVersionChecker;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.ModMetadata;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.TickType;
-import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
 
-@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge 1.4.5.r01", useMetadata = true)
+@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge 1.4.5.r02", useMetadata = true)
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
 public class FloatingRuinsMod
 {
-    private static ModVersionChecker versionChecker;
-    private final String             versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.5/floatingRuinsForge.version";
-    private final String             mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
+    public static ModVersionChecker versionChecker;
+    private final String            versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.5/floatingRuinsForge.version";
+    private final String            mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
     
-    @SideOnly(Side.CLIENT)
-    public static Minecraft          mcClient;
+    public ModMetadata              metadata;
     
-    public ModMetadata               metadata;
+    @SidedProxy(clientSide = "bspkrs.floatingruins.fml.ClientProxy", serverSide = "bspkrs.floatingruins.fml.CommonProxy")
+    public static CommonProxy       proxy;
     
     @PreInit
     public void preInit(FMLPreInitializationEvent event)
@@ -76,32 +69,7 @@ public class FloatingRuinsMod
     @Init
     public void init(FMLInitializationEvent event)
     {
-        if (event.getSide().equals(Side.CLIENT))
-        {
-            TickRegistry.registerTickHandler(new FloatingRuinsTicker(EnumSet.of(TickType.CLIENT)), Side.CLIENT);
-            this.mcClient = FMLClientHandler.instance().getClient();
-        }
-        
         GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator());
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public static boolean onTick(TickType tick, boolean isStart)
-    {
-        if (isStart)
-        {
-            return true;
-        }
-        
-        if (mcClient != null && mcClient.thePlayer != null)
-        {
-            if (FloatingRuins.allowUpdateCheck)
-                if (!versionChecker.isCurrentVersion())
-                    for (String msg : versionChecker.getInGameMessage())
-                        mcClient.thePlayer.addChatMessage(msg);
-            return false;
-        }
-        
-        return true;
+        proxy.registerTickHandler();
     }
 }

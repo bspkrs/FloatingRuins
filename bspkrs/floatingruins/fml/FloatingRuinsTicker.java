@@ -2,6 +2,9 @@ package bspkrs.floatingruins.fml;
 
 import java.util.EnumSet;
 
+import net.minecraft.client.Minecraft;
+import bspkrs.floatingruins.FloatingRuins;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
@@ -10,11 +13,14 @@ import cpw.mods.fml.common.asm.SideOnly;
 @SideOnly(Side.CLIENT)
 public class FloatingRuinsTicker implements ITickHandler
 {
+    public static Minecraft   mcClient;
+    
     private EnumSet<TickType> tickTypes = EnumSet.noneOf(TickType.class);
     
     public FloatingRuinsTicker(EnumSet<TickType> tickTypes)
     {
         this.tickTypes = tickTypes;
+        this.mcClient = FMLClientHandler.instance().getClient();
     }
     
     @Override
@@ -33,12 +39,31 @@ public class FloatingRuinsTicker implements ITickHandler
     {
         for (TickType tickType : tickTypes)
         {
-            if (!FloatingRuinsMod.onTick(tickType, isStart))
+            if (!onTick(tickType, isStart))
             {
                 this.tickTypes.remove(tickType);
                 this.tickTypes.removeAll(tickType.partnerTicks());
             }
         }
+    }
+    
+    public boolean onTick(TickType tick, boolean isStart)
+    {
+        if (isStart)
+        {
+            return true;
+        }
+        
+        if (mcClient != null && mcClient.thePlayer != null)
+        {
+            if (FloatingRuins.allowUpdateCheck)
+                if (!FloatingRuinsMod.versionChecker.isCurrentVersion())
+                    for (String msg : FloatingRuinsMod.versionChecker.getInGameMessage())
+                        mcClient.thePlayer.addChatMessage(msg);
+            return false;
+        }
+        
+        return true;
     }
     
     @Override
@@ -50,7 +75,7 @@ public class FloatingRuinsTicker implements ITickHandler
     @Override
     public String getLabel()
     {
-        return "TreeCapitatorTicker";
+        return "FloatingRuinsTicker";
     }
     
 }
