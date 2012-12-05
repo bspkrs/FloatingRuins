@@ -15,7 +15,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge 1.4.5.r02", useMetadata = true)
+@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge 1.4.5.r03", useMetadata = true)
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
 public class FloatingRuinsMod
 {
@@ -63,6 +63,7 @@ public class FloatingRuinsMod
         FloatingRuins.spawnerRiver = Config.getString(config, "spawnerRiver", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerRiver, FloatingRuins.spawnerRiverDesc);
         FloatingRuins.spawnerSwampland = Config.getString(config, "spawnerSwampland", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerSwampland, FloatingRuins.spawnerSwamplandDesc);
         FloatingRuins.spawnerTaiga = Config.getString(config, "spawnerTaiga", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerTaiga, FloatingRuins.spawnerTaigaDesc);
+        FloatingRuins.spawnerNearLava = Config.getString(config, "spawnerNearLava", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerNearLava, FloatingRuins.spawnerNearLavaDesc);
         config.save();
     }
     
