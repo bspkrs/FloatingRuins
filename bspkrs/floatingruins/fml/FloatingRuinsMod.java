@@ -41,6 +41,7 @@ public class FloatingRuinsMod
         config.load();
         FloatingRuins.allowUpdateCheck = Config.getBoolean(config, "allowUpdateCheck", Configuration.CATEGORY_GENERAL, FloatingRuins.allowUpdateCheck, FloatingRuins.allowUpdateCheckDesc);
         FloatingRuins.allowInSuperFlat = Config.getBoolean(config, "allowInSuperFlat", Configuration.CATEGORY_GENERAL, FloatingRuins.allowInSuperFlat, FloatingRuins.allowInSuperFlatDesc);
+        FloatingRuins.harderDungeons = Config.getBoolean(config, "harderDungeons", Configuration.CATEGORY_GENERAL, FloatingRuins.harderDungeons, FloatingRuins.harderDungeonsDesc);
         FloatingRuins.rarity = Config.getInt(config, "rarity", Configuration.CATEGORY_GENERAL, FloatingRuins.rarity, 1, Integer.MAX_VALUE, FloatingRuins.rarityDesc);
         FloatingRuins.baseHeight = Config.getInt(config, "baseHeight", Configuration.CATEGORY_GENERAL, FloatingRuins.baseHeight, 80, 240, FloatingRuins.baseHeightDesc);
         FloatingRuins.heightVariation = Config.getInt(config, "heightVariation", Configuration.CATEGORY_GENERAL, FloatingRuins.heightVariation, 0, 160, FloatingRuins.heightVariationDesc);
