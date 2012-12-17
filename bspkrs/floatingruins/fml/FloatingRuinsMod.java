@@ -15,7 +15,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge 1.4.5.r03", useMetadata = true)
+@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge " + FloatingRuins.versionNumber, useMetadata = true)
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
 public class FloatingRuinsMod
 {
@@ -32,9 +32,6 @@ public class FloatingRuinsMod
     public void preInit(FMLPreInitializationEvent event)
     {
         metadata = event.getModMetadata();
-        metadata.version = "Forge " + FloatingRuins.versionNumber;
-        versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
-        versionChecker.checkVersionWithLogging();
         
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
         
@@ -66,6 +63,12 @@ public class FloatingRuinsMod
         FloatingRuins.spawnerTaiga = Config.getString(config, "spawnerTaiga", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerTaiga, FloatingRuins.spawnerTaigaDesc);
         FloatingRuins.spawnerNearLava = Config.getString(config, "spawnerNearLava", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerNearLava, FloatingRuins.spawnerNearLavaDesc);
         config.save();
+        
+        if (FloatingRuins.allowUpdateCheck)
+        {
+            versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
+            versionChecker.checkVersionWithLogging();
+        }
     }
     
     @Init
