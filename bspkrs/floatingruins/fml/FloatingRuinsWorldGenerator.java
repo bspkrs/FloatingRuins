@@ -2,8 +2,8 @@ package bspkrs.floatingruins.fml;
 
 import java.util.Random;
 
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.World;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
 import bspkrs.floatingruins.FloatingRuins;
 import cpw.mods.fml.common.IWorldGenerator;
 
