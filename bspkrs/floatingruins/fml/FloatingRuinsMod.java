@@ -20,7 +20,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class FloatingRuinsMod
 {
     public static ModVersionChecker versionChecker;
-    private final String            versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.5/floatingRuinsForge.version";
+    private final String            versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.6/floatingRuinsForge.version";
     private final String            mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
     
     public ModMetadata              metadata;
