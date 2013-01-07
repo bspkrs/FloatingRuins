@@ -6,9 +6,9 @@ import net.minecraft.client.Minecraft;
 import bspkrs.floatingruins.FloatingRuins;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.Side;
 import cpw.mods.fml.common.TickType;
-import cpw.mods.fml.common.asm.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class FloatingRuinsTicker implements ITickHandler
@@ -56,7 +56,7 @@ public class FloatingRuinsTicker implements ITickHandler
         
         if (mcClient != null && mcClient.thePlayer != null)
         {
-            if (FloatingRuins.allowUpdateCheck)
+            if (FloatingRuins.allowUpdateCheck && FloatingRuinsMod.versionChecker != null)
                 if (!FloatingRuinsMod.versionChecker.isCurrentVersion())
                     for (String msg : FloatingRuinsMod.versionChecker.getInGameMessage())
                         mcClient.thePlayer.addChatMessage(msg);
