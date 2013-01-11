@@ -113,114 +113,153 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         TileEntityMobSpawner tileEntityMobSpawner = (TileEntityMobSpawner) world.getBlockTileEntity(x, y, z);
         if (tileEntityMobSpawner != null)
         {
-            String mobID = getSpawnerType(world, biomegenbase, x, z);
+            String[] mobIDList;
+            if (FloatingRuins.allowMultiMobSpawners)
+                mobIDList = getSpawnerMobList(world, biomegenbase);
+            else
+            {
+                mobIDList = new String[1];
+                mobIDList[0] = getSpawnerType(world, biomegenbase, x, z);
+            }
+            
+            if (mobIDList.length == 1 && mobIDList[0].trim().equalsIgnoreCase("Default"))
+                mobIDList = FloatingRuins.spawnerDefault.split(",");
+            
+            // get rid of extra whitespace from list to avoid NPEs
+            for (int i = 0; i < mobIDList.length; i++)
+                mobIDList[i] = mobIDList[i].trim();
+            
             NBTTagCompound spawnerNBT = new NBTTagCompound();
             tileEntityMobSpawner.writeToNBT(spawnerNBT);
             
-            NBTTagCompound spawnData;
+            NBTTagCompound properties;
+            NBTTagList spawnPotentials = new NBTTagList();
             
-            if (spawnerNBT.hasKey("SpawnData"))
-                spawnData = spawnerNBT.getCompoundTag("SpawnData");
-            else
-                spawnData = new NBTTagCompound();
-            
-            if (mobID.equals("WitherSkeleton"))
+            for (int i = 0; i < mobIDList.length; i++)
             {
-                spawnData.setByte("SkeletonType", (byte) 1);
-                spawnerNBT.setCompoundTag("SpawnData", spawnData);
-                spawnerNBT.setString("EntityId", "Skeleton");
-            }
-            else if (mobID.equals("Wolf"))
-            {
-                spawnData.setByte("Angry", (byte) 1);
-                spawnerNBT.setCompoundTag("SpawnData", spawnData);
-                spawnerNBT.setString("EntityId", mobID);
-            }
-            else if (mobID.equals("ChargedCreeper"))
-            {
-                spawnData.setByte("powered", (byte) 1);
-                spawnerNBT.setCompoundTag("SpawnData", spawnData);
-                spawnerNBT.setString("EntityId", "Creeper");
-            }
-            else if (mobID.equals("PigZombie"))
-            {
-                spawnData.setShort("Anger", (short) (400 + world.rand.nextInt(400)));
-                spawnerNBT.setCompoundTag("SpawnData", spawnData);
-                spawnerNBT.setString("EntityId", mobID);
-            }
-            else if (mobID.equals("Zombie"))
-            {
-                boolean flag = world.rand.nextBoolean();
-                spawnData.setByte("isVillager", (byte) (flag ? 1 : 0));
-                if (flag)
-                    spawnData.setInteger("ConversionTime", -1);
+                properties = new NBTTagCompound();
                 
-                flag = world.rand.nextBoolean();
-                if (flag)
+                NBTTagCompound potentialSpawn = new NBTTagCompound();
+                potentialSpawn.setInteger("Weight", world.rand.nextInt(4) + 1);
+                
+                if (mobIDList[i].equals("WitherSkeleton"))
                 {
-                    NBTTagList equipment = new NBTTagList();
+                    properties.setByte("SkeletonType", (byte) 1);
+                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setString("Type", "Skeleton");
+                    spawnerNBT.setString("EntityId", "Skeleton");
+                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                }
+                else if (mobIDList[i].equals("Wolf"))
+                {
+                    properties.setByte("Angry", (byte) 1);
+                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setString("Type", mobIDList[i]);
+                    spawnerNBT.setString("EntityId", mobIDList[i]);
+                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                }
+                else if (mobIDList[i].equals("ChargedCreeper"))
+                {
+                    properties.setByte("powered", (byte) 1);
+                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setString("Type", "Creeper");
+                    spawnerNBT.setString("EntityId", "Creeper");
+                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                }
+                else if (mobIDList[i].equals("PigZombie"))
+                {
+                    properties.setShort("Anger", (short) (400 + world.rand.nextInt(400)));
+                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setString("Type", mobIDList[i]);
+                    spawnerNBT.setString("EntityId", mobIDList[i]);
+                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                }
+                else if (mobIDList[i].equals("Zombie"))
+                {
+                    boolean flag = world.rand.nextBoolean();
+                    properties.setByte("isVillager", (byte) (flag ? 1 : 0));
+                    if (flag)
+                        properties.setInteger("ConversionTime", -1);
                     
-                    NBTTagCompound item = new NBTTagCompound();
+                    flag = world.rand.nextBoolean();
+                    if (flag)
+                    {
+                        NBTTagList equipment = new NBTTagList();
+                        
+                        NBTTagCompound item = new NBTTagCompound();
+                        
+                        (new ItemStack(Item.swordSteel.itemID, 1, 0)).writeToNBT(item);
+                        equipment.appendTag(item);
+                        item = new NBTTagCompound();
+                        (new ItemStack(Item.bootsGold.itemID, 1, 0)).writeToNBT(item);
+                        equipment.appendTag(item);
+                        item = new NBTTagCompound();
+                        (new ItemStack(Item.legsGold.itemID, 1, 0)).writeToNBT(item);
+                        equipment.appendTag(item);
+                        item = new NBTTagCompound();
+                        (new ItemStack(Item.plateGold.itemID, 1, 0)).writeToNBT(item);
+                        equipment.appendTag(item);
+                        item = new NBTTagCompound();
+                        (new ItemStack(Item.helmetGold.itemID, 1, 0)).writeToNBT(item);
+                        equipment.appendTag(item);
+                        
+                        properties.setTag("Equipment", equipment);
+                    }
                     
-                    (new ItemStack(Item.swordSteel.shiftedIndex, 1, 0)).writeToNBT(item);
-                    equipment.appendTag(item);
-                    item = new NBTTagCompound();
-                    (new ItemStack(Item.bootsGold.shiftedIndex, 1, 0)).writeToNBT(item);
-                    equipment.appendTag(item);
-                    item = new NBTTagCompound();
-                    (new ItemStack(Item.legsGold.shiftedIndex, 1, 0)).writeToNBT(item);
-                    equipment.appendTag(item);
-                    item = new NBTTagCompound();
-                    (new ItemStack(Item.plateGold.shiftedIndex, 1, 0)).writeToNBT(item);
-                    equipment.appendTag(item);
-                    item = new NBTTagCompound();
-                    (new ItemStack(Item.helmetGold.shiftedIndex, 1, 0)).writeToNBT(item);
-                    equipment.appendTag(item);
+                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setString("Type", mobIDList[i]);
+                    spawnerNBT.setString("EntityId", mobIDList[i]);
+                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                }
+                else if (mobIDList[i].equals("Skeleton"))
+                {
+                    boolean flag = world.rand.nextBoolean();
+                    if (flag)
+                    {
+                        NBTTagList equipment = new NBTTagList();
+                        NBTTagCompound item = new NBTTagCompound();
+                        
+                        (new ItemStack(Item.bow.itemID, 1, 0)).writeToNBT(item);
+                        equipment.appendTag(item);
+                        item = new NBTTagCompound();
+                        (new ItemStack(Item.bootsGold.itemID, 1, 0)).writeToNBT(item);
+                        equipment.appendTag(item);
+                        item = new NBTTagCompound();
+                        (new ItemStack(Item.legsGold.itemID, 1, 0)).writeToNBT(item);
+                        equipment.appendTag(item);
+                        item = new NBTTagCompound();
+                        (new ItemStack(Item.plateGold.itemID, 1, 0)).writeToNBT(item);
+                        equipment.appendTag(item);
+                        item = new NBTTagCompound();
+                        (new ItemStack(Item.helmetGold.itemID, 1, 0)).writeToNBT(item);
+                        equipment.appendTag(item);
+                        
+                        properties.setTag("Equipment", equipment);
+                    }
                     
-                    spawnData.setTag("Equipment", equipment);
+                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setString("Type", mobIDList[i]);
+                    spawnerNBT.setString("EntityId", mobIDList[i]);
+                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                }
+                else
+                {
+                    potentialSpawn.setString("Type", mobIDList[i]);
+                    spawnerNBT.setString("EntityId", mobIDList[i]);
+                    spawnerNBT.setCompoundTag("SpawnData", properties);
                 }
                 
-                spawnerNBT.setCompoundTag("SpawnData", spawnData);
-                spawnerNBT.setString("EntityId", mobID);
+                spawnPotentials.appendTag(potentialSpawn);
             }
-            else if (mobID.equals("Skeleton"))
-            {
-                boolean flag = world.rand.nextBoolean();
-                if (flag)
-                {
-                    NBTTagList equipment = new NBTTagList();
-                    NBTTagCompound item = new NBTTagCompound();
-                    
-                    (new ItemStack(Item.bow.shiftedIndex, 1, 0)).writeToNBT(item);
-                    equipment.appendTag(item);
-                    item = new NBTTagCompound();
-                    (new ItemStack(Item.bootsGold.shiftedIndex, 1, 0)).writeToNBT(item);
-                    equipment.appendTag(item);
-                    item = new NBTTagCompound();
-                    (new ItemStack(Item.legsGold.shiftedIndex, 1, 0)).writeToNBT(item);
-                    equipment.appendTag(item);
-                    item = new NBTTagCompound();
-                    (new ItemStack(Item.plateGold.shiftedIndex, 1, 0)).writeToNBT(item);
-                    equipment.appendTag(item);
-                    item = new NBTTagCompound();
-                    (new ItemStack(Item.helmetGold.shiftedIndex, 1, 0)).writeToNBT(item);
-                    equipment.appendTag(item);
-                    
-                    spawnData.setTag("Equipment", equipment);
-                }
-                
-                spawnerNBT.setCompoundTag("SpawnData", spawnData);
-                spawnerNBT.setString("EntityId", mobID);
-            }
-            else
-                spawnerNBT.setString("EntityId", mobID);
+            
+            spawnerNBT.setTag("SpawnPotentials", spawnPotentials);
             
             if (FloatingRuins.harderDungeons)
             {
-                spawnerNBT.setShort("MinSpawnDelay", (short) 100);
-                spawnerNBT.setShort("MaxSpawnDelay", (short) 600);
+                spawnerNBT.setShort("MinSpawnDelay", (short) 80);
+                spawnerNBT.setShort("MaxSpawnDelay", (short) 200);
                 spawnerNBT.setShort("SpawnCount", (short) 6);
-                spawnerNBT.setShort("MaxNearbyEntities", (short) 10);
+                spawnerNBT.setShort("MaxNearbyEntities", (short) 16);
                 spawnerNBT.setShort("SpawnRange", (short) 7);
             }
             
@@ -346,6 +385,47 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
             return getMobString(spawnerMushroom, world, x, z);
         else
             return getMobString(spawnerDefault, world, x, z);
+    }
+    
+    public String[] getSpawnerMobList(World world, BiomeGenBase biomegenbase)
+    {
+        if (isLavaNearby)
+            return spawnerNearLava.split(",");
+        
+        if (biomegenbase.equals(BiomeGenBase.desert) || biomegenbase.equals(BiomeGenBase.desertHills))
+            return spawnerDesert.split(",");
+        
+        if (biomegenbase.equals(BiomeGenBase.forest) || biomegenbase.equals(BiomeGenBase.forestHills))
+            return spawnerForest.split(",");
+        
+        if (biomegenbase.equals(BiomeGenBase.plains))
+            return spawnerPlains.split(",");
+        
+        if (biomegenbase.equals(BiomeGenBase.swampland))
+            return spawnerSwampland.split(",");
+        
+        if (biomegenbase.equals(BiomeGenBase.taiga) || biomegenbase.equals(BiomeGenBase.taigaHills))
+            return spawnerTaiga.split(",");
+        
+        if (biomegenbase.equals(BiomeGenBase.extremeHills) || biomegenbase.equals(BiomeGenBase.extremeHillsEdge))
+            return spawnerHills.split(",");
+        
+        if (biomegenbase.equals(BiomeGenBase.ocean))
+            return spawnerOcean.split(",");
+        
+        if (biomegenbase.equals(BiomeGenBase.river))
+            return spawnerRiver.split(",");
+        
+        if (biomegenbase.equals(BiomeGenBase.jungle) || biomegenbase.equals(BiomeGenBase.jungleHills))
+            return spawnerJungle.split(",");
+        
+        if (isIceBiome(biomegenbase))
+            return spawnerIceBiomes.split(",");
+        
+        if (isMushroomBiome(biomegenbase))
+            return spawnerMushroom.split(",");
+        else
+            return spawnerDefault.split(",");
     }
     
     private String getMobString(String s, World world, int x, int z)
