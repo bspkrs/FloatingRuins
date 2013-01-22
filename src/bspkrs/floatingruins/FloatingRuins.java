@@ -10,7 +10,7 @@ import net.minecraft.world.WorldType;
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String versionNumber             = "1.4.6.r02";
+    public final static String VERSION_NUMBER            = "1.4.6.r02";
     
     public final static String allowUpdateCheckDesc      = "Set to true to allow checking for mod updates, false to disable";
     public static boolean      allowUpdateCheck          = true;

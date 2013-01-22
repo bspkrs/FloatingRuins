@@ -10,61 +10,63 @@ import bspkrs.util.ModVersionChecker;
 public class mod_floatingRuins extends BaseMod
 {
     @MLProp(info = FloatingRuins.allowUpdateCheckDesc)
-    public static boolean     allowUpdateCheck = FloatingRuins.allowUpdateCheck;
+    public static boolean     allowUpdateCheck      = FloatingRuins.allowUpdateCheck;
     @MLProp(info = FloatingRuins.allowInSuperFlatDesc)
-    public static boolean     allowInSuperFlat = FloatingRuins.allowInSuperFlat;
+    public static boolean     allowInSuperFlat      = FloatingRuins.allowInSuperFlat;
+    @MLProp(info = FloatingRuins.allowMultiMobSpawnersDesc)
+    public static boolean     allowMultiMobSpawners = FloatingRuins.allowMultiMobSpawners;
     @MLProp(info = FloatingRuins.harderDungeonsDesc)
-    public static boolean     harderDungeons   = FloatingRuins.harderDungeons;
+    public static boolean     harderDungeons        = FloatingRuins.harderDungeons;
     @MLProp(info = FloatingRuins.rarityDesc)
-    public static int         rarity           = FloatingRuins.rarity;
+    public static int         rarity                = FloatingRuins.rarity;
     @MLProp(info = FloatingRuins.baseHeightDesc)
-    public static int         baseHeight       = FloatingRuins.baseHeight;
+    public static int         baseHeight            = FloatingRuins.baseHeight;
     @MLProp(info = FloatingRuins.heightVariationDesc)
-    public static int         heightVariation  = FloatingRuins.heightVariation;
+    public static int         heightVariation       = FloatingRuins.heightVariation;
     @MLProp(info = FloatingRuins.baseRadiusDesc)
-    public static int         baseRadius       = FloatingRuins.baseRadius;
+    public static int         baseRadius            = FloatingRuins.baseRadius;
     @MLProp(info = FloatingRuins.radiusVariationDesc)
-    public static int         radiusVariation  = FloatingRuins.radiusVariation;
+    public static int         radiusVariation       = FloatingRuins.radiusVariation;
     @MLProp(info = FloatingRuins.baseDepthDesc)
-    public static int         baseDepth        = FloatingRuins.baseDepth;
+    public static int         baseDepth             = FloatingRuins.baseDepth;
     @MLProp(info = FloatingRuins.depthVariationDesc)
-    public static int         depthVariation   = FloatingRuins.depthVariation;
+    public static int         depthVariation        = FloatingRuins.depthVariation;
     @MLProp(info = FloatingRuins.numberOfItemsDesc)
-    public static int         numberOfItems    = FloatingRuins.numberOfItems;
+    public static int         numberOfItems         = FloatingRuins.numberOfItems;
     @MLProp(info = FloatingRuins.blockIDBlacklistDesc)
-    public static String      blockIDBlacklist = FloatingRuins.blockIDBlacklist;
+    public static String      blockIDBlacklist      = FloatingRuins.blockIDBlacklist;
     @MLProp(info = FloatingRuins.stringOfIdsDesc)
-    public static String      stringOfIds      = FloatingRuins.stringOfIds;
+    public static String      stringOfIds           = FloatingRuins.stringOfIds;
     @MLProp(info = FloatingRuins.spawnerDefaultDesc)
-    public static String      spawnerDefault   = FloatingRuins.spawnerDefault;
+    public static String      spawnerDefault        = FloatingRuins.spawnerDefault;
     @MLProp(info = FloatingRuins.spawnerDesertDesc)
-    public static String      spawnerDesert    = FloatingRuins.spawnerDesert;
+    public static String      spawnerDesert         = FloatingRuins.spawnerDesert;
     @MLProp(info = FloatingRuins.spawnerForestDesc)
-    public static String      spawnerForest    = FloatingRuins.spawnerForest;
+    public static String      spawnerForest         = FloatingRuins.spawnerForest;
     @MLProp(info = FloatingRuins.spawnerPlainsDesc)
-    public static String      spawnerPlains    = FloatingRuins.spawnerPlains;
+    public static String      spawnerPlains         = FloatingRuins.spawnerPlains;
     @MLProp(info = FloatingRuins.spawnerSwamplandDesc)
-    public static String      spawnerSwampland = FloatingRuins.spawnerSwampland;
+    public static String      spawnerSwampland      = FloatingRuins.spawnerSwampland;
     @MLProp(info = FloatingRuins.spawnerTaigaDesc)
-    public static String      spawnerTaiga     = FloatingRuins.spawnerTaiga;
+    public static String      spawnerTaiga          = FloatingRuins.spawnerTaiga;
     @MLProp(info = FloatingRuins.spawnerHillsDesc)
-    public static String      spawnerHills     = FloatingRuins.spawnerHills;
+    public static String      spawnerHills          = FloatingRuins.spawnerHills;
     @MLProp(info = FloatingRuins.spawnerOceanDesc)
-    public static String      spawnerOcean     = FloatingRuins.spawnerOcean;
+    public static String      spawnerOcean          = FloatingRuins.spawnerOcean;
     @MLProp(info = FloatingRuins.spawnerRiverDesc)
-    public static String      spawnerRiver     = FloatingRuins.spawnerRiver;
+    public static String      spawnerRiver          = FloatingRuins.spawnerRiver;
     @MLProp(info = FloatingRuins.spawnerJungleDesc)
-    public static String      spawnerJungle    = FloatingRuins.spawnerJungle;
+    public static String      spawnerJungle         = FloatingRuins.spawnerJungle;
     @MLProp(info = FloatingRuins.spawnerIceBiomesDesc)
-    public static String      spawnerIceBiomes = FloatingRuins.spawnerIceBiomes;
+    public static String      spawnerIceBiomes      = FloatingRuins.spawnerIceBiomes;
     @MLProp(info = FloatingRuins.spawnerMushroomDesc)
-    public static String      spawnerMushroom  = FloatingRuins.spawnerMushroom;
+    public static String      spawnerMushroom       = FloatingRuins.spawnerMushroom;
     @MLProp(info = FloatingRuins.spawnerNearLavaDesc + "\n\n**ONLY EDIT WHAT IS BELOW THIS**")
-    public static String      spawnerNearLava  = FloatingRuins.spawnerNearLava;
+    public static String      spawnerNearLava       = FloatingRuins.spawnerNearLava;
     
     private ModVersionChecker versionChecker;
-    private final String      versionURL       = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.6/floatingRuins.version";
-    private final String      mcfTopic         = "http://www.minecraftforum.net/topic/1009577-";
+    private final String      versionURL            = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.6/floatingRuins.version";
+    private final String      mcfTopic              = "http://www.minecraftforum.net/topic/1009577-";
     
     public mod_floatingRuins()
     {
@@ -81,7 +83,7 @@ public class mod_floatingRuins extends BaseMod
     @Override
     public String getVersion()
     {
-        return "ML " + FloatingRuins.versionNumber;
+        return "ML " + FloatingRuins.VERSION_NUMBER;
     }
     
     @Override
@@ -98,6 +100,7 @@ public class mod_floatingRuins extends BaseMod
         
         FloatingRuins.allowUpdateCheck = allowUpdateCheck;
         FloatingRuins.allowInSuperFlat = allowInSuperFlat;
+        FloatingRuins.allowMultiMobSpawners = allowMultiMobSpawners;
         FloatingRuins.harderDungeons = harderDungeons;
         FloatingRuins.rarity = rarity;
         FloatingRuins.baseHeight = baseHeight;
