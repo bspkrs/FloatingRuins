@@ -18,7 +18,7 @@ public final class FloatingRuins
     public static boolean      allowInSuperFlat          = false;
     public final static String allowMultiMobSpawnersDesc = "When set to true spawners will be able to spawn any of the mobs for the biome the floating island generated in, set to false to use the old logic of randomly picking just one mob.";
     public static boolean      allowMultiMobSpawners     = true;
-    public final static String harderDungeonsDesc        = "Set to true to generate harder dungeons (roof is bedrock, chest is harder to get to), set to false to generate normal dungeons.";
+    public final static String harderDungeonsDesc        = "Set to true to generate harder dungeons (roof is bedrock, chest is harder to get to, mobs spawn more aggressively), set to false to generate normal dungeons.";
     public static boolean      harderDungeons            = false;
     public final static String rarityDesc                = "The probability of a floating island generating is 1 in each 'rarity' number of chunks.";
     public static int          rarity                    = 800;
