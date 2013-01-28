@@ -3,6 +3,7 @@ package bspkrs.floatingruins;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -16,7 +17,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
     private boolean   isLavaNearby;
     private final int SPHEROID    = 0;
     private final int CONE        = 1;
-    private final int POINT       = 2;
+    private final int JETSONS     = 2;
     private final int STALACTITE  = 3;
     private int[]     islandTypes = { SPHEROID, CONE, SPHEROID, SPHEROID, CONE };
     
@@ -46,7 +47,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
             else
                 return distToCenterColumn <= (1.0F - Math.abs((y + 1.0F) / (depth - 1.0F))) * radius;
         }
-        else if (islandType == POINT)
+        else if (islandType == JETSONS)
         {
             return distToCenterColumn <= (y >= -1 ? radius * 1.0F : y == -2 ? Math.ceil(radius * 0.8F) : (((float) depth / Math.abs(y)) - 1.0F));
         }
@@ -93,7 +94,12 @@ public class WorldGenFloatingIsland extends WorldGenerator
                     if (isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
                     {
                         int metadata = world.getBlockMetadata(x + xIn, yg + y, z + zIn);
-                        if (((y <= 0) || (blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID && (world.isBlockNormalCube(x + xIn, yg + y, z + zIn) || blockID == Block.leaves.blockID))) && !CommonUtils.isIDInList(blockID, metadata, FloatingRuins.blockIDBlacklist))
+                        if (((y <= 0) || (blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID
+                                && (world.isBlockNormalCube(x + xIn, yg + y, z + zIn)
+                                || (blockID != 0 && BlockLeavesBase.class.isAssignableFrom(Block.blocksList[blockID].getClass()))
+                                )
+                                )
+                                && !CommonUtils.isIDInList(blockID, metadata, FloatingRuins.blockIDBlacklist)))
                         {
                             if (blockID == Block.mobSpawner.blockID)
                             {
