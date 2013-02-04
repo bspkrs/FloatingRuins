@@ -10,7 +10,7 @@ import net.minecraft.world.WorldType;
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String VERSION_NUMBER            = "1.4.6.r03";
+    public final static String VERSION_NUMBER            = "1.4.6.r04";
     
     public final static String allowUpdateCheckDesc      = "Set to true to allow checking for mod updates, false to disable";
     public static boolean      allowUpdateCheck          = true;
@@ -55,7 +55,7 @@ public final class FloatingRuins
     public final static String spawnerHillsDesc          = "";
     public static String       spawnerHills              = "Default";
     public final static String spawnerOceanDesc          = "";
-    public static String       spawnerOcean              = "Silverfish";
+    public static String       spawnerOcean              = "Silverfish, ChargedCreeper";
     public final static String spawnerRiverDesc          = "";
     public static String       spawnerRiver              = "Silverfish";
     public final static String spawnerJungleDesc         = "";

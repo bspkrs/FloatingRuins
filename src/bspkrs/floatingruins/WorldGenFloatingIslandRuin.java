@@ -17,22 +17,508 @@ import bspkrs.util.CommonUtils;
 
 public class WorldGenFloatingIslandRuin extends WorldGenerator
 {
-    private final int    numberOfItems;
-    private final String stringOfIds;
-    private final String spawnerDefault;
-    private final String spawnerDesert;
-    private final String spawnerForest;
-    private final String spawnerHills;
-    private final String spawnerPlains;
-    private final String spawnerSwampland;
-    private final String spawnerTaiga;
-    private final String spawnerOcean;
-    private final String spawnerRiver;
-    private final String spawnerJungle;
-    private final String spawnerIceBiomes;
-    private final String spawnerMushroom;
-    private final String spawnerNearLava;
-    private boolean      isLavaNearby;
+    private final int          numberOfItems;
+    private final String       stringOfIds;
+    private final String       spawnerDefault;
+    private final String       spawnerDesert;
+    private final String       spawnerForest;
+    private final String       spawnerHills;
+    private final String       spawnerPlains;
+    private final String       spawnerSwampland;
+    private final String       spawnerTaiga;
+    private final String       spawnerOcean;
+    private final String       spawnerRiver;
+    private final String       spawnerJungle;
+    private final String       spawnerIceBiomes;
+    private final String       spawnerMushroom;
+    private final String       spawnerNearLava;
+    private boolean            isLavaNearby;
+    
+    private static ItemStack[] helms       = { null,
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.helmetDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.helmetDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                           new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                           new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                           new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                           new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.helmetDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.helmetDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                           new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                           new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                           new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                           new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0),
+                                           new ItemStack(Item.helmetSteel.itemID, 1, 0) };
+    
+    private static ItemStack[] plates      = { null,
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.plateDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.plateDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.plateGold.itemID, 1, 0),
+                                           new ItemStack(Item.plateGold.itemID, 1, 0),
+                                           new ItemStack(Item.plateGold.itemID, 1, 0),
+                                           new ItemStack(Item.plateGold.itemID, 1, 0),
+                                           new ItemStack(Item.plateGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.plateDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.plateDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.plateGold.itemID, 1, 0),
+                                           new ItemStack(Item.plateGold.itemID, 1, 0),
+                                           new ItemStack(Item.plateGold.itemID, 1, 0),
+                                           new ItemStack(Item.plateGold.itemID, 1, 0),
+                                           new ItemStack(Item.plateGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0),
+                                           new ItemStack(Item.plateSteel.itemID, 1, 0) };
+    
+    private static ItemStack[] legs        = { null,
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.legsDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.legsDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.legsGold.itemID, 1, 0),
+                                           new ItemStack(Item.legsGold.itemID, 1, 0),
+                                           new ItemStack(Item.legsGold.itemID, 1, 0),
+                                           new ItemStack(Item.legsGold.itemID, 1, 0),
+                                           new ItemStack(Item.legsGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.legsDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.legsDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.legsGold.itemID, 1, 0),
+                                           new ItemStack(Item.legsGold.itemID, 1, 0),
+                                           new ItemStack(Item.legsGold.itemID, 1, 0),
+                                           new ItemStack(Item.legsGold.itemID, 1, 0),
+                                           new ItemStack(Item.legsGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.legsSteel.itemID, 1, 0) };
+    
+    private static ItemStack[] boots       = { null,
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bootsDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.bootsDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                           new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                           new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                           new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                           new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bootsDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.bootsDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                           new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                           new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                           new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                           new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0),
+                                           new ItemStack(Item.bootsSteel.itemID, 1, 0) };
+    
+    private static ItemStack[] skel_weap   = { null,
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.swordDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           new ItemStack(Item.bow.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0) };
+    
+    private static ItemStack[] zombie_weap = { null,
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.swordDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.swordDiamond.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           null,
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0) };
     
     public WorldGenFloatingIslandRuin(boolean isLavaNearby)
     {
@@ -158,7 +644,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     spawnerNBT.setString("EntityId", mobIDList[i]);
                     spawnerNBT.setCompoundTag("SpawnData", properties);
                 }
-                else if (mobIDList[i].equals("ChargedCreeper"))
+                else if (mobIDList[i].equals("ChargedCreeper") || (mobIDList[i].equals("Creeper") && biomegenbase.canSpawnLightningBolt()))
                 {
                     properties.setByte("powered", (byte) 1);
                     potentialSpawn.setCompoundTag("Properties", properties);
@@ -185,23 +671,47 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     if (flag)
                     {
                         NBTTagList equipment = new NBTTagList();
-                        
                         NBTTagCompound item = new NBTTagCompound();
                         
-                        (new ItemStack(Item.swordSteel.itemID, 1, 0)).writeToNBT(item);
-                        equipment.appendTag(item);
-                        item = new NBTTagCompound();
-                        (new ItemStack(Item.bootsGold.itemID, 1, 0)).writeToNBT(item);
-                        equipment.appendTag(item);
-                        item = new NBTTagCompound();
-                        (new ItemStack(Item.legsGold.itemID, 1, 0)).writeToNBT(item);
-                        equipment.appendTag(item);
-                        item = new NBTTagCompound();
-                        (new ItemStack(Item.plateGold.itemID, 1, 0)).writeToNBT(item);
-                        equipment.appendTag(item);
-                        item = new NBTTagCompound();
-                        (new ItemStack(Item.helmetGold.itemID, 1, 0)).writeToNBT(item);
-                        equipment.appendTag(item);
+                        ItemStack equip = zombie_weap[world.rand.nextInt(zombie_weap.length)];
+                        if (equip != null)
+                        {
+                            equip.writeToNBT(item);
+                            equipment.appendTag(item);
+                            item = new NBTTagCompound();
+                        }
+                        
+                        equip = boots[world.rand.nextInt(boots.length)];
+                        if (equip != null)
+                        {
+                            equip.writeToNBT(item);
+                            equipment.appendTag(item);
+                            item = new NBTTagCompound();
+                        }
+                        
+                        equip = legs[world.rand.nextInt(legs.length)];
+                        if (equip != null)
+                        {
+                            equip.writeToNBT(item);
+                            equipment.appendTag(item);
+                            item = new NBTTagCompound();
+                        }
+                        
+                        equip = plates[world.rand.nextInt(plates.length)];
+                        if (equip != null)
+                        {
+                            equip.writeToNBT(item);
+                            equipment.appendTag(item);
+                            item = new NBTTagCompound();
+                        }
+                        
+                        equip = helms[world.rand.nextInt(helms.length)];
+                        if (equip != null)
+                        {
+                            equip.writeToNBT(item);
+                            equipment.appendTag(item);
+                            item = new NBTTagCompound();
+                        }
                         
                         properties.setTag("Equipment", equipment);
                     }
@@ -219,20 +729,45 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         NBTTagList equipment = new NBTTagList();
                         NBTTagCompound item = new NBTTagCompound();
                         
-                        (new ItemStack(Item.bow.itemID, 1, 0)).writeToNBT(item);
-                        equipment.appendTag(item);
-                        item = new NBTTagCompound();
-                        (new ItemStack(Item.bootsGold.itemID, 1, 0)).writeToNBT(item);
-                        equipment.appendTag(item);
-                        item = new NBTTagCompound();
-                        (new ItemStack(Item.legsGold.itemID, 1, 0)).writeToNBT(item);
-                        equipment.appendTag(item);
-                        item = new NBTTagCompound();
-                        (new ItemStack(Item.plateGold.itemID, 1, 0)).writeToNBT(item);
-                        equipment.appendTag(item);
-                        item = new NBTTagCompound();
-                        (new ItemStack(Item.helmetGold.itemID, 1, 0)).writeToNBT(item);
-                        equipment.appendTag(item);
+                        ItemStack equip = skel_weap[world.rand.nextInt(skel_weap.length)];
+                        if (equip != null)
+                        {
+                            equip.writeToNBT(item);
+                            equipment.appendTag(item);
+                            item = new NBTTagCompound();
+                        }
+                        
+                        equip = boots[world.rand.nextInt(boots.length)];
+                        if (equip != null)
+                        {
+                            equip.writeToNBT(item);
+                            equipment.appendTag(item);
+                            item = new NBTTagCompound();
+                        }
+                        
+                        equip = legs[world.rand.nextInt(legs.length)];
+                        if (equip != null)
+                        {
+                            equip.writeToNBT(item);
+                            equipment.appendTag(item);
+                            item = new NBTTagCompound();
+                        }
+                        
+                        equip = plates[world.rand.nextInt(plates.length)];
+                        if (equip != null)
+                        {
+                            equip.writeToNBT(item);
+                            equipment.appendTag(item);
+                            item = new NBTTagCompound();
+                        }
+                        
+                        equip = helms[world.rand.nextInt(helms.length)];
+                        if (equip != null)
+                        {
+                            equip.writeToNBT(item);
+                            equipment.appendTag(item);
+                            item = new NBTTagCompound();
+                        }
                         
                         properties.setTag("Equipment", equipment);
                     }
