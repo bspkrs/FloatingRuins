@@ -12,6 +12,8 @@ public final class FloatingRuins
 {
     public final static String VERSION_NUMBER            = "1.4.6.r04";
     
+    public final static String allowDebugLoggingDesc     = "Set to true if you want FloatingRuins to log info about what it's doing, false to disable";
+    public static boolean      allowDebugLogging         = false;
     public final static String allowUpdateCheckDesc      = "Set to true to allow checking for mod updates, false to disable";
     public static boolean      allowUpdateCheck          = true;
     public final static String allowInSuperFlatDesc      = "Set to true to allow generation of floating ruins on superflat maps, false to disable.";
@@ -82,5 +84,11 @@ public final class FloatingRuins
             if (random.nextInt(rarity) == 0)
                 (new WorldGenFloatingIsland()).generate(world, random, x, y, z);
         }
+    }
+    
+    public static void debug(String msg, Object... args)
+    {
+        if (allowDebugLogging)
+            FRLog.info("[DEBUG] " + msg, args);
     }
 }

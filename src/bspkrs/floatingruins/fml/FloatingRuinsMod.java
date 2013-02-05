@@ -1,5 +1,8 @@
 package bspkrs.floatingruins.fml;
 
+import java.io.File;
+
+import net.minecraft.block.Block;
 import net.minecraftforge.common.Configuration;
 import bspkrs.floatingruins.FloatingRuins;
 import bspkrs.fml.util.Config;
@@ -31,38 +34,53 @@ public class FloatingRuinsMod
     @PreInit
     public void preInit(FMLPreInitializationEvent event)
     {
+        String ctgyGen = Configuration.CATEGORY_GENERAL;
         metadata = event.getModMetadata();
         
-        Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+        File file = event.getSuggestedConfigurationFile();
+        
+        if (Block.class.getSimpleName().equalsIgnoreCase("Block"))
+        { // debug settings for deobfuscated execution
+            FloatingRuins.rarity = 100;
+            FloatingRuins.harderDungeons = true;
+            FloatingRuins.allowDebugLogging = true;
+            if (file.exists())
+                file.delete();
+        }
+        
+        Configuration config = new Configuration(file);
         
         config.load();
-        FloatingRuins.allowUpdateCheck = Config.getBoolean(config, "allowUpdateCheck", Configuration.CATEGORY_GENERAL, FloatingRuins.allowUpdateCheck, FloatingRuins.allowUpdateCheckDesc);
-        FloatingRuins.allowInSuperFlat = Config.getBoolean(config, "allowInSuperFlat", Configuration.CATEGORY_GENERAL, FloatingRuins.allowInSuperFlat, FloatingRuins.allowInSuperFlatDesc);
-        FloatingRuins.allowMultiMobSpawners = Config.getBoolean(config, "allowMultiMobSpawners", Configuration.CATEGORY_GENERAL, FloatingRuins.allowMultiMobSpawners, FloatingRuins.allowMultiMobSpawnersDesc);
-        FloatingRuins.harderDungeons = Config.getBoolean(config, "harderDungeons", Configuration.CATEGORY_GENERAL, FloatingRuins.harderDungeons, FloatingRuins.harderDungeonsDesc);
-        FloatingRuins.rarity = Config.getInt(config, "rarity", Configuration.CATEGORY_GENERAL, FloatingRuins.rarity, 1, Integer.MAX_VALUE, FloatingRuins.rarityDesc);
-        FloatingRuins.baseHeight = Config.getInt(config, "baseHeight", Configuration.CATEGORY_GENERAL, FloatingRuins.baseHeight, 80, 240, FloatingRuins.baseHeightDesc);
-        FloatingRuins.heightVariation = Config.getInt(config, "heightVariation", Configuration.CATEGORY_GENERAL, FloatingRuins.heightVariation, 0, 160, FloatingRuins.heightVariationDesc);
-        FloatingRuins.baseRadius = Config.getInt(config, "baseRadius", Configuration.CATEGORY_GENERAL, FloatingRuins.baseRadius, 6, 50, FloatingRuins.baseRadiusDesc);
-        FloatingRuins.radiusVariation = Config.getInt(config, "radiusVariation", Configuration.CATEGORY_GENERAL, FloatingRuins.radiusVariation, 0, 50, FloatingRuins.radiusVariationDesc);
-        FloatingRuins.baseDepth = Config.getInt(config, "baseDepth", Configuration.CATEGORY_GENERAL, FloatingRuins.baseDepth, 2, 50, FloatingRuins.baseDepthDesc);
-        FloatingRuins.depthVariation = Config.getInt(config, "depthVariation", Configuration.CATEGORY_GENERAL, FloatingRuins.depthVariation, 0, 50, FloatingRuins.depthVariationDesc);
-        FloatingRuins.numberOfItems = Config.getInt(config, "numberOfItems", Configuration.CATEGORY_GENERAL, FloatingRuins.numberOfItems, 1, 27, FloatingRuins.numberOfItemsDesc);
-        FloatingRuins.stringOfIds = Config.getString(config, "stringOfIds", Configuration.CATEGORY_GENERAL, FloatingRuins.stringOfIds, FloatingRuins.stringOfIdsDesc);
-        FloatingRuins.blockIDBlacklist = Config.getString(config, "blockIDBlacklist", Configuration.CATEGORY_GENERAL, FloatingRuins.blockIDBlacklist, FloatingRuins.blockIDBlacklistDesc);
-        FloatingRuins.spawnerDefault = Config.getString(config, "spawnerDefault", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerDefault, FloatingRuins.spawnerDefaultDesc);
-        FloatingRuins.spawnerDesert = Config.getString(config, "spawnerDesert", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerDesert, FloatingRuins.spawnerDesertDesc);
-        FloatingRuins.spawnerForest = Config.getString(config, "spawnerForest", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerForest, FloatingRuins.spawnerForestDesc);
-        FloatingRuins.spawnerHills = Config.getString(config, "spawnerHills", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerHills, FloatingRuins.spawnerHillsDesc);
-        FloatingRuins.spawnerIceBiomes = Config.getString(config, "spawnerIceBiomes", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerIceBiomes, FloatingRuins.spawnerIceBiomesDesc);
-        FloatingRuins.spawnerJungle = Config.getString(config, "spawnerJungle", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerJungle, FloatingRuins.spawnerJungleDesc);
-        FloatingRuins.spawnerMushroom = Config.getString(config, "spawnerMushroom", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerMushroom, FloatingRuins.spawnerMushroomDesc);
-        FloatingRuins.spawnerOcean = Config.getString(config, "spawnerOcean", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerOcean, FloatingRuins.spawnerOceanDesc);
-        FloatingRuins.spawnerPlains = Config.getString(config, "spawnerPlains", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerPlains, FloatingRuins.spawnerPlainsDesc);
-        FloatingRuins.spawnerRiver = Config.getString(config, "spawnerRiver", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerRiver, FloatingRuins.spawnerRiverDesc);
-        FloatingRuins.spawnerSwampland = Config.getString(config, "spawnerSwampland", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerSwampland, FloatingRuins.spawnerSwamplandDesc);
-        FloatingRuins.spawnerTaiga = Config.getString(config, "spawnerTaiga", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerTaiga, FloatingRuins.spawnerTaigaDesc);
-        FloatingRuins.spawnerNearLava = Config.getString(config, "spawnerNearLava", Configuration.CATEGORY_GENERAL, FloatingRuins.spawnerNearLava, FloatingRuins.spawnerNearLavaDesc);
+        
+        FloatingRuins.allowDebugLogging = Config.getBoolean(config, "allowDebugLogging", ctgyGen, FloatingRuins.allowDebugLogging, FloatingRuins.allowDebugLoggingDesc);
+        FloatingRuins.allowUpdateCheck = Config.getBoolean(config, "allowUpdateCheck", ctgyGen, FloatingRuins.allowUpdateCheck, FloatingRuins.allowUpdateCheckDesc);
+        FloatingRuins.allowInSuperFlat = Config.getBoolean(config, "allowInSuperFlat", ctgyGen, FloatingRuins.allowInSuperFlat, FloatingRuins.allowInSuperFlatDesc);
+        FloatingRuins.allowMultiMobSpawners = Config.getBoolean(config, "allowMultiMobSpawners", ctgyGen, FloatingRuins.allowMultiMobSpawners, FloatingRuins.allowMultiMobSpawnersDesc);
+        FloatingRuins.harderDungeons = Config.getBoolean(config, "harderDungeons", ctgyGen, FloatingRuins.harderDungeons, FloatingRuins.harderDungeonsDesc);
+        FloatingRuins.rarity = Config.getInt(config, "rarity", ctgyGen, FloatingRuins.rarity, 1, Integer.MAX_VALUE, FloatingRuins.rarityDesc);
+        FloatingRuins.baseHeight = Config.getInt(config, "baseHeight", ctgyGen, FloatingRuins.baseHeight, 80, 240, FloatingRuins.baseHeightDesc);
+        FloatingRuins.heightVariation = Config.getInt(config, "heightVariation", ctgyGen, FloatingRuins.heightVariation, 0, 160, FloatingRuins.heightVariationDesc);
+        FloatingRuins.baseRadius = Config.getInt(config, "baseRadius", ctgyGen, FloatingRuins.baseRadius, 6, 50, FloatingRuins.baseRadiusDesc);
+        FloatingRuins.radiusVariation = Config.getInt(config, "radiusVariation", ctgyGen, FloatingRuins.radiusVariation, 0, 50, FloatingRuins.radiusVariationDesc);
+        FloatingRuins.baseDepth = Config.getInt(config, "baseDepth", ctgyGen, FloatingRuins.baseDepth, 2, 50, FloatingRuins.baseDepthDesc);
+        FloatingRuins.depthVariation = Config.getInt(config, "depthVariation", ctgyGen, FloatingRuins.depthVariation, 0, 50, FloatingRuins.depthVariationDesc);
+        FloatingRuins.numberOfItems = Config.getInt(config, "numberOfItems", ctgyGen, FloatingRuins.numberOfItems, 1, 27, FloatingRuins.numberOfItemsDesc);
+        FloatingRuins.stringOfIds = Config.getString(config, "stringOfIds", ctgyGen, FloatingRuins.stringOfIds, FloatingRuins.stringOfIdsDesc);
+        FloatingRuins.blockIDBlacklist = Config.getString(config, "blockIDBlacklist", ctgyGen, FloatingRuins.blockIDBlacklist, FloatingRuins.blockIDBlacklistDesc);
+        FloatingRuins.spawnerDefault = Config.getString(config, "spawnerDefault", ctgyGen, FloatingRuins.spawnerDefault, FloatingRuins.spawnerDefaultDesc);
+        FloatingRuins.spawnerDesert = Config.getString(config, "spawnerDesert", ctgyGen, FloatingRuins.spawnerDesert, FloatingRuins.spawnerDesertDesc);
+        FloatingRuins.spawnerForest = Config.getString(config, "spawnerForest", ctgyGen, FloatingRuins.spawnerForest, FloatingRuins.spawnerForestDesc);
+        FloatingRuins.spawnerHills = Config.getString(config, "spawnerHills", ctgyGen, FloatingRuins.spawnerHills, FloatingRuins.spawnerHillsDesc);
+        FloatingRuins.spawnerIceBiomes = Config.getString(config, "spawnerIceBiomes", ctgyGen, FloatingRuins.spawnerIceBiomes, FloatingRuins.spawnerIceBiomesDesc);
+        FloatingRuins.spawnerJungle = Config.getString(config, "spawnerJungle", ctgyGen, FloatingRuins.spawnerJungle, FloatingRuins.spawnerJungleDesc);
+        FloatingRuins.spawnerMushroom = Config.getString(config, "spawnerMushroom", ctgyGen, FloatingRuins.spawnerMushroom, FloatingRuins.spawnerMushroomDesc);
+        FloatingRuins.spawnerOcean = Config.getString(config, "spawnerOcean", ctgyGen, FloatingRuins.spawnerOcean, FloatingRuins.spawnerOceanDesc);
+        FloatingRuins.spawnerPlains = Config.getString(config, "spawnerPlains", ctgyGen, FloatingRuins.spawnerPlains, FloatingRuins.spawnerPlainsDesc);
+        FloatingRuins.spawnerRiver = Config.getString(config, "spawnerRiver", ctgyGen, FloatingRuins.spawnerRiver, FloatingRuins.spawnerRiverDesc);
+        FloatingRuins.spawnerSwampland = Config.getString(config, "spawnerSwampland", ctgyGen, FloatingRuins.spawnerSwampland, FloatingRuins.spawnerSwamplandDesc);
+        FloatingRuins.spawnerTaiga = Config.getString(config, "spawnerTaiga", ctgyGen, FloatingRuins.spawnerTaiga, FloatingRuins.spawnerTaigaDesc);
+        FloatingRuins.spawnerNearLava = Config.getString(config, "spawnerNearLava", ctgyGen, FloatingRuins.spawnerNearLava, FloatingRuins.spawnerNearLavaDesc);
+        
         config.save();
         
         if (FloatingRuins.allowUpdateCheck)
