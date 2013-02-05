@@ -35,6 +35,10 @@ public class mod_floatingRuins extends BaseMod
     public static int         numberOfItems         = FloatingRuins.numberOfItems;
     @MLProp(info = FloatingRuins.blockIDBlacklistDesc)
     public static String      blockIDBlacklist      = FloatingRuins.blockIDBlacklist;
+    @MLProp(info = FloatingRuins.dimensionIDBlacklistDesc)
+    public static String      dimensionIDBlacklist  = FloatingRuins.dimensionIDBlacklist;
+    @MLProp(info = FloatingRuins.biomeIDBlacklistDesc)
+    public static String      biomeIDBlacklist      = FloatingRuins.biomeIDBlacklist;
     @MLProp(info = FloatingRuins.stringOfIdsDesc)
     public static String      stringOfIds           = FloatingRuins.stringOfIds;
     @MLProp(info = FloatingRuins.spawnerDefaultDesc)
@@ -111,6 +115,8 @@ public class mod_floatingRuins extends BaseMod
         FloatingRuins.depthVariation = depthVariation;
         FloatingRuins.numberOfItems = numberOfItems;
         FloatingRuins.blockIDBlacklist = blockIDBlacklist;
+        FloatingRuins.dimensionIDBlacklist = dimensionIDBlacklist;
+        FloatingRuins.biomeIDBlacklist = biomeIDBlacklist;
         FloatingRuins.stringOfIds = stringOfIds;
         FloatingRuins.spawnerDefault = spawnerDefault;
         FloatingRuins.spawnerDesert = spawnerDesert;

@@ -10,6 +10,8 @@ import bspkrs.util.ModVersionChecker;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.Mod.Metadata;
 import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
@@ -26,7 +28,11 @@ public class FloatingRuinsMod
     private final String            versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.6/floatingRuinsForge.version";
     private final String            mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
     
-    public ModMetadata              metadata;
+    @Metadata(value = "FloatingRuins")
+    public static ModMetadata       metadata;
+    
+    @Instance(value = "FloatingRuins")
+    public static FloatingRuinsMod  instance;
     
     @SidedProxy(clientSide = "bspkrs.floatingruins.fml.ClientProxy", serverSide = "bspkrs.floatingruins.fml.CommonProxy")
     public static CommonProxy       proxy;
@@ -35,6 +41,7 @@ public class FloatingRuinsMod
     public void preInit(FMLPreInitializationEvent event)
     {
         String ctgyGen = Configuration.CATEGORY_GENERAL;
+        
         metadata = event.getModMetadata();
         
         File file = event.getSuggestedConfigurationFile();
@@ -44,6 +51,9 @@ public class FloatingRuinsMod
             FloatingRuins.rarity = 100;
             FloatingRuins.harderDungeons = true;
             FloatingRuins.allowDebugLogging = true;
+            FloatingRuins.allowInSuperFlat = true;
+            FloatingRuins.spawnerPlains = "Zombie, Skeleton";
+            FloatingRuins.biomeIDBlacklist = "0;1;3;4;5;6;7;13;17;";
             if (file.exists())
                 file.delete();
         }
@@ -67,6 +77,8 @@ public class FloatingRuinsMod
         FloatingRuins.numberOfItems = Config.getInt(config, "numberOfItems", ctgyGen, FloatingRuins.numberOfItems, 1, 27, FloatingRuins.numberOfItemsDesc);
         FloatingRuins.stringOfIds = Config.getString(config, "stringOfIds", ctgyGen, FloatingRuins.stringOfIds, FloatingRuins.stringOfIdsDesc);
         FloatingRuins.blockIDBlacklist = Config.getString(config, "blockIDBlacklist", ctgyGen, FloatingRuins.blockIDBlacklist, FloatingRuins.blockIDBlacklistDesc);
+        FloatingRuins.dimensionIDBlacklist = Config.getString(config, "dimensionIDBlacklist", ctgyGen, FloatingRuins.dimensionIDBlacklist, FloatingRuins.dimensionIDBlacklistDesc);
+        FloatingRuins.biomeIDBlacklist = Config.getString(config, "biomeIDBlacklist", ctgyGen, FloatingRuins.biomeIDBlacklist, FloatingRuins.biomeIDBlacklistDesc);
         FloatingRuins.spawnerDefault = Config.getString(config, "spawnerDefault", ctgyGen, FloatingRuins.spawnerDefault, FloatingRuins.spawnerDefaultDesc);
         FloatingRuins.spawnerDesert = Config.getString(config, "spawnerDesert", ctgyGen, FloatingRuins.spawnerDesert, FloatingRuins.spawnerDesertDesc);
         FloatingRuins.spawnerForest = Config.getString(config, "spawnerForest", ctgyGen, FloatingRuins.spawnerForest, FloatingRuins.spawnerForestDesc);
@@ -86,7 +98,7 @@ public class FloatingRuinsMod
         if (FloatingRuins.allowUpdateCheck)
         {
             versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
-            versionChecker.checkVersionWithLogging();
+            versionChecker.checkVersionWithLoggingBySubStringAsFloat(metadata.version.length() - 1, metadata.version.length());
         }
     }
     

@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
+import bspkrs.util.CommonUtils;
 
 // Test Seed: 5460896710218081688
 // 1470679938 (large biomes)
@@ -39,7 +40,11 @@ public final class FloatingRuins
     public final static String numberOfItemsDesc         = "The number of items in a ruin's chest.";
     public static int          numberOfItems             = 4;
     public final static String blockIDBlacklistDesc      = "Add block IDs to this list if you don't want them to be moved when a floating island is generated.  Format used: \",\" separates between id and metadata and \";\" separates between each block.";
-    public static String       blockIDBlacklist          = "" + Block.bedrock.blockID;
+    public static String       blockIDBlacklist          = Block.bedrock.blockID + ";";
+    public final static String dimensionIDBlacklistDesc  = "Add dimension IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each dimension ID.";
+    public static String       dimensionIDBlacklist      = "-1;1";
+    public final static String biomeIDBlacklistDesc      = "Add biome IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each biome ID.";
+    public static String       biomeIDBlacklist          = "";
     public final static String stringOfIdsDesc           = "The ids for items found in chests. Format used: \",\" separates between item id, quantity, and metadata and \";\" separates between each item.";
     public static String       stringOfIds               = "262, 10; 262, 16; 263, 6; 264, 1; 265, 3; 266, 2; 282, 2; 288, 1; 302, 1; 303, 1; 304, 1; 305, 1; 321, 2; 321, 5; 322, 1; 322, 3; 325, 2; 326, 1; 335, 1; 340, 1; 341, 2; 341, 4; 344, 2; 344, 4; 348, 12; 348, 8; 350, 1; 351, 5, 0; 354, 2; 369, 2; 372, 6; 388, 1; 388, 4; 46, 4; 79, 2";
     public final static String spawnerDefaultDesc        = "Mob spawners can be configured using the mobs' names, each separated by a comma. Using \"Default\" will make the specified biome use the same settings as 'spawnerDefault'.";
@@ -71,7 +76,9 @@ public final class FloatingRuins
     
     public static void generateSurface(World world, Random random, int x, int z)
     {
-        if (world.getWorldInfo().getTerrainType() != WorldType.FLAT || allowInSuperFlat)
+        if ((world.getWorldInfo().getTerrainType() != WorldType.FLAT || allowInSuperFlat)
+                && !CommonUtils.isIDInList(world.getWorldInfo().getDimension(), FloatingRuins.dimensionIDBlacklist)
+                && !CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, FloatingRuins.biomeIDBlacklist))
         {
             random = new Random(world.getSeed());
             long l = (random.nextLong() / 2L) * 2L + 1L;

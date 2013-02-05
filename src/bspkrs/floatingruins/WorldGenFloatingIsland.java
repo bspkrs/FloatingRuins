@@ -86,6 +86,14 @@ public class WorldGenFloatingIsland extends WorldGenerator
         
         int islandType = islandTypes[(new Random(xIn * yIn * zIn)).nextInt(islandTypes.length)];
         
+        String debug = "Island: ";
+        if (islandType == CONE)
+            debug += "Cone ";
+        else
+            debug += "Spheroid ";
+        
+        debug += "r(" + radius + ") d(" + depth + ") @" + xIn + "," + yIn + "," + zIn + " ";
+        
         for (int x = -radius; x <= radius; x++)
             for (int y = 15; y >= -depth; y--)
                 for (int z = -radius; z <= radius; z++)
@@ -109,6 +117,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                     world.setBlockWithNotify(x + xIn, y + yIn, z + zIn, Block.mobSpawner.blockID);
                                     NBTTagCompound spawnerNBT = new NBTTagCompound();
                                     spawner.writeToNBT(spawnerNBT);
+                                    debug += "+S(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + " ";
                                     
                                     spawner = (TileEntityMobSpawner) world.getBlockTileEntity(x + xIn, y + yIn, z + zIn);
                                     if (spawner != null)
@@ -123,6 +132,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                     world.setBlockAndMetadataWithNotify(x + xIn, y + yIn, z + zIn, Block.chest.blockID, metadata);
                                     NBTTagCompound chestNBT = new NBTTagCompound();
                                     chest.writeToNBT(chestNBT);
+                                    debug += "+C(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + " ";
                                     
                                     chest = (TileEntityChest) world.getBlockTileEntity(x + xIn, y + yIn, z + zIn);
                                     if (chest != null)
@@ -130,16 +140,19 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                 }
                             }
                             else
-                                world.setBlockAndMetadata(x + xIn, y + yIn, z + zIn, blockID, metadata);
+                                world.setBlockAndMetadataWithNotify(x + xIn, y + yIn, z + zIn, blockID, metadata);
                             
-                            if (y >= -8 && (blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID))
+                            if (y >= -8 && !isLavaNearby && (blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID))
+                            {
                                 isLavaNearby = true;
+                                debug += "+L ";
+                            }
                             
                             world.setBlockWithNotify(x + xIn, yg + y, z + zIn, 0);
                         }
                     }
                     if (random.nextInt(3) == 0 && world.getBlockId(x + xIn, y + yIn, z + zIn) == Block.stone.blockID && Math.abs(x) <= 1 && Math.abs(z) <= 1 && Math.abs(y + depth / 2) <= 2)
-                        world.setBlock(x + xIn, y + yIn, z + zIn, specialOre);
+                        world.setBlockWithNotify(x + xIn, y + yIn, z + zIn, specialOre);
                 }
         
         // if (depthRatio < 1.0F)
@@ -150,11 +163,12 @@ public class WorldGenFloatingIsland extends WorldGenerator
                     int block = world.getBlockId(x + xIn, y + yIn, z + zIn);
                     if (block != 0 && world.isAirBlock(x + xIn, (y + yIn) - 1, z + zIn))
                         if (block == Block.gravel.blockID)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, Block.stone.blockID);
+                            world.setBlockWithNotify(x + xIn, y + yIn, z + zIn, Block.stone.blockID);
                         else if (block == Block.sand.blockID)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, Block.sandStone.blockID);
+                            world.setBlockWithNotify(x + xIn, y + yIn, z + zIn, Block.sandStone.blockID);
                 }
         
+        FloatingRuins.debug(debug);
         return true;
     }
     

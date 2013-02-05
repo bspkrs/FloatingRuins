@@ -39,16 +39,10 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.helmetChain.itemID, 1, 0),
                                            new ItemStack(Item.helmetChain.itemID, 1, 0),
                                            new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.helmetDiamond.itemID, 1, 0),
-                                           new ItemStack(Item.helmetDiamond.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.helmetGold.itemID, 1, 0),
                                            new ItemStack(Item.helmetGold.itemID, 1, 0),
@@ -56,15 +50,12 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.helmetGold.itemID, 1, 0),
                                            new ItemStack(Item.helmetGold.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.helmetLeather.itemID, 1, 0),
                                            new ItemStack(Item.helmetLeather.itemID, 1, 0),
                                            new ItemStack(Item.helmetLeather.itemID, 1, 0),
                                            new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.helmetSteel.itemID, 1, 0),
                                            new ItemStack(Item.helmetSteel.itemID, 1, 0),
@@ -75,20 +66,16 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.helmetSteel.itemID, 1, 0),
                                            new ItemStack(Item.helmetSteel.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.helmetChain.itemID, 1, 0),
                                            new ItemStack(Item.helmetChain.itemID, 1, 0),
                                            new ItemStack(Item.helmetChain.itemID, 1, 0),
                                            new ItemStack(Item.helmetChain.itemID, 1, 0),
                                            new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                           new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.helmetDiamond.itemID, 1, 0),
-                                           new ItemStack(Item.helmetDiamond.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.helmetGold.itemID, 1, 0),
                                            new ItemStack(Item.helmetGold.itemID, 1, 0),
@@ -96,15 +83,11 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.helmetGold.itemID, 1, 0),
                                            new ItemStack(Item.helmetGold.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.helmetLeather.itemID, 1, 0),
                                            new ItemStack(Item.helmetLeather.itemID, 1, 0),
                                            new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                           new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.helmetSteel.itemID, 1, 0),
                                            new ItemStack(Item.helmetSteel.itemID, 1, 0),
@@ -120,16 +103,10 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.plateChain.itemID, 1, 0),
                                            new ItemStack(Item.plateChain.itemID, 1, 0),
                                            new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.plateDiamond.itemID, 1, 0),
-                                           new ItemStack(Item.plateDiamond.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.plateGold.itemID, 1, 0),
                                            new ItemStack(Item.plateGold.itemID, 1, 0),
@@ -137,15 +114,11 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.plateGold.itemID, 1, 0),
                                            new ItemStack(Item.plateGold.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.plateLeather.itemID, 1, 0),
                                            new ItemStack(Item.plateLeather.itemID, 1, 0),
                                            new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.plateSteel.itemID, 1, 0),
                                            new ItemStack(Item.plateSteel.itemID, 1, 0),
@@ -156,20 +129,17 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.plateSteel.itemID, 1, 0),
                                            new ItemStack(Item.plateSteel.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.plateChain.itemID, 1, 0),
                                            new ItemStack(Item.plateChain.itemID, 1, 0),
                                            new ItemStack(Item.plateChain.itemID, 1, 0),
                                            new ItemStack(Item.plateChain.itemID, 1, 0),
                                            new ItemStack(Item.plateChain.itemID, 1, 0),
                                            new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
-                                           new ItemStack(Item.plateChain.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.plateDiamond.itemID, 1, 0),
-                                           new ItemStack(Item.plateDiamond.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.plateGold.itemID, 1, 0),
                                            new ItemStack(Item.plateGold.itemID, 1, 0),
@@ -177,15 +147,11 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.plateGold.itemID, 1, 0),
                                            new ItemStack(Item.plateGold.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.plateLeather.itemID, 1, 0),
                                            new ItemStack(Item.plateLeather.itemID, 1, 0),
                                            new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                           new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.plateSteel.itemID, 1, 0),
                                            new ItemStack(Item.plateSteel.itemID, 1, 0),
@@ -201,16 +167,10 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.legsChain.itemID, 1, 0),
                                            new ItemStack(Item.legsChain.itemID, 1, 0),
                                            new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.legsDiamond.itemID, 1, 0),
-                                           new ItemStack(Item.legsDiamond.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.legsGold.itemID, 1, 0),
                                            new ItemStack(Item.legsGold.itemID, 1, 0),
@@ -218,15 +178,12 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.legsGold.itemID, 1, 0),
                                            new ItemStack(Item.legsGold.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.legsLeather.itemID, 1, 0),
                                            new ItemStack(Item.legsLeather.itemID, 1, 0),
                                            new ItemStack(Item.legsLeather.itemID, 1, 0),
                                            new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.legsSteel.itemID, 1, 0),
                                            new ItemStack(Item.legsSteel.itemID, 1, 0),
@@ -237,20 +194,16 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.legsSteel.itemID, 1, 0),
                                            new ItemStack(Item.legsSteel.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.legsChain.itemID, 1, 0),
                                            new ItemStack(Item.legsChain.itemID, 1, 0),
                                            new ItemStack(Item.legsChain.itemID, 1, 0),
                                            new ItemStack(Item.legsChain.itemID, 1, 0),
                                            new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
-                                           new ItemStack(Item.legsChain.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.legsDiamond.itemID, 1, 0),
-                                           new ItemStack(Item.legsDiamond.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.legsGold.itemID, 1, 0),
                                            new ItemStack(Item.legsGold.itemID, 1, 0),
@@ -258,15 +211,11 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.legsGold.itemID, 1, 0),
                                            new ItemStack(Item.legsGold.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.legsLeather.itemID, 1, 0),
                                            new ItemStack(Item.legsLeather.itemID, 1, 0),
                                            new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.legsSteel.itemID, 1, 0),
                                            new ItemStack(Item.legsSteel.itemID, 1, 0),
@@ -284,14 +233,10 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.bootsChain.itemID, 1, 0),
                                            new ItemStack(Item.bootsChain.itemID, 1, 0),
                                            new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.bootsDiamond.itemID, 1, 0),
-                                           new ItemStack(Item.bootsDiamond.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.bootsGold.itemID, 1, 0),
                                            new ItemStack(Item.bootsGold.itemID, 1, 0),
@@ -299,15 +244,12 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.bootsGold.itemID, 1, 0),
                                            new ItemStack(Item.bootsGold.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.bootsLeather.itemID, 1, 0),
                                            new ItemStack(Item.bootsLeather.itemID, 1, 0),
                                            new ItemStack(Item.bootsLeather.itemID, 1, 0),
                                            new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.bootsSteel.itemID, 1, 0),
                                            new ItemStack(Item.bootsSteel.itemID, 1, 0),
@@ -318,20 +260,16 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.bootsSteel.itemID, 1, 0),
                                            new ItemStack(Item.bootsSteel.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.bootsChain.itemID, 1, 0),
                                            new ItemStack(Item.bootsChain.itemID, 1, 0),
                                            new ItemStack(Item.bootsChain.itemID, 1, 0),
                                            new ItemStack(Item.bootsChain.itemID, 1, 0),
                                            new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                           new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.bootsDiamond.itemID, 1, 0),
-                                           new ItemStack(Item.bootsDiamond.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.bootsGold.itemID, 1, 0),
                                            new ItemStack(Item.bootsGold.itemID, 1, 0),
@@ -339,15 +277,12 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.bootsGold.itemID, 1, 0),
                                            new ItemStack(Item.bootsGold.itemID, 1, 0),
                                            null,
+                                           null,
                                            new ItemStack(Item.bootsLeather.itemID, 1, 0),
                                            new ItemStack(Item.bootsLeather.itemID, 1, 0),
                                            new ItemStack(Item.bootsLeather.itemID, 1, 0),
                                            new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                           new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                           null,
                                            null,
                                            new ItemStack(Item.bootsSteel.itemID, 1, 0),
                                            new ItemStack(Item.bootsSteel.itemID, 1, 0),
@@ -385,11 +320,6 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.bow.itemID, 1, 0),
                                            new ItemStack(Item.bow.itemID, 1, 0),
                                            new ItemStack(Item.bow.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
                                            new ItemStack(Item.swordSteel.itemID, 1, 0),
                                            new ItemStack(Item.swordSteel.itemID, 1, 0),
                                            new ItemStack(Item.swordSteel.itemID, 1, 0),
@@ -435,7 +365,20 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.swordStone.itemID, 1, 0),
                                            new ItemStack(Item.swordStone.itemID, 1, 0),
                                            new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
+                                           new ItemStack(Item.swordDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.swordDiamond.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordGold.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordWood.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
+                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
                                            new ItemStack(Item.swordStone.itemID, 1, 0),
                                            new ItemStack(Item.swordStone.itemID, 1, 0),
                                            new ItemStack(Item.swordStone.itemID, 1, 0),
@@ -450,49 +393,6 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                                            new ItemStack(Item.swordWood.itemID, 1, 0),
                                            new ItemStack(Item.swordWood.itemID, 1, 0),
                                            new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordStone.itemID, 1, 0),
-                                           new ItemStack(Item.swordDiamond.itemID, 1, 0),
-                                           new ItemStack(Item.swordDiamond.itemID, 1, 0),
-                                           new ItemStack(Item.swordGold.itemID, 1, 0),
-                                           new ItemStack(Item.swordGold.itemID, 1, 0),
-                                           new ItemStack(Item.swordGold.itemID, 1, 0),
-                                           new ItemStack(Item.swordGold.itemID, 1, 0),
-                                           new ItemStack(Item.swordGold.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordWood.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
-                                           new ItemStack(Item.swordSteel.itemID, 1, 0),
                                            new ItemStack(Item.swordSteel.itemID, 1, 0),
                                            new ItemStack(Item.swordSteel.itemID, 1, 0),
                                            new ItemStack(Item.swordSteel.itemID, 1, 0),
@@ -607,7 +507,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 
                 NBTTagCompound potentialSpawn = new NBTTagCompound();
                 potentialSpawn.setInteger("Weight", world.rand.nextInt(4) + 1);
-                String debug = mobIDList[i] + " wt(" + potentialSpawn.getInteger("Weight") + ") ";
+                String debug = "  +" + mobIDList[i] + " wt(" + potentialSpawn.getInteger("Weight") + ") ";
                 
                 if (mobIDList[i].equals("WitherSkeleton"))
                 {
@@ -662,45 +562,45 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            equipment.appendTag(item);
                             debug += equip.getItemName() + ";";
                         }
+                        equipment.appendTag(item);
                         
                         item = new NBTTagCompound();
                         equip = boots[world.rand.nextInt(boots.length)];
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            equipment.appendTag(item);
                             debug += equip.getItemName() + ";";
                         }
+                        equipment.appendTag(item);
                         
                         item = new NBTTagCompound();
                         equip = legs[world.rand.nextInt(legs.length)];
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            equipment.appendTag(item);
                             debug += equip.getItemName() + ";";
                         }
+                        equipment.appendTag(item);
                         
                         item = new NBTTagCompound();
                         equip = plates[world.rand.nextInt(plates.length)];
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            equipment.appendTag(item);
                             debug += equip.getItemName() + ";";
                         }
+                        equipment.appendTag(item);
                         
                         item = new NBTTagCompound();
                         equip = helms[world.rand.nextInt(helms.length)];
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            equipment.appendTag(item);
                             debug += equip.getItemName() + ";";
                         }
+                        equipment.appendTag(item);
                         properties.setTag("Equipment", equipment);
                     }
                     
@@ -722,45 +622,45 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            equipment.appendTag(item);
                             debug += equip.getItemName() + ";";
                         }
+                        equipment.appendTag(item);
                         
                         item = new NBTTagCompound();
                         equip = boots[world.rand.nextInt(boots.length)];
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            equipment.appendTag(item);
                             debug += equip.getItemName() + ";";
                         }
+                        equipment.appendTag(item);
                         
                         item = new NBTTagCompound();
                         equip = legs[world.rand.nextInt(legs.length)];
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            equipment.appendTag(item);
                             debug += equip.getItemName() + ";";
                         }
+                        equipment.appendTag(item);
                         
                         item = new NBTTagCompound();
                         equip = plates[world.rand.nextInt(plates.length)];
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            equipment.appendTag(item);
                             debug += equip.getItemName() + ";";
                         }
+                        equipment.appendTag(item);
                         
                         item = new NBTTagCompound();
                         equip = helms[world.rand.nextInt(helms.length)];
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            equipment.appendTag(item);
                             debug += equip.getItemName() + ";";
                         }
+                        equipment.appendTag(item);
                         
                         properties.setTag("Equipment", equipment);
                     }

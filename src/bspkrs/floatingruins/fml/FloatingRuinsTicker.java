@@ -57,7 +57,7 @@ public class FloatingRuinsTicker implements ITickHandler
         if (mcClient != null && mcClient.thePlayer != null)
         {
             if (FloatingRuins.allowUpdateCheck && FloatingRuinsMod.versionChecker != null)
-                if (!FloatingRuinsMod.versionChecker.isCurrentVersion())
+                if (!FloatingRuinsMod.versionChecker.isCurrentVersionBySubStringAsFloatNewer(FloatingRuinsMod.instance.metadata.version.length() - 1, FloatingRuinsMod.instance.metadata.version.length()))
                     for (String msg : FloatingRuinsMod.versionChecker.getInGameMessage())
                         mcClient.thePlayer.addChatMessage(msg);
             return false;
