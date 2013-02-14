@@ -77,6 +77,9 @@ public class WorldGenFloatingIsland extends WorldGenerator
         int depth = (int) Math.ceil(radius * depthRatio);
         int yg = CommonUtils.getHighestGroundBlock(world, xIn, yIn, zIn);
         
+        if (yg == 0)
+            return false;
+        
         if (depth > FloatingRuins.baseDepth + FloatingRuins.depthVariation || depth < FloatingRuins.baseDepth || depth > yg - 5)
         {
             WorldType wt = world.getWorldInfo().getTerrainType();

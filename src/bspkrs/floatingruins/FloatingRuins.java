@@ -11,7 +11,7 @@ import bspkrs.util.CommonUtils;
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String VERSION_NUMBER            = "1.4.6.r04";
+    public final static String VERSION_NUMBER            = "1.4.6.r05";
     
     public final static String allowDebugLoggingDesc     = "Set to true if you want FloatingRuins to log info about what it's doing, false to disable";
     public static boolean      allowDebugLogging         = false;
@@ -44,7 +44,7 @@ public final class FloatingRuins
     public final static String dimensionIDBlacklistDesc  = "Add dimension IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each dimension ID.";
     public static String       dimensionIDBlacklist      = "-1;1";
     public final static String biomeIDBlacklistDesc      = "Add biome IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each biome ID.";
-    public static String       biomeIDBlacklist          = "";
+    public static String       biomeIDBlacklist          = "8;9;";
     public final static String stringOfIdsDesc           = "The ids for items found in chests. Format used: \",\" separates between item id, quantity, and metadata and \";\" separates between each item.";
     public static String       stringOfIds               = "262, 10; 262, 16; 263, 6; 264, 1; 265, 3; 266, 2; 282, 2; 288, 1; 302, 1; 303, 1; 304, 1; 305, 1; 321, 2; 321, 5; 322, 1; 322, 3; 325, 2; 326, 1; 335, 1; 340, 1; 341, 2; 341, 4; 344, 2; 344, 4; 348, 12; 348, 8; 350, 1; 351, 5, 0; 354, 2; 369, 2; 372, 6; 388, 1; 388, 4; 46, 4; 79, 2";
     public final static String spawnerDefaultDesc        = "Mob spawners can be configured using the mobs' names, each separated by a comma. Using \"Default\" will make the specified biome use the same settings as 'spawnerDefault'.";
@@ -77,7 +77,7 @@ public final class FloatingRuins
     public static void generateSurface(World world, Random random, int x, int z)
     {
         if ((world.getWorldInfo().getTerrainType() != WorldType.FLAT || allowInSuperFlat)
-                && !CommonUtils.isIDInList(world.getWorldInfo().getDimension(), FloatingRuins.dimensionIDBlacklist)
+                && !CommonUtils.isIDInList(world.provider.dimensionId, FloatingRuins.dimensionIDBlacklist)
                 && !CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, FloatingRuins.biomeIDBlacklist))
         {
             random = new Random(world.getSeed());
