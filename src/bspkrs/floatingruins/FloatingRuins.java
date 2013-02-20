@@ -11,12 +11,10 @@ import bspkrs.util.CommonUtils;
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String VERSION_NUMBER            = "1.4.6.r05";
+    public final static String VERSION_NUMBER            = "1.4.6.r06";
     
     public final static String allowDebugLoggingDesc     = "Set to true if you want FloatingRuins to log info about what it's doing, false to disable";
     public static boolean      allowDebugLogging         = false;
-    public final static String allowUpdateCheckDesc      = "Set to true to allow checking for mod updates, false to disable";
-    public static boolean      allowUpdateCheck          = true;
     public final static String allowInSuperFlatDesc      = "Set to true to allow generation of floating ruins on superflat maps, false to disable.";
     public static boolean      allowInSuperFlat          = false;
     public final static String allowMultiMobSpawnersDesc = "When set to true spawners will be able to spawn any of the mobs for the biome the floating island generated in, set to false to use the old logic of randomly picking just one mob.";
@@ -64,7 +62,7 @@ public final class FloatingRuins
     public final static String spawnerOceanDesc          = "";
     public static String       spawnerOcean              = "Silverfish, ChargedCreeper";
     public final static String spawnerRiverDesc          = "";
-    public static String       spawnerRiver              = "Silverfish";
+    public static String       spawnerRiver              = "Silverfish, Creeper";
     public final static String spawnerJungleDesc         = "";
     public static String       spawnerJungle             = "Skeleton, CaveSpider";
     public final static String spawnerIceBiomesDesc      = "";

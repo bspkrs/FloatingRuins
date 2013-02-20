@@ -9,8 +9,6 @@ import bspkrs.util.ModVersionChecker;
 
 public class mod_floatingRuins extends BaseMod
 {
-    @MLProp(info = FloatingRuins.allowUpdateCheckDesc)
-    public static boolean     allowUpdateCheck      = FloatingRuins.allowUpdateCheck;
     @MLProp(info = FloatingRuins.allowInSuperFlatDesc)
     public static boolean     allowInSuperFlat      = FloatingRuins.allowInSuperFlat;
     @MLProp(info = FloatingRuins.allowMultiMobSpawnersDesc)
@@ -74,7 +72,7 @@ public class mod_floatingRuins extends BaseMod
     
     public mod_floatingRuins()
     {
-        if (FloatingRuins.allowUpdateCheck)
+        if (mod_bspkrsCore.allowUpdateCheck)
             versionChecker = new ModVersionChecker(getName(), getVersion(), versionURL, mcfTopic, ModLoader.getLogger());
     }
     
@@ -91,6 +89,12 @@ public class mod_floatingRuins extends BaseMod
     }
     
     @Override
+    public String getPriorities()
+    {
+        return "after:*";
+    }
+    
+    @Override
     public void generateSurface(World world, Random random, int x, int z)
     {
         FloatingRuins.generateSurface(world, random, x, z);
@@ -99,10 +103,9 @@ public class mod_floatingRuins extends BaseMod
     @Override
     public void load()
     {
-        if (FloatingRuins.allowUpdateCheck && versionChecker != null)
+        if (mod_bspkrsCore.allowUpdateCheck && versionChecker != null)
             versionChecker.checkVersionWithLogging();
         
-        FloatingRuins.allowUpdateCheck = allowUpdateCheck;
         FloatingRuins.allowInSuperFlat = allowInSuperFlat;
         FloatingRuins.allowMultiMobSpawners = allowMultiMobSpawners;
         FloatingRuins.harderDungeons = harderDungeons;
@@ -138,7 +141,7 @@ public class mod_floatingRuins extends BaseMod
     @Override
     public boolean onTickInGame(float f, Minecraft mc)
     {
-        if (FloatingRuins.allowUpdateCheck && versionChecker != null)
+        if (mod_bspkrsCore.allowUpdateCheck && versionChecker != null)
         {
             if (!versionChecker.isCurrentVersion())
                 for (String msg : versionChecker.getInGameMessage())

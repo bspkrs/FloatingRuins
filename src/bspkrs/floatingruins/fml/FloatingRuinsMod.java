@@ -3,6 +3,7 @@ package bspkrs.floatingruins.fml;
 import java.io.File;
 
 import net.minecraft.block.Block;
+import net.minecraft.src.mod_bspkrsCore;
 import net.minecraftforge.common.Configuration;
 import bspkrs.floatingruins.FloatingRuins;
 import bspkrs.fml.util.Config;
@@ -20,7 +21,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge " + FloatingRuins.VERSION_NUMBER, useMetadata = true)
+@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge " + FloatingRuins.VERSION_NUMBER, dependencies = "after:*", useMetadata = true)
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
 public class FloatingRuinsMod
 {
@@ -53,7 +54,7 @@ public class FloatingRuinsMod
             FloatingRuins.allowDebugLogging = true;
             FloatingRuins.allowInSuperFlat = true;
             FloatingRuins.spawnerPlains = "Zombie, Skeleton";
-            FloatingRuins.biomeIDBlacklist = "0;1;3;4;5;6;7;13;17;";
+            FloatingRuins.biomeIDBlacklist = "0;1;3;4;5;6;7;8;9;13;17;";
             if (file.exists())
                 file.delete();
         }
@@ -63,7 +64,6 @@ public class FloatingRuinsMod
         config.load();
         
         FloatingRuins.allowDebugLogging = Config.getBoolean(config, "allowDebugLogging", ctgyGen, FloatingRuins.allowDebugLogging, FloatingRuins.allowDebugLoggingDesc);
-        FloatingRuins.allowUpdateCheck = Config.getBoolean(config, "allowUpdateCheck", ctgyGen, FloatingRuins.allowUpdateCheck, FloatingRuins.allowUpdateCheckDesc);
         FloatingRuins.allowInSuperFlat = Config.getBoolean(config, "allowInSuperFlat", ctgyGen, FloatingRuins.allowInSuperFlat, FloatingRuins.allowInSuperFlatDesc);
         FloatingRuins.allowMultiMobSpawners = Config.getBoolean(config, "allowMultiMobSpawners", ctgyGen, FloatingRuins.allowMultiMobSpawners, FloatingRuins.allowMultiMobSpawnersDesc);
         FloatingRuins.harderDungeons = Config.getBoolean(config, "harderDungeons", ctgyGen, FloatingRuins.harderDungeons, FloatingRuins.harderDungeonsDesc);
@@ -95,7 +95,7 @@ public class FloatingRuinsMod
         
         config.save();
         
-        if (FloatingRuins.allowUpdateCheck)
+        if (mod_bspkrsCore.allowUpdateCheck)
         {
             versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
             versionChecker.checkVersionWithLoggingBySubStringAsFloat(metadata.version.length() - 1, metadata.version.length());
