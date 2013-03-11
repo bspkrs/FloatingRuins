@@ -54,7 +54,7 @@ public class FloatingRuinsMod
             FloatingRuins.allowDebugLogging = true;
             FloatingRuins.allowInSuperFlat = true;
             FloatingRuins.spawnerPlains = "Zombie, Skeleton";
-            FloatingRuins.biomeIDBlacklist = "0;1;3;4;5;6;7;8;9;13;17;";
+            FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
             if (file.exists())
                 file.delete();
         }

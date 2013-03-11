@@ -117,7 +117,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                 TileEntityMobSpawner spawner = (TileEntityMobSpawner) world.getBlockTileEntity(x + xIn, yg + y, z + zIn);
                                 if (spawner != null)
                                 {
-                                    world.setBlockWithNotify(x + xIn, y + yIn, z + zIn, Block.mobSpawner.blockID);
+                                    world.setBlockAndMetadataWithNotify(x + xIn, y + yIn, z + zIn, Block.mobSpawner.blockID, 0, 3);
                                     NBTTagCompound spawnerNBT = new NBTTagCompound();
                                     spawner.writeToNBT(spawnerNBT);
                                     debug += "+S(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + " ";
@@ -132,7 +132,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                 TileEntityChest chest = (TileEntityChest) world.getBlockTileEntity(x + xIn, yg + y, z + zIn);
                                 if (chest != null)
                                 {
-                                    world.setBlockAndMetadataWithNotify(x + xIn, y + yIn, z + zIn, Block.chest.blockID, metadata);
+                                    world.setBlockAndMetadataWithNotify(x + xIn, y + yIn, z + zIn, Block.chest.blockID, metadata, 3);
                                     NBTTagCompound chestNBT = new NBTTagCompound();
                                     chest.writeToNBT(chestNBT);
                                     debug += "+C(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + " ";
@@ -143,7 +143,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                 }
                             }
                             else
-                                world.setBlockAndMetadataWithNotify(x + xIn, y + yIn, z + zIn, blockID, metadata);
+                                world.setBlockAndMetadataWithNotify(x + xIn, y + yIn, z + zIn, blockID, metadata, 3);
                             
                             if (y >= -8 && !isLavaNearby && (blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID))
                             {
@@ -151,11 +151,11 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                 debug += "+L ";
                             }
                             
-                            world.setBlockWithNotify(x + xIn, yg + y, z + zIn, 0);
+                            world.setBlockAndMetadataWithNotify(x + xIn, yg + y, z + zIn, 0, 0, 3);
                         }
                     }
                     if (random.nextInt(3) == 0 && world.getBlockId(x + xIn, y + yIn, z + zIn) == Block.stone.blockID && Math.abs(x) <= 1 && Math.abs(z) <= 1 && Math.abs(y + depth / 2) <= 2)
-                        world.setBlockWithNotify(x + xIn, y + yIn, z + zIn, specialOre);
+                        world.setBlockAndMetadataWithNotify(x + xIn, y + yIn, z + zIn, specialOre, 0, 3);
                 }
         
         // if (depthRatio < 1.0F)
@@ -166,9 +166,9 @@ public class WorldGenFloatingIsland extends WorldGenerator
                     int block = world.getBlockId(x + xIn, y + yIn, z + zIn);
                     if (block != 0 && world.isAirBlock(x + xIn, (y + yIn) - 1, z + zIn))
                         if (block == Block.gravel.blockID)
-                            world.setBlockWithNotify(x + xIn, y + yIn, z + zIn, Block.stone.blockID);
+                            world.setBlockAndMetadataWithNotify(x + xIn, y + yIn, z + zIn, Block.stone.blockID, 0, 3);
                         else if (block == Block.sand.blockID)
-                            world.setBlockWithNotify(x + xIn, y + yIn, z + zIn, Block.sandStone.blockID);
+                            world.setBlockAndMetadataWithNotify(x + xIn, y + yIn, z + zIn, Block.sandStone.blockID, 0, 3);
                 }
         
         FloatingRuins.debug(debug);
