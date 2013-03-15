@@ -67,7 +67,7 @@ public class mod_floatingRuins extends BaseMod
     public static String      spawnerNearLava       = FloatingRuins.spawnerNearLava;
     
     private ModVersionChecker versionChecker;
-    private final String      versionURL            = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.6/floatingRuins.version";
+    private final String      versionURL            = "https://dl.dropbox.com/u/20748481/Minecraft/1.5.0/floatingRuins.version";
     private final String      mcfTopic              = "http://www.minecraftforum.net/topic/1009577-";
     
     public mod_floatingRuins()
@@ -91,7 +91,7 @@ public class mod_floatingRuins extends BaseMod
     @Override
     public String getPriorities()
     {
-        return "after:*";
+        return "required-after:mod_bspkrsCore";
     }
     
     @Override

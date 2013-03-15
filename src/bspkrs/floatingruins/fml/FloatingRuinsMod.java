@@ -2,7 +2,6 @@ package bspkrs.floatingruins.fml;
 
 import java.io.File;
 
-import net.minecraft.block.Block;
 import net.minecraft.src.mod_bspkrsCore;
 import net.minecraftforge.common.Configuration;
 import bspkrs.floatingruins.FloatingRuins;
@@ -21,12 +20,12 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge " + FloatingRuins.VERSION_NUMBER, dependencies = "after:*", useMetadata = true)
+@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge " + FloatingRuins.VERSION_NUMBER, dependencies = "required-after:mod_bspkrsCore", useMetadata = true)
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
 public class FloatingRuinsMod
 {
     public static ModVersionChecker versionChecker;
-    private final String            versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.4.6/floatingRuinsForge.version";
+    private final String            versionURL = "https://dl.dropbox.com/u/20748481/Minecraft/1.5.0/floatingRuinsForge.version";
     private final String            mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
     
     @Metadata(value = "FloatingRuins")
@@ -47,17 +46,17 @@ public class FloatingRuinsMod
         
         File file = event.getSuggestedConfigurationFile();
         
-        if (Block.class.getSimpleName().equalsIgnoreCase("Block"))
-        { // debug settings for deobfuscated execution
-            FloatingRuins.rarity = 100;
-            FloatingRuins.harderDungeons = true;
-            FloatingRuins.allowDebugLogging = true;
-            FloatingRuins.allowInSuperFlat = true;
-            FloatingRuins.spawnerPlains = "Zombie, Skeleton";
-            FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
-            if (file.exists())
-                file.delete();
-        }
+        //        if (Block.class.getSimpleName().equalsIgnoreCase("Block"))
+        //        { // debug settings for deobfuscated execution
+        //            FloatingRuins.rarity = 100;
+        //            FloatingRuins.harderDungeons = true;
+        //            FloatingRuins.allowDebugLogging = true;
+        //            FloatingRuins.allowInSuperFlat = true;
+        //            FloatingRuins.spawnerPlains = "Zombie, Skeleton";
+        //            FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
+        //            if (file.exists())
+        //                file.delete();
+        //        }
         
         Configuration config = new Configuration(file);
         

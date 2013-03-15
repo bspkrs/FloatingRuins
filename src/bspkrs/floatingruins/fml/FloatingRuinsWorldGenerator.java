@@ -18,7 +18,7 @@ public class FloatingRuinsWorldGenerator implements IWorldGenerator
     public void generate(Random random, int x, int z, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
     {
         Random r = new Random(world.getSeed());
-        FloatingRuins.generateSurface(world, random, (x << 4) + r.nextInt(16), (z << 4) + r.nextInt(16));
+        FloatingRuins.generateSurface(world, random, x << 4, z << 4);
     }
     
 }
