@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 import bspkrs.floatingruins.FloatingRuins;
 import bspkrs.util.ModVersionChecker;
 
-public class mod_floatingRuins extends BaseMod
+public class mod_FloatingRuins extends BaseMod
 {
     @MLProp(info = FloatingRuins.allowInSuperFlatDesc)
     public static boolean     allowInSuperFlat      = FloatingRuins.allowInSuperFlat;
@@ -67,10 +67,10 @@ public class mod_floatingRuins extends BaseMod
     public static String      spawnerNearLava       = FloatingRuins.spawnerNearLava;
     
     private ModVersionChecker versionChecker;
-    private final String      versionURL            = "https://dl.dropbox.com/u/20748481/Minecraft/1.5.0/floatingRuins.version";
+    private final String      versionURL            = "http://bspk.rs/Minecraft/1.5.0/floatingRuins.version";
     private final String      mcfTopic              = "http://www.minecraftforum.net/topic/1009577-";
     
-    public mod_floatingRuins()
+    public mod_FloatingRuins()
     {
         if (mod_bspkrsCore.allowUpdateCheck)
             versionChecker = new ModVersionChecker(getName(), getVersion(), versionURL, mcfTopic, ModLoader.getLogger());
