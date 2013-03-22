@@ -12,11 +12,10 @@
         <!-- base dirs -->
         <property name="dev.home" location="${dir.project}"/>
         <property name="mcp.home" location="${dir.mcp}"/>
-        <property name="mc.home" location="${dir.mc}"/>
-        <property name="core.dev.home" location="${mc.home}/github/bspkrsCore"/>
+        <property name="dev.core.home" location="${dir.core.project}"/>
         <property name="release.home" location="${dir.release}"/>
-        <property name="release.jar" value="[${version.minecraft}]${mod.id}.Forge.${version}.Uni.CoreMod.jar"/>
-        <property name="release.zip" value="[${version.minecraft}]${mod.id}.ML.${version}.zip"/>
+        <property name="release.Forge.zip" value="[${version.minecraft}]${mod.id}.Forge.${version}.Universal.zip"/>
+        <property name="release.ML.zip" value="[${version.minecraft}]${mod.id}.ML.${version}.zip"/>
 
         <!-- setup python -->
         <property name="python.win" location="${mcp.home}/runtime/bin/python/python_mcp"/>
@@ -27,7 +26,7 @@
         <!-- setup source dirs -->
         <property name="dev.src" location="${dev.home}/src"/>
         <property name="dev.resources" location="${dev.home}/resources"/>
-        <property name="dev.core.src" location="${core.dev.home}/src"/>
+        <property name="dev.core.src" location="${dev.core.home}/src"/>
 
         <!-- check if the directories are present -->
         <condition property="has.dev.src" value="true" else="false">
@@ -99,10 +98,10 @@
         </exec>
     </target>
 
-    <target name="build-Forge-jar">
-        <!-- build the jar -->
-        <jar manifest="${dev.resources}/META-INF/MANIFEST.MF" destfile="${release.home}/${release.jar}">
-            <fileset dir="${mcp.bin}" includes="bspkrs/treecapitator/**/*.class"/>
+    <target name="build-Forge-zip">
+        <!-- build the zip -->
+        <zip destfile="${release.home}/${release.Forge.zip}">
+            <fileset dir="${mcp.bin}" includes="bspkrs/floatingruins/**/*.class"/>
             <fileset dir="${dev.resources}" excludes="mcmod.template"/>
             <mappedresources>
                 <concat>
@@ -130,13 +129,13 @@
                 </concat>
                 <mergemapper to="mcmod.info"/>
             </mappedresources>
-        </jar>
+        </zip>
     </target>
 
     <target name="build-ML-zip">
         <!-- build the zip -->
-        <zip destfile="${release.home}/${release.zip}">
-            <fileset dir="${mcp.bin}" includes="bspkrs/treecapitator/*.class"/>
+        <zip destfile="${release.home}/${release.ML.zip}">
+            <fileset dir="${mcp.bin}" includes="bspkrs/floatingruins/*.class"/>
             <fileset dir="${mcp.bin}" includes="mod_${mod.id}.class"/>
             <fileset dir="${dev.resources}" includes="LICENSE"/>
             <mappedresources>
@@ -174,7 +173,7 @@
         <antcall target="merge-source"/>
         <antcall target="recompile"/>
         <antcall target="reobfuscate"/>
-        <antcall target="build-Forge-jar"/>
+        <antcall target="build-Forge-zip"/>
         <antcall target="build-ML-zip"/>
 
         <antcall target="clean"/>
