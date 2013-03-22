@@ -11,7 +11,7 @@ import bspkrs.util.CommonUtils;
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String VERSION_NUMBER            = "1.5.0.r01";
+    public final static String VERSION_NUMBER            = "1.5.1.r01";
     
     public final static String allowDebugLoggingDesc     = "Set to true if you want FloatingRuins to log info about what it's doing, false to disable";
     public static boolean      allowDebugLogging         = false;
