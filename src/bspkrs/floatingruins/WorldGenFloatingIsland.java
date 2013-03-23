@@ -4,6 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeavesBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -119,27 +120,30 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                 {
                                     world.setBlock(x + xIn, y + yIn, z + zIn, Block.mobSpawner.blockID, 0, 3);
                                     NBTTagCompound spawnerNBT = new NBTTagCompound();
-                                    spawner.writeToNBT(spawnerNBT);
+                                    spawner.func_98049_a().func_98280_b(spawnerNBT);
                                     debug += "+S(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + " ";
                                     
                                     spawner = (TileEntityMobSpawner) world.getBlockTileEntity(x + xIn, y + yIn, z + zIn);
                                     if (spawner != null)
-                                        spawner.readFromNBT(spawnerNBT);
+                                        spawner.func_98049_a().func_98270_a(spawnerNBT);
                                 }
                             }
                             else if (blockID == Block.chest.blockID)
                             {
                                 TileEntityChest chest = (TileEntityChest) world.getBlockTileEntity(x + xIn, yg + y, z + zIn);
+                                ItemStack[] chestContents = new ItemStack[chest.getSizeInventory()];
                                 if (chest != null)
                                 {
+                                    for (int i = 0; i < chest.getSizeInventory(); i++)
+                                    {
+                                        chestContents[i] = chest.getStackInSlot(i);
+                                    }
                                     world.setBlock(x + xIn, y + yIn, z + zIn, Block.chest.blockID, metadata, 3);
-                                    NBTTagCompound chestNBT = new NBTTagCompound();
-                                    chest.writeToNBT(chestNBT);
-                                    debug += "+C(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + " ";
-                                    
                                     chest = (TileEntityChest) world.getBlockTileEntity(x + xIn, y + yIn, z + zIn);
                                     if (chest != null)
-                                        chest.readFromNBT(chestNBT);
+                                        for (int i = 0; i < chestContents.length; i++)
+                                            if (chestContents[i] != null)
+                                                chest.setInventorySlotContents(i, chestContents[i].copy());
                                 }
                             }
                             else

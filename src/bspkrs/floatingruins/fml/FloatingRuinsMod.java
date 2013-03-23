@@ -2,6 +2,7 @@ package bspkrs.floatingruins.fml;
 
 import java.io.File;
 
+import net.minecraft.block.Block;
 import net.minecraft.src.mod_bspkrsCore;
 import net.minecraftforge.common.Configuration;
 import bspkrs.floatingruins.FloatingRuins;
@@ -46,17 +47,17 @@ public class FloatingRuinsMod
         
         File file = event.getSuggestedConfigurationFile();
         
-        //        if (Block.class.getSimpleName().equalsIgnoreCase("Block"))
-        //        { // debug settings for deobfuscated execution
-        //            FloatingRuins.rarity = 100;
-        //            FloatingRuins.harderDungeons = true;
+        if (Block.class.getSimpleName().equalsIgnoreCase("Block"))
+        { // debug settings for deobfuscated execution
+        //            FloatingRuins.rarity = 80;
+        //            //FloatingRuins.harderDungeons = true;
         //            FloatingRuins.allowDebugLogging = true;
         //            FloatingRuins.allowInSuperFlat = true;
-        //            FloatingRuins.spawnerPlains = "Zombie, Skeleton";
         //            FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
+        //            FloatingRuins.baseDepth = 30;
         //            if (file.exists())
         //                file.delete();
-        //        }
+        }
         
         Configuration config = new Configuration(file);
         
