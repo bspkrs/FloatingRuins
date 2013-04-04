@@ -73,7 +73,7 @@ public class mod_FloatingRuins extends BaseMod
     public mod_FloatingRuins()
     {
         if (mod_bspkrsCore.allowUpdateCheck)
-            versionChecker = new ModVersionChecker(getName(), getVersion(), versionURL, mcfTopic, ModLoader.getLogger());
+            versionChecker = new ModVersionChecker(getName(), getVersion(), versionURL, mcfTopic);
     }
     
     @Override

@@ -8,7 +8,6 @@ import net.minecraftforge.common.Configuration;
 import bspkrs.floatingruins.FloatingRuins;
 import bspkrs.fml.util.Config;
 import bspkrs.util.ModVersionChecker;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -49,14 +48,14 @@ public class FloatingRuinsMod
         
         if (Block.class.getSimpleName().equalsIgnoreCase("Block"))
         { // debug settings for deobfuscated execution
-        //            FloatingRuins.rarity = 80;
-        //            //FloatingRuins.harderDungeons = true;
-        //            FloatingRuins.allowDebugLogging = true;
-        //            FloatingRuins.allowInSuperFlat = true;
-        //            FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
-        //            FloatingRuins.baseDepth = 30;
-        //            if (file.exists())
-        //                file.delete();
+          //            FloatingRuins.rarity = 80;
+          //            //FloatingRuins.harderDungeons = true;
+          //            FloatingRuins.allowDebugLogging = true;
+          //            FloatingRuins.allowInSuperFlat = true;
+          //            FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
+          //            FloatingRuins.baseDepth = 30;
+          //            if (file.exists())
+          //                file.delete();
         }
         
         Configuration config = new Configuration(file);
@@ -97,7 +96,7 @@ public class FloatingRuinsMod
         
         if (mod_bspkrsCore.allowUpdateCheck)
         {
-            versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic, FMLLog.getLogger());
+            versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
             versionChecker.checkVersionWithLoggingBySubStringAsFloat(metadata.version.length() - 1, metadata.version.length());
         }
     }
