@@ -120,12 +120,12 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                 {
                                     world.setBlock(x + xIn, y + yIn, z + zIn, Block.mobSpawner.blockID, 0, 3);
                                     NBTTagCompound spawnerNBT = new NBTTagCompound();
-                                    spawner.func_98049_a().func_98280_b(spawnerNBT);
+                                    spawner.func_98049_a().writeToNBT(spawnerNBT);
                                     debug += "+S(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + " ";
                                     
                                     spawner = (TileEntityMobSpawner) world.getBlockTileEntity(x + xIn, y + yIn, z + zIn);
                                     if (spawner != null)
-                                        spawner.func_98049_a().func_98270_a(spawnerNBT);
+                                        spawner.func_98049_a().readFromNBT(spawnerNBT);
                                 }
                             }
                             else if (blockID == Block.chest.blockID)
