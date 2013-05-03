@@ -6,12 +6,13 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import bspkrs.util.CommonUtils;
+import bspkrs.util.Const;
 
 // Test Seed: 5460896710218081688
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String VERSION_NUMBER            = "1.5.1.r01";
+    public final static String VERSION_NUMBER            = Const.MCVERSION + ".r01";
     
     public final static String allowDebugLoggingDesc     = "Set to true if you want FloatingRuins to log info about what it's doing, false to disable";
     public static boolean      allowDebugLogging         = false;

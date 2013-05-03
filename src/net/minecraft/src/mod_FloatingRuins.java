@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
 import bspkrs.floatingruins.FloatingRuins;
+import bspkrs.util.Const;
 import bspkrs.util.ModVersionChecker;
 
 public class mod_FloatingRuins extends BaseMod
@@ -67,7 +68,7 @@ public class mod_FloatingRuins extends BaseMod
     public static String      spawnerNearLava       = FloatingRuins.spawnerNearLava;
     
     private ModVersionChecker versionChecker;
-    private final String      versionURL            = "http://192.210.150.163/Minecraft/1.5.1/floatingRuins.version";
+    private final String      versionURL            = "http://bspk.rs/Minecraft/" + Const.MCVERSION + "/floatingRuins.version";
     private final String      mcfTopic              = "http://www.minecraftforum.net/topic/1009577-";
     
     public mod_FloatingRuins()

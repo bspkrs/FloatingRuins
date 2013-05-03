@@ -4,9 +4,10 @@ import java.io.File;
 
 import net.minecraft.block.Block;
 import net.minecraft.src.mod_bspkrsCore;
-import net.minecraftforge.common.Configuration;
 import bspkrs.floatingruins.FloatingRuins;
 import bspkrs.fml.util.Config;
+import bspkrs.util.Configuration;
+import bspkrs.util.Const;
 import bspkrs.util.ModVersionChecker;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
@@ -25,7 +26,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class FloatingRuinsMod
 {
     public static ModVersionChecker versionChecker;
-    private final String            versionURL = "http://192.210.150.163/Minecraft/1.5.1/floatingRuinsForge.version";
+    private final String            versionURL = "http://bspk.rs/Minecraft/" + Const.MCVERSION + "/floatingRuinsForge.version";
     private final String            mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
     
     @Metadata(value = "FloatingRuins")
