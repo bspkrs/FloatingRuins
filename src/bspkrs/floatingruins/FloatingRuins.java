@@ -73,24 +73,41 @@ public final class FloatingRuins
     public final static String spawnerNearLavaDesc       = "If the dungeon is close enough to lava, the spawner will use one of these mobs:";
     public static String       spawnerNearLava           = "Blaze, LavaSlime, WitherSkeleton, PigZombie";
     
+    private static int         chunksToRetry             = 0;
+    
     public static void generateSurface(World world, Random random, int x, int z)
     {
-        if ((world.getWorldInfo().getTerrainType() != WorldType.FLAT || allowInSuperFlat)
-                && !CommonUtils.isIDInList(world.provider.dimensionId, FloatingRuins.dimensionIDBlacklist)
-                && !CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, FloatingRuins.biomeIDBlacklist))
+        if ((world.getWorldInfo().getTerrainType() != WorldType.FLAT || allowInSuperFlat))
         {
-            random = new Random(world.getSeed());
-            long l = (random.nextLong() / 2L) * 2L + 1L;
-            long l1 = (random.nextLong() / 2L) * 2L + 1L;
-            random.setSeed(x * l + z * l1 ^ world.getSeed());
-            
-            int bH = Math.max(80, Math.min(240, baseHeight));
-            int hV = Math.max(0, Math.min(240 - baseHeight, heightVariation));
-            int y = bH + random.nextInt(hV);
-            if (random.nextInt(rarity) == 0)
+            if (!CommonUtils.isIDInList(world.provider.dimensionId, FloatingRuins.dimensionIDBlacklist))
             {
                 
-                (new WorldGenFloatingIsland()).generate(world, random, x + random.nextInt(16), y, z + random.nextInt(16));
+                random = new Random(world.getSeed());
+                long l = (random.nextLong() / 2L) * 2L + 1L;
+                long l1 = (random.nextLong() / 2L) * 2L + 1L;
+                random.setSeed(x * l + z * l1 ^ world.getSeed());
+                
+                int bH = Math.max(80, Math.min(240, baseHeight));
+                int hV = Math.max(0, Math.min(240 - baseHeight, heightVariation));
+                int y = bH + random.nextInt(hV);
+                if (random.nextInt(rarity) == 0)
+                {
+                    if (CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, FloatingRuins.biomeIDBlacklist))
+                        chunksToRetry++;
+                    else if (!(new WorldGenFloatingIsland()).generate(world, random, x + random.nextInt(16), y, z + random.nextInt(16)))
+                        chunksToRetry++;
+                }
+                else if (chunksToRetry < 0)
+                {
+                    if (!CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, FloatingRuins.biomeIDBlacklist))
+                    {
+                        chunksToRetry--;
+                        if (!(new WorldGenFloatingIsland()).generate(world, random, x + random.nextInt(16), y, z + random.nextInt(16)))
+                            chunksToRetry++;
+                    }
+                    
+                }
+                
             }
         }
     }

@@ -25,15 +25,16 @@ public class WorldGenFloatingIsland extends WorldGenerator
     @Override
     public boolean generate(World world, Random random, int x, int y, int z)
     {
+        boolean ran = false;
         FloatingRuins.baseRadius = Math.max(6, Math.min(50, FloatingRuins.baseRadius));
         FloatingRuins.radiusVariation = Math.max(0, Math.min(50, FloatingRuins.radiusVariation));
         int r = FloatingRuins.baseRadius + random.nextInt(FloatingRuins.radiusVariation);
         isLavaNearby = false;
         if (world.isAirBlock(x, y, z) && (world.isAirBlock(x, y - r, z) || world.getBlockId(x, y - r, z) == Block.waterStill.blockID)
                 && genIsland(world, r, x, y, z))
-            (new WorldGenFloatingIslandRuin(isLavaNearby)).generate(world, random, x, y, z);
+            ran = (new WorldGenFloatingIslandRuin(isLavaNearby)).generate(world, random, x, y, z);
         
-        return true;
+        return ran;
     }
     
     private boolean isBlockInRange(int islandType, World world, int x, int y, int z, float depthRatio, int depth, int radius)
@@ -96,7 +97,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
         else
             debug += "Spheroid ";
         
-        debug += "r(" + radius + ") d(" + depth + ") @" + xIn + "," + yIn + "," + zIn + " ";
+        debug += String.format("r(%d) d(%d) @%d,%d,%d ", radius, depth, xIn, yIn, zIn);
         
         for (int x = -radius; x <= radius; x++)
             for (int y = 15; y >= -depth; y--)
