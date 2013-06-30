@@ -1,0 +1,76 @@
+1.5.2.r02 - 24-May-2013
+- bspkrsCore update
+1.5.2.r01 - 03-May-2013
+- updated for 1.5.2
+1.5.1.r01 - 23-Mar-2013
+- updated for 1.5.1
+- fixed issue with spawners/chests when they are raised up with an island
+1.5.0.r01 - 15-Mar-2013
+- updated for 1.5
+- added code to randomize offset from chunk 0,0 block
+1.4.6.r06 - 20-Feb-2013
+- updated to support bspkrsCore
+1.4.6.r05 - 13-Feb-2013
+- fixed infinite loop when an island tries to generate at an x,z coordinate that's open to the void
+- fixed dimensionIDBlacklist feature
+1.4.6.r04 - 05-Feb-2013
+- added code to randomize the armor given to mobs
+- added dimension and biome blacklists
+1.4.6.r03 - 31-Jan-2013
+- compatibility update for shared code
+1.4.6.r02 - 24-Jan-2013
+- added support for SpawnPotentials
+- tweaked harderDungeons code to be harder
+1.4.6.r01 - 23-Dec-2012
+- 1.4.6 update
+1.4.5.r03 - 19-Dec-2012
+- added more support for mobs.
+- added harderDungeons option
+- new "Cone" shape for islands
+- dungeons close enough to lava will spawn nether mobs (see first screenshot)
+1.4.5.r02 - 23-Nov-2012
+- removed client class references from main mod
+- implemented SidedProxies
+1.4.4.r01 - 13-Nov-2012
+- updated for 1.4.4
+1.4.2.r01a ML - 02-Nov-2012
+- fixed tick registration issue with Forge
+1.4.2.r01 ML/FML - 29-Oct-2012
+- update for 1.4.2
+- added code to handle moving chests up with islands (like in a vanilla dungeon or abandoned mineshaft)
+1.3.2.r03 ML/FML 04-Oct-2012
+- compatibility release for changes in CommonUtils
+1.3.2.r02 ML/MLMP/FML 19-Sep-2012
+- various fixes to ruins generation (like preventing the boxes from peeking out of the bottom of islands)
+- fixed config for blockIDBlacklist in FML version
+- added code to handle the case when an island spawns over a vanilla dungeon and moves the spawner
+1.3.2.r01 ML/MLMP/FML 17-Sep-2012
+- first Forge release
+- added options for island radius, island depth (thickness)
+- added block ID blacklist
+- added option to disable in Superflat worlds
+- refactored all code
+- tweaked ruins generation
+- switched to shared versioning
+1.3.2.g - 19-Aug-2012
+- Updated for 1.3.2
+1.3.1.f - 08-Aug-2012
+- first MLMP server release
+- tweaked gen code to get the leaves (mostly right)
+- updated chest item list
+- updated ore generation
+- tweaked default settings to make ruins less rare
+1.3.1.e - 05-Aug-2012
+- updated for 1.3.1
+- added version checking
+1.2.5.d - 20-May-2012
+- added code to reset the seed of the Random object passed in by ModLoader since it can't be guaranteed that another mod has not ­ed with it (I'm looking at YOU Better Dungeons...)
+1.2.3.c - 08-Mar-2012
+- new config option for island radius variation
+- changed the dungeon frame blocks from bricks to stone bricks (I likes them better)
+1.2.3.b - 07-Mar-2012
+- new config options for base island height and height variation
+- support for Jungle biome
+- support for y>127
+1.2.3.a - 05-Mar-2012
+- initial 1.2.3 update
