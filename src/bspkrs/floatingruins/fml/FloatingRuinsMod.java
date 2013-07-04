@@ -2,17 +2,16 @@ package bspkrs.floatingruins.fml;
 
 import java.io.File;
 
-import net.minecraft.block.Block;
 import net.minecraft.src.mod_bspkrsCore;
 import bspkrs.floatingruins.FloatingRuins;
+import bspkrs.util.CommonUtils;
 import bspkrs.util.Configuration;
 import bspkrs.util.Const;
 import bspkrs.util.ModVersionChecker;
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.Init;
+import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.Mod.Metadata;
-import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -37,7 +36,7 @@ public class FloatingRuinsMod
     @SidedProxy(clientSide = "bspkrs.floatingruins.fml.ClientProxy", serverSide = "bspkrs.floatingruins.fml.CommonProxy")
     public static CommonProxy       proxy;
     
-    @PreInit
+    @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
         String ctgyGen = Configuration.CATEGORY_GENERAL;
@@ -46,16 +45,16 @@ public class FloatingRuinsMod
         
         File file = event.getSuggestedConfigurationFile();
         
-        if (Block.class.getSimpleName().equalsIgnoreCase("Block"))
+        if (!CommonUtils.isObfuscatedEnv())
         { // debug settings for deobfuscated execution
-          //            FloatingRuins.rarity = 80;
-          //            //FloatingRuins.harderDungeons = true;
-          //            FloatingRuins.allowDebugLogging = true;
-          //            FloatingRuins.allowInSuperFlat = true;
-          //            FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
-          //            FloatingRuins.baseDepth = 30;
-          //            if (file.exists())
-          //                file.delete();
+            FloatingRuins.rarity = 80;
+            //FloatingRuins.harderDungeons = true;
+            FloatingRuins.allowDebugLogging = true;
+            FloatingRuins.allowInSuperFlat = true;
+            //FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
+            //FloatingRuins.baseDepth = 30;
+            if (file.exists())
+                file.delete();
         }
         
         Configuration config = new Configuration(file);
@@ -101,10 +100,15 @@ public class FloatingRuinsMod
         }
     }
     
-    @Init
+    @EventHandler
     public void init(FMLInitializationEvent event)
     {
         GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator());
         proxy.registerTickHandler();
+    }
+    
+    public static boolean exists()
+    {
+        return true;
     }
 }

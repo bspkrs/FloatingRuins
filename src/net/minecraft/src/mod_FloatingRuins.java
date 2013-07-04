@@ -4,7 +4,9 @@ import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.World;
+import bspkrs.floatingruins.FRLog;
 import bspkrs.floatingruins.FloatingRuins;
+import bspkrs.floatingruins.fml.FloatingRuinsMod;
 import bspkrs.util.Const;
 import bspkrs.util.ModVersionChecker;
 
@@ -104,39 +106,47 @@ public class mod_FloatingRuins extends BaseMod
     @Override
     public void load()
     {
-        if (mod_bspkrsCore.allowUpdateCheck && versionChecker != null)
-            versionChecker.checkVersionWithLogging();
-        
-        FloatingRuins.allowInSuperFlat = allowInSuperFlat;
-        FloatingRuins.allowMultiMobSpawners = allowMultiMobSpawners;
-        FloatingRuins.harderDungeons = harderDungeons;
-        FloatingRuins.rarity = rarity;
-        FloatingRuins.baseHeight = baseHeight;
-        FloatingRuins.heightVariation = heightVariation;
-        FloatingRuins.baseRadius = baseRadius;
-        FloatingRuins.radiusVariation = radiusVariation;
-        FloatingRuins.baseDepth = baseDepth;
-        FloatingRuins.depthVariation = depthVariation;
-        FloatingRuins.numberOfItems = numberOfItems;
-        FloatingRuins.blockIDBlacklist = blockIDBlacklist;
-        FloatingRuins.dimensionIDBlacklist = dimensionIDBlacklist;
-        FloatingRuins.biomeIDBlacklist = biomeIDBlacklist;
-        FloatingRuins.stringOfIds = stringOfIds;
-        FloatingRuins.spawnerDefault = spawnerDefault;
-        FloatingRuins.spawnerDesert = spawnerDesert;
-        FloatingRuins.spawnerForest = spawnerForest;
-        FloatingRuins.spawnerHills = spawnerHills;
-        FloatingRuins.spawnerIceBiomes = spawnerIceBiomes;
-        FloatingRuins.spawnerJungle = spawnerJungle;
-        FloatingRuins.spawnerMushroom = spawnerMushroom;
-        FloatingRuins.spawnerOcean = spawnerOcean;
-        FloatingRuins.spawnerPlains = spawnerPlains;
-        FloatingRuins.spawnerRiver = spawnerRiver;
-        FloatingRuins.spawnerSwampland = spawnerSwampland;
-        FloatingRuins.spawnerTaiga = spawnerTaiga;
-        FloatingRuins.spawnerNearLava = spawnerNearLava;
-        
-        ModLoader.setInGameHook(this, true, true);
+        try
+        {
+            if (FloatingRuinsMod.exists())
+                FRLog.warning("%s Forge has been detected! ModLoader version of %s will be ignored!", getName(), getName());
+        }
+        catch (Throwable e)
+        {
+            if (mod_bspkrsCore.allowUpdateCheck && versionChecker != null)
+                versionChecker.checkVersionWithLogging();
+            
+            FloatingRuins.allowInSuperFlat = allowInSuperFlat;
+            FloatingRuins.allowMultiMobSpawners = allowMultiMobSpawners;
+            FloatingRuins.harderDungeons = harderDungeons;
+            FloatingRuins.rarity = rarity;
+            FloatingRuins.baseHeight = baseHeight;
+            FloatingRuins.heightVariation = heightVariation;
+            FloatingRuins.baseRadius = baseRadius;
+            FloatingRuins.radiusVariation = radiusVariation;
+            FloatingRuins.baseDepth = baseDepth;
+            FloatingRuins.depthVariation = depthVariation;
+            FloatingRuins.numberOfItems = numberOfItems;
+            FloatingRuins.blockIDBlacklist = blockIDBlacklist;
+            FloatingRuins.dimensionIDBlacklist = dimensionIDBlacklist;
+            FloatingRuins.biomeIDBlacklist = biomeIDBlacklist;
+            FloatingRuins.stringOfIds = stringOfIds;
+            FloatingRuins.spawnerDefault = spawnerDefault;
+            FloatingRuins.spawnerDesert = spawnerDesert;
+            FloatingRuins.spawnerForest = spawnerForest;
+            FloatingRuins.spawnerHills = spawnerHills;
+            FloatingRuins.spawnerIceBiomes = spawnerIceBiomes;
+            FloatingRuins.spawnerJungle = spawnerJungle;
+            FloatingRuins.spawnerMushroom = spawnerMushroom;
+            FloatingRuins.spawnerOcean = spawnerOcean;
+            FloatingRuins.spawnerPlains = spawnerPlains;
+            FloatingRuins.spawnerRiver = spawnerRiver;
+            FloatingRuins.spawnerSwampland = spawnerSwampland;
+            FloatingRuins.spawnerTaiga = spawnerTaiga;
+            FloatingRuins.spawnerNearLava = spawnerNearLava;
+            
+            ModLoader.setInGameHook(this, true, true);
+        }
     }
     
     @Override
