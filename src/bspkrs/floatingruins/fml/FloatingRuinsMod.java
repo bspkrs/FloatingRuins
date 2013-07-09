@@ -24,7 +24,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class FloatingRuinsMod
 {
     public static ModVersionChecker versionChecker;
-    private final String            versionURL = "http://bspk.rs/Minecraft/" + Const.MCVERSION + "/floatingRuinsForge.version";
+    private final String            versionURL = Const.VERSION_URL + "/Minecraft/" + Const.MCVERSION + "/floatingRuinsForge.version";
     private final String            mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
     
     @Metadata(value = "FloatingRuins")

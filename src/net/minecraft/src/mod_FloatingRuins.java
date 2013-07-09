@@ -70,7 +70,7 @@ public class mod_FloatingRuins extends BaseMod
     public static String      spawnerNearLava       = FloatingRuins.spawnerNearLava;
     
     private ModVersionChecker versionChecker;
-    private final String      versionURL            = "http://bspk.rs/Minecraft/" + Const.MCVERSION + "/floatingRuins.version";
+    private final String      versionURL            = Const.VERSION_URL + "/Minecraft/" + Const.MCVERSION + "/floatingRuins.version";
     private final String      mcfTopic              = "http://www.minecraftforum.net/topic/1009577-";
     
     public mod_FloatingRuins()
