@@ -69,6 +69,13 @@ public class WorldGenFloatingIsland extends WorldGenerator
         return distToOrigin <= radius;
     }
     
+    private boolean isSpecialMoveableBlock(Block block)
+    {
+        return (block.blockID == Block.stoneSingleSlab.blockID) || (block.blockID == Block.stairsWoodOak.blockID) || (block.blockID == Block.stairsCobblestone.blockID)
+                || (block.blockID == Block.pressurePlatePlanks.blockID) || (block.blockID == Block.pressurePlateIron.blockID) || (block.blockID == Block.pressurePlateStone.blockID)
+                || (block.blockID == Block.fence.blockID) || (block.blockID == Block.thinGlass.blockID) || BlockLeavesBase.class.isAssignableFrom(block.getClass());
+    }
+    
     public boolean genIsland(World world, int radius, int xIn, int yIn, int zIn)
     {
         FloatingRuins.baseDepth = Math.max(2, Math.min(50, FloatingRuins.baseDepth));
@@ -107,9 +114,12 @@ public class WorldGenFloatingIsland extends WorldGenerator
                     if (isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
                     {
                         int metadata = world.getBlockMetadata(x + xIn, yg + y, z + zIn);
-                        if (((y <= 0) || (blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID
-                                && (world.isBlockNormalCube(x + xIn, yg + y, z + zIn)
-                                || (blockID != 0 && BlockLeavesBase.class.isAssignableFrom(Block.blocksList[blockID].getClass()))
+                        if (((y <= 0)
+                        || (
+                                blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID
+                                        && (
+                                world.isBlockNormalCube(x + xIn, yg + y, z + zIn)
+                                || (blockID != 0 && isSpecialMoveableBlock(Block.blocksList[blockID]))
                                 )
                                 )
                                 && !CommonUtils.isIDInList(blockID, metadata, FloatingRuins.blockIDBlacklist)))
