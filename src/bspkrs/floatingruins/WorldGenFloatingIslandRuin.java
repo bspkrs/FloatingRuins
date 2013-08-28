@@ -511,6 +511,26 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 
                 if (mobIDList[i].equals("WitherSkeleton"))
                 {
+                    NBTTagList equipment = new NBTTagList();
+                    NBTTagCompound item = new NBTTagCompound();
+                    debug += "+E:";
+                    
+                    ItemStack equip = zombie_weap[world.rand.nextInt(zombie_weap.length)];
+                    if (equip != null)
+                    {
+                        equip.writeToNBT(item);
+                        debug += equip.getItemName() + ";";
+                    }
+                    equipment.appendTag(item);
+                    
+                    for (int j = 0; j < 4; j++)
+                    {
+                        item = new NBTTagCompound();
+                        equipment.appendTag(item);
+                    }
+                    
+                    properties.setTag("Equipment", equipment);
+                    
                     properties.setByte("SkeletonType", (byte) 1);
                     potentialSpawn.setCompoundTag("Properties", properties);
                     potentialSpawn.setString("Type", "Skeleton");
@@ -612,20 +632,21 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 else if (mobIDList[i].equals("Skeleton"))
                 {
                     boolean flag = world.rand.nextBoolean();
+                    NBTTagList equipment = new NBTTagList();
+                    NBTTagCompound item = new NBTTagCompound();
+                    debug += "+E:";
+                    
+                    ItemStack equip = skel_weap[world.rand.nextInt(skel_weap.length)];
+                    if (equip != null)
+                    {
+                        equip.writeToNBT(item);
+                        debug += equip.getItemName() + ";";
+                    }
+                    
+                    equipment.appendTag(item);
+                    
                     if (flag)
                     {
-                        NBTTagList equipment = new NBTTagList();
-                        NBTTagCompound item = new NBTTagCompound();
-                        debug += "+E:";
-                        
-                        ItemStack equip = skel_weap[world.rand.nextInt(skel_weap.length)];
-                        if (equip != null)
-                        {
-                            equip.writeToNBT(item);
-                            debug += equip.getItemName() + ";";
-                        }
-                        equipment.appendTag(item);
-                        
                         item = new NBTTagCompound();
                         equip = boots[world.rand.nextInt(boots.length)];
                         if (equip != null)
@@ -661,9 +682,17 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                             debug += equip.getItemName() + ";";
                         }
                         equipment.appendTag(item);
-                        
-                        properties.setTag("Equipment", equipment);
                     }
+                    else
+                    {
+                        for (int j = 0; j < 4; j++)
+                        {
+                            item = new NBTTagCompound();
+                            equipment.appendTag(item);
+                        }
+                    }
+                    
+                    properties.setTag("Equipment", equipment);
                     
                     potentialSpawn.setCompoundTag("Properties", properties);
                     potentialSpawn.setString("Type", mobIDList[i]);
