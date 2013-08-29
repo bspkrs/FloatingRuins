@@ -57,7 +57,7 @@ public final class FloatingRuins
     public final static String spawnerSwamplandDesc      = "";
     public static String       spawnerSwampland          = "Creeper, CaveSpider, Witch";
     public final static String spawnerTaigaDesc          = "";
-    public static String       spawnerTaiga              = "Zombie, ChargedCreeper";
+    public static String       spawnerTaiga              = "Zombie, ChargedCreeper, Wolf";
     public final static String spawnerHillsDesc          = "";
     public static String       spawnerHills              = "Default";
     public final static String spawnerOceanDesc          = "";
@@ -67,10 +67,10 @@ public final class FloatingRuins
     public final static String spawnerJungleDesc         = "";
     public static String       spawnerJungle             = "Skeleton, CaveSpider";
     public final static String spawnerIceBiomesDesc      = "";
-    public static String       spawnerIceBiomes          = "Zombie, Skeleton";
+    public static String       spawnerIceBiomes          = "Zombie, Skeleton, Wolf";
     public final static String spawnerMushroomDesc       = "";
     public static String       spawnerMushroom           = "MushroomCow";
-    public final static String spawnerNearLavaDesc       = "If the dungeon is close enough to lava, the spawner will use one of these mobs:";
+    public final static String spawnerNearLavaDesc       = "If the dungeon is close enough to lava, the spawner will use these mobs:";
     public static String       spawnerNearLava           = "Blaze, LavaSlime, WitherSkeleton, PigZombie";
     
     private static int         chunksToRetry             = 0;

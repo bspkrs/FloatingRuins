@@ -474,7 +474,10 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         world.setBlock(x, y, z + 1, Block.obsidian.blockID, 0, 3);
         world.setBlock(x, y, z - 1, Block.obsidian.blockID, 0, 3);
         if (FloatingRuins.harderDungeons)
+        {
             world.setBlock(x, y - 1, z, Block.obsidian.blockID, 0, 3);
+            world.setBlock(x, y + 1, z, Block.obsidian.blockID, 0, 3);
+        }
         
         TileEntityMobSpawner tileEntityMobSpawner = (TileEntityMobSpawner) world.getBlockTileEntity(x, y, z);
         if (tileEntityMobSpawner != null)
@@ -945,8 +948,9 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                             if (dist == range)
                                 world.setBlock(x + xIn, y + yIn, z + zIn, (FloatingRuins.harderDungeons && y > 2 ? Block.bedrock.blockID : blockID), 0, 3);
                             
-                            if (y == 0)
-                                world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, 3);
+                            // For wolves
+                            if (y == 0 && dist < range)
+                                world.setBlock(x + xIn, y + yIn, z + zIn, Block.grass.blockID, 0, 3);
                             
                             if (y > 0 && dist < range)
                             {
