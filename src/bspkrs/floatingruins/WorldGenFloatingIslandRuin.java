@@ -548,7 +548,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     spawnerNBT.setString("EntityId", mobIDList[i]);
                     spawnerNBT.setCompoundTag("SpawnData", properties);
                 }
-                else if (mobIDList[i].equals("ChargedCreeper") || (mobIDList[i].equals("Creeper") && biomegenbase.canSpawnLightningBolt()))
+                else if (mobIDList[i].equals("ChargedCreeper"))
                 {
                     properties.setByte("powered", (byte) 1);
                     potentialSpawn.setCompoundTag("Properties", properties);
