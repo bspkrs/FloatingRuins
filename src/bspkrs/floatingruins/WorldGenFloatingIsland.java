@@ -40,12 +40,12 @@ public class WorldGenFloatingIsland extends WorldGenerator
     private boolean isBlockInRange(int islandType, World world, int x, int y, int z, float depthRatio, int depth, int radius)
     {
         float distToCenterColumn = Math.round(Math.sqrt(CommonUtils.sqr(x) + CommonUtils.sqr(z)));
-        float distToOrigin = Math.round(Math.sqrt(CommonUtils.sqr(x) + CommonUtils.sqr(z) + (y > 0 ? 0.0D : CommonUtils.sqr(y / depthRatio))));
+        float distToOrigin = Math.round(Math.sqrt(CommonUtils.sqr(x) + CommonUtils.sqr(z) + (y > 10 ? -2.0D : y > 5 ? -1.0D : y > 0 ? 0.0D : CommonUtils.sqr(y / depthRatio))));
         
         if (islandType == CONE)
         {
             if (y >= -1)
-                return distToCenterColumn <= radius;
+                return distToCenterColumn <= radius + (y > 9 ? 3.5D : (y > 5 ? 2.5D : (y > 1 ? 1.5D : 0)));
             else
                 return distToCenterColumn <= (1.0F - Math.abs((y + 1.0F) / (depth - 1.0F))) * radius;
         }
@@ -106,12 +106,12 @@ public class WorldGenFloatingIsland extends WorldGenerator
         
         debug += String.format("r(%d) d(%d) @%d,%d,%d ", radius, depth, xIn, yIn, zIn);
         
-        for (int x = -radius; x <= radius; x++)
-            for (int y = 15; y >= -depth; y--)
-                for (int z = -radius; z <= radius; z++)
+        for (int x = -radius - 4; x <= radius + 4; x++)
+            for (int y = 40; y >= -depth; y--)
+                for (int z = -radius - 4; z <= radius + 4; z++)
                 {
                     int blockID = world.getBlockId(x + xIn, yg + y, z + zIn);
-                    if (isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
+                    if (blockID > 0 && isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
                     {
                         int metadata = world.getBlockMetadata(x + xIn, yg + y, z + zIn);
                         if (((y <= 0)
