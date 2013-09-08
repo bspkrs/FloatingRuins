@@ -47,14 +47,14 @@ public class FloatingRuinsMod
         
         if (!CommonUtils.isObfuscatedEnv())
         { // debug settings for deobfuscated execution
-            FloatingRuins.rarity = 80;
-            //FloatingRuins.harderDungeons = true;
-            FloatingRuins.allowDebugLogging = true;
-            FloatingRuins.allowInSuperFlat = true;
-            //FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
-            //FloatingRuins.baseDepth = 30;
-            if (file.exists())
-                file.delete();
+          //            FloatingRuins.rarity = 80;
+          //            //FloatingRuins.harderDungeons = true;
+          //            FloatingRuins.allowDebugLogging = true;
+          //            FloatingRuins.allowInSuperFlat = true;
+          //            //FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
+          //            //FloatingRuins.baseDepth = 30;
+          //            if (file.exists())
+          //                file.delete();
         }
         
         Configuration config = new Configuration(file);
@@ -66,7 +66,7 @@ public class FloatingRuinsMod
         FloatingRuins.allowMultiMobSpawners = config.getBoolean("allowMultiMobSpawners", ctgyGen, FloatingRuins.allowMultiMobSpawners, FloatingRuins.allowMultiMobSpawnersDesc);
         FloatingRuins.harderDungeons = config.getBoolean("harderDungeons", ctgyGen, FloatingRuins.harderDungeons, FloatingRuins.harderDungeonsDesc);
         FloatingRuins.rarity = config.getInt("rarity", ctgyGen, FloatingRuins.rarity, 1, Integer.MAX_VALUE, FloatingRuins.rarityDesc);
-        FloatingRuins.baseHeight = config.getInt("baseHeight", ctgyGen, FloatingRuins.baseHeight, 80, 240, FloatingRuins.baseHeightDesc);
+        FloatingRuins.baseHeight = config.getInt("baseHeight", ctgyGen, FloatingRuins.baseHeight, 80, 215, FloatingRuins.baseHeightDesc);
         FloatingRuins.heightVariation = config.getInt("heightVariation", ctgyGen, FloatingRuins.heightVariation, 0, 160, FloatingRuins.heightVariationDesc);
         FloatingRuins.baseRadius = config.getInt("baseRadius", ctgyGen, FloatingRuins.baseRadius, 6, 50, FloatingRuins.baseRadiusDesc);
         FloatingRuins.radiusVariation = config.getInt("radiusVariation", ctgyGen, FloatingRuins.radiusVariation, 0, 50, FloatingRuins.radiusVariationDesc);
