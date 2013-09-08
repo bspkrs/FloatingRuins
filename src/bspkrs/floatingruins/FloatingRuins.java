@@ -24,7 +24,7 @@ public final class FloatingRuins
     public static boolean      harderDungeons            = false;
     public final static String rarityDesc                = "The probability of a floating island generating is 1 in each 'rarity' number of chunks.";
     public static int          rarity                    = 800;
-    public final static String baseHeightDesc            = "The base world height for floating ruins (Min=80, Max=240).";
+    public final static String baseHeightDesc            = "The base world height for floating ruins (Min=80, Max=225).";
     public static int          baseHeight                = 100;
     public final static String heightVariationDesc       = "The amount of height variation allowed above baseHeight (Min=0, Max=240-baseHeight).";
     public static int          heightVariation           = 20;
@@ -53,11 +53,11 @@ public final class FloatingRuins
     public final static String spawnerForestDesc         = "";
     public static String       spawnerForest             = "Witch, CaveSpider";
     public final static String spawnerPlainsDesc         = "";
-    public static String       spawnerPlains             = "Spider, Zombie, ChargedCreeper";
+    public static String       spawnerPlains             = "Spider, Zombie, Creeper";
     public final static String spawnerSwamplandDesc      = "";
     public static String       spawnerSwampland          = "Creeper, CaveSpider, Witch";
     public final static String spawnerTaigaDesc          = "";
-    public static String       spawnerTaiga              = "Zombie, ChargedCreeper, Wolf";
+    public static String       spawnerTaiga              = "Zombie, Creeper, Wolf";
     public final static String spawnerHillsDesc          = "";
     public static String       spawnerHills              = "Default";
     public final static String spawnerOceanDesc          = "";
@@ -87,8 +87,8 @@ public final class FloatingRuins
                 long l1 = (random.nextLong() / 2L) * 2L + 1L;
                 random.setSeed(x * l + z * l1 ^ world.getSeed());
                 
-                int bH = Math.max(80, Math.min(240, baseHeight));
-                int hV = Math.max(0, Math.min(240 - baseHeight, heightVariation));
+                int bH = Math.max(80, Math.min(215, baseHeight));
+                int hV = Math.max(0, Math.min(215 - bH, heightVariation));
                 int y = bH + random.nextInt(hV);
                 if (random.nextInt(rarity) == 0)
                 {
