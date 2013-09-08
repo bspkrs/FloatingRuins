@@ -1,6 +1,8 @@
-1.6.2.r03 - 29-Aug-2013
+1.6.2.r03 - 07-Sep-2013
 - fixed skeletons not having any weapons o.0
 - added code to make Wolves able to spawn in igloo dungeons
+- fixed derpy charged creeper code
+- prettied up islands that spawn in the sides of hills
 1.6.2.r02 - 12-Jul-2013
 - fixed village structures that are caught in floating islands
 1.6.2.r01 - 10-Jul-2013
