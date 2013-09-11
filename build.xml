@@ -102,7 +102,7 @@
         <!-- build the zip -->
         <zip destfile="${release.home}/${release.Forge.zip}">
             <fileset dir="${mcp.bin}" includes="bspkrs/floatingruins/**/*.class"/>
-            <fileset dir="${dev.resources}" excludes="mcmod.template"/>
+            <fileset dir="${dev.resources}" excludes="mcmod.template,template.pack.mcmeta"/>
             <mappedresources>
                 <concat>
                     <fileset dir="${dev.resources}" includes="mcmod.template"/>
