@@ -522,7 +522,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     if (equip != null)
                     {
                         equip.writeToNBT(item);
-                        debug += equip.getItemName() + ";";
+                        debug += equip.getDisplayName() + ";";
                     }
                     equipment.appendTag(item);
                     
@@ -585,7 +585,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            debug += equip.getItemName() + ";";
+                            debug += equip.getDisplayName() + ";";
                         }
                         equipment.appendTag(item);
                         
@@ -594,7 +594,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            debug += equip.getItemName() + ";";
+                            debug += equip.getDisplayName() + ";";
                         }
                         equipment.appendTag(item);
                         
@@ -603,7 +603,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            debug += equip.getItemName() + ";";
+                            debug += equip.getDisplayName() + ";";
                         }
                         equipment.appendTag(item);
                         
@@ -612,7 +612,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            debug += equip.getItemName() + ";";
+                            debug += equip.getDisplayName() + ";";
                         }
                         equipment.appendTag(item);
                         
@@ -621,7 +621,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            debug += equip.getItemName() + ";";
+                            debug += equip.getDisplayName() + ";";
                         }
                         equipment.appendTag(item);
                         properties.setTag("Equipment", equipment);
@@ -643,7 +643,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     if (equip != null)
                     {
                         equip.writeToNBT(item);
-                        debug += equip.getItemName() + ";";
+                        debug += equip.getDisplayName() + ";";
                     }
                     
                     equipment.appendTag(item);
@@ -655,7 +655,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            debug += equip.getItemName() + ";";
+                            debug += equip.getDisplayName() + ";";
                         }
                         equipment.appendTag(item);
                         
@@ -664,7 +664,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            debug += equip.getItemName() + ";";
+                            debug += equip.getDisplayName() + ";";
                         }
                         equipment.appendTag(item);
                         
@@ -673,7 +673,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            debug += equip.getItemName() + ";";
+                            debug += equip.getDisplayName() + ";";
                         }
                         equipment.appendTag(item);
                         
@@ -682,7 +682,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (equip != null)
                         {
                             equip.writeToNBT(item);
-                            debug += equip.getItemName() + ";";
+                            debug += equip.getDisplayName() + ";";
                         }
                         equipment.appendTag(item);
                     }
