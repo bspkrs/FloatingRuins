@@ -1,11 +1,11 @@
 FloatingRuins
 =================
 DaftPVF's FloatingRuins mod for Minecraft.  Raises large chunks of earth up into the sky with a difficult dungeon to conquer.
-This repo contains source files for ModLoader and Forge (dependant on bspkrsCore).
+This repo contains source files for Forge (dependant on bspkrsCore).
 
 ### Links of Interest
  - [Official Minecraft Forum Thread](http://www.minecraftforum.net/topic/1009577-)
- - [ModLoader Downloads](http://bspk.rs/MC/FloatingRuins_ML/index.html)
+ - [Old ModLoader Downloads](http://bspk.rs/MC/FloatingRuins_ML/index.html)
  - [Forge Downloads](http://bspk.rs/MC/FloatingRuins_Forge/index.html)
  - [Issue Tracking System](https://github.com/bspkrs/FloatingRuins/issues)
  
