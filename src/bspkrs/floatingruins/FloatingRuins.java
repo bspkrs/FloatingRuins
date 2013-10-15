@@ -12,7 +12,7 @@ import bspkrs.util.Const;
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String VERSION_NUMBER            = Const.MCVERSION + ".r01";
+    public final static String VERSION_NUMBER            = Const.MCVERSION + ".r02";
     
     public final static String allowDebugLoggingDesc     = "Set to true if you want FloatingRuins to log info about what it's doing, false to disable";
     public static boolean      allowDebugLogging         = false;

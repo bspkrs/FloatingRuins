@@ -3,7 +3,7 @@ package bspkrs.floatingruins.fml;
 import java.util.EnumSet;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.mod_bspkrsCore;
+import bspkrs.bspkrscore.fml.bspkrsCoreMod;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -13,7 +13,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class FloatingRuinsTicker implements ITickHandler
 {
-    public static Minecraft   mcClient;
+    private Minecraft         mcClient;
     
     private EnumSet<TickType> tickTypes = EnumSet.noneOf(TickType.class);
     
@@ -56,8 +56,8 @@ public class FloatingRuinsTicker implements ITickHandler
         
         if (mcClient != null && mcClient.thePlayer != null)
         {
-            if (mod_bspkrsCore.allowUpdateCheck && FloatingRuinsMod.versionChecker != null)
-                if (!FloatingRuinsMod.versionChecker.isCurrentVersionBySubStringAsFloatNewer(FloatingRuinsMod.instance.metadata.version.length() - 1, FloatingRuinsMod.instance.metadata.version.length()))
+            if (bspkrsCoreMod.instance.allowUpdateCheck && FloatingRuinsMod.versionChecker != null)
+                if (!FloatingRuinsMod.versionChecker.isCurrentVersion())
                     for (String msg : FloatingRuinsMod.versionChecker.getInGameMessage())
                         mcClient.thePlayer.addChatMessage(msg);
             return false;

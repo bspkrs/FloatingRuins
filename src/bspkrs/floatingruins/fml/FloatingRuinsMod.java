@@ -2,7 +2,7 @@ package bspkrs.floatingruins.fml;
 
 import java.io.File;
 
-import net.minecraft.src.mod_bspkrsCore;
+import bspkrs.bspkrscore.fml.bspkrsCoreMod;
 import bspkrs.floatingruins.FloatingRuins;
 import bspkrs.util.CommonUtils;
 import bspkrs.util.Configuration;
@@ -19,7 +19,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge " + FloatingRuins.VERSION_NUMBER, dependencies = "required-after:mod_bspkrsCore", useMetadata = true)
+@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge " + FloatingRuins.VERSION_NUMBER, dependencies = "required-after:bspkrsCore", useMetadata = true)
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
 public class FloatingRuinsMod
 {
@@ -93,10 +93,10 @@ public class FloatingRuinsMod
         
         config.save();
         
-        if (mod_bspkrsCore.allowUpdateCheck)
+        if (bspkrsCoreMod.instance.allowUpdateCheck)
         {
             versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
-            versionChecker.checkVersionWithLoggingBySubStringAsFloat(metadata.version.length() - 1, metadata.version.length());
+            versionChecker.checkVersionWithLogging();
         }
     }
     
