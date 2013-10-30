@@ -47,14 +47,14 @@ public class FloatingRuinsMod
         
         if (!CommonUtils.isObfuscatedEnv())
         { // debug settings for deobfuscated execution
-          //            FloatingRuins.rarity = 80;
-          //            //FloatingRuins.harderDungeons = true;
-          //            FloatingRuins.allowDebugLogging = true;
-          //            FloatingRuins.allowInSuperFlat = true;
-          //            //FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
-          //            //FloatingRuins.baseDepth = 30;
-          //            if (file.exists())
-          //                file.delete();
+        //            FloatingRuins.rarity = 80;
+        //            //FloatingRuins.harderDungeons = true;
+        //            FloatingRuins.allowDebugLogging = true;
+        //            FloatingRuins.allowInSuperFlat = true;
+        //            //FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
+        //            //FloatingRuins.baseDepth = 30;
+        //            if (file.exists())
+        //                file.delete();
         }
         
         Configuration config = new Configuration(file);
@@ -92,12 +92,6 @@ public class FloatingRuinsMod
         FloatingRuins.spawnerNearLava = config.getString("spawnerNearLava", ctgyGen, FloatingRuins.spawnerNearLava, FloatingRuins.spawnerNearLavaDesc);
         
         config.save();
-        
-        if (bspkrsCoreMod.instance.allowUpdateCheck)
-        {
-            versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
-            versionChecker.checkVersionWithLogging();
-        }
     }
     
     @EventHandler
@@ -105,10 +99,11 @@ public class FloatingRuinsMod
     {
         GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator());
         proxy.registerTickHandler();
-    }
-    
-    public static boolean exists()
-    {
-        return true;
+        
+        if (bspkrsCoreMod.instance.allowUpdateCheck)
+        {
+            versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
+            versionChecker.checkVersionWithLogging();
+        }
     }
 }
