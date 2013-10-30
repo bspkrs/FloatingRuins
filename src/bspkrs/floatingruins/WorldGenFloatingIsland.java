@@ -80,7 +80,6 @@ public class WorldGenFloatingIsland extends WorldGenerator
     {
         FloatingRuins.baseDepth = Math.max(2, Math.min(50, FloatingRuins.baseDepth));
         FloatingRuins.depthVariation = Math.max(0, Math.min(50, FloatingRuins.depthVariation));
-        int specialOre = getSpecialOre();
         Random random = new Random();
         float depthRatio = random.nextInt(5) == 0 ? random.nextFloat() * 0.5F + 2.0F : random.nextFloat() * 0.2F + 0.4F;
         int depth = (int) Math.ceil(radius * depthRatio);
@@ -105,6 +104,8 @@ public class WorldGenFloatingIsland extends WorldGenerator
             debug += "Spheroid ";
         
         debug += String.format("r(%d) d(%d) @%d,%d,%d ", radius, depth, xIn, yIn, zIn);
+        
+        int specialOre = getSpecialOre();
         
         for (int x = -radius - 4; x <= radius + 4; x++)
             for (int y = 40; y >= -depth; y--)
@@ -132,11 +133,12 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                     world.setBlock(x + xIn, y + yIn, z + zIn, Block.mobSpawner.blockID, 0, 3);
                                     NBTTagCompound spawnerNBT = new NBTTagCompound();
                                     spawner.getSpawnerLogic().writeToNBT(spawnerNBT);
-                                    debug += "+S(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + " ";
                                     
                                     spawner = (TileEntityMobSpawner) world.getBlockTileEntity(x + xIn, y + yIn, z + zIn);
                                     if (spawner != null)
                                         spawner.getSpawnerLogic().readFromNBT(spawnerNBT);
+                                    
+                                    debug += "+S(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + ") ";
                                 }
                             }
                             else if (blockID == Block.chest.blockID)
@@ -155,6 +157,8 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                         for (int i = 0; i < chestContents.length; i++)
                                             if (chestContents[i] != null)
                                                 chest.setInventorySlotContents(i, chestContents[i].copy());
+                                    
+                                    debug += "+C(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + ") ";
                                 }
                             }
                             else
