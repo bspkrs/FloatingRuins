@@ -1,8 +1,10 @@
 package bspkrs.floatingruins;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.village.Village;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import bspkrs.util.CommonUtils;
@@ -79,34 +81,51 @@ public final class FloatingRuins
     {
         if ((world.getWorldInfo().getTerrainType() != WorldType.FLAT || allowInSuperFlat))
         {
-            if (!CommonUtils.isIDInList(world.provider.dimensionId, FloatingRuins.dimensionIDBlacklist))
+            if (!CommonUtils.isIDInList(world.provider.dimensionId, dimensionIDBlacklist))
             {
-                
                 random = new Random(world.getSeed());
                 long l = (random.nextLong() / 2L) * 2L + 1L;
                 long l1 = (random.nextLong() / 2L) * 2L + 1L;
                 random.setSeed(x * l + z * l1 ^ world.getSeed());
                 
+                x += random.nextInt(16);
+                z += random.nextInt(16);
+                
                 int bH = Math.max(80, Math.min(215, baseHeight));
                 int hV = Math.max(0, Math.min(215 - bH, heightVariation));
                 int y = bH + random.nextInt(hV);
+                int yg = CommonUtils.getHighestGroundBlock(world, x, y, z);
                 if (random.nextInt(rarity) == 0)
                 {
-                    if (CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, FloatingRuins.biomeIDBlacklist))
+                    if (CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, biomeIDBlacklist))
                         chunksToRetry++;
-                    else if (!(new WorldGenFloatingIsland()).generate(world, random, x + random.nextInt(16), y, z + random.nextInt(16)))
+                    else if (isVillageNearby(world, x, yg, z, baseRadius + radiusVariation))
+                        chunksToRetry++;
+                    else if (!(new WorldGenFloatingIsland()).generate(world, random, x, y, z))
                         chunksToRetry++;
                 }
                 else if (chunksToRetry < 0)
                 {
-                    if (!CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, FloatingRuins.biomeIDBlacklist))
+                    if (!CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, biomeIDBlacklist)
+                            && !isVillageNearby(world, x, yg, z, baseRadius + radiusVariation))
                     {
-                        if ((new WorldGenFloatingIsland()).generate(world, random, x + random.nextInt(16), y, z + random.nextInt(16)))
+                        if ((new WorldGenFloatingIsland()).generate(world, random, x, y, z))
                             chunksToRetry--;
                     }
                 }
             }
         }
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static boolean isVillageNearby(World world, int x, int y, int z, int radius)
+    {
+        for (Village village : (List<Village>) world.villageCollectionObj.getVillageList())
+        {
+            if (village.getCenter().getDistanceSquared(x, y, z) < (village.getVillageRadius() * village.getVillageRadius()) + radius)
+                return true;
+        }
+        return false;
     }
     
     public static void debug(String msg, Object... args)
