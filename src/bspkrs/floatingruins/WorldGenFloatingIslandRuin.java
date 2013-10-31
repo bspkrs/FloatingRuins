@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import bspkrs.util.BlockNotifyType;
 import bspkrs.util.CommonUtils;
 
 public class WorldGenFloatingIslandRuin extends WorldGenerator
@@ -447,36 +448,36 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     
     private void setChest(World world, Random random, int x, int y, int z)
     {
-        world.setBlock(x, y, z, Block.chest.blockID, 0, 3);
+        world.setBlock(x, y, z, Block.chest.blockID, 0, BlockNotifyType.ALL);
         TileEntityChest tileentitychest = (TileEntityChest) world.getBlockTileEntity(x, y, z);
         addItems(tileentitychest, random);
         
         int blockingBlockID = (FloatingRuins.harderDungeons ? Block.bedrock.blockID : Block.obsidian.blockID);
         
-        world.setBlock(x + 1, y, z, blockingBlockID, 0, 3);
-        world.setBlock(x - 1, y, z, blockingBlockID, 0, 3);
-        world.setBlock(x, y, z + 1, blockingBlockID, 0, 3);
-        world.setBlock(x, y, z - 1, blockingBlockID, 0, 3);
-        world.setBlock(x, y - 1, z, blockingBlockID, 0, 3);
+        world.setBlock(x + 1, y, z, blockingBlockID, 0, BlockNotifyType.ALL);
+        world.setBlock(x - 1, y, z, blockingBlockID, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y, z + 1, blockingBlockID, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y, z - 1, blockingBlockID, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y - 1, z, blockingBlockID, 0, BlockNotifyType.ALL);
         
         if (FloatingRuins.harderDungeons)
-            world.setBlock(x, y + 1, z, Block.obsidian.blockID, 0, 3);
+            world.setBlock(x, y + 1, z, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
         else
-            world.setBlock(x, y + 1, z, Block.cobblestone.blockID, 0, 3);
+            world.setBlock(x, y + 1, z, Block.cobblestone.blockID, 0, BlockNotifyType.ALL);
     }
     
     private void setSpawner(World world, BiomeGenBase biomegenbase, int x, int y, int z)
     {
-        world.setBlock(x, y, z, Block.mobSpawner.blockID, 0, 3);
+        world.setBlock(x, y, z, Block.mobSpawner.blockID, 0, BlockNotifyType.ALL);
         
-        world.setBlock(x + 1, y, z, Block.obsidian.blockID, 0, 3);
-        world.setBlock(x - 1, y, z, Block.obsidian.blockID, 0, 3);
-        world.setBlock(x, y, z + 1, Block.obsidian.blockID, 0, 3);
-        world.setBlock(x, y, z - 1, Block.obsidian.blockID, 0, 3);
+        world.setBlock(x + 1, y, z, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
+        world.setBlock(x - 1, y, z, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y, z + 1, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y, z - 1, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
         if (FloatingRuins.harderDungeons)
         {
-            world.setBlock(x, y - 1, z, Block.obsidian.blockID, 0, 3);
-            world.setBlock(x, y + 1, z, Block.obsidian.blockID, 0, 3);
+            world.setBlock(x, y - 1, z, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
+            world.setBlock(x, y + 1, z, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
         }
         
         TileEntityMobSpawner tileEntityMobSpawner = (TileEntityMobSpawner) world.getBlockTileEntity(x, y, z);
@@ -864,24 +865,24 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 {
                     if (y == height || (Math.abs(x) == width && Math.abs(z) == width && y >= 0))
                     {
-                        world.setBlock(x + xIn, y + yIn, z + zIn, Block.stoneBrick.blockID, 0, 3);
-                        world.setBlock(x + xIn, y + yIn + 1, z + zIn, (FloatingRuins.harderDungeons ? Block.bedrock.blockID : Block.stoneBrick.blockID), 0, 3);
+                        world.setBlock(x + xIn, y + yIn, z + zIn, Block.stoneBrick.blockID, 0, BlockNotifyType.ALL);
+                        world.setBlock(x + xIn, y + yIn + 1, z + zIn, (FloatingRuins.harderDungeons ? Block.bedrock.blockID : Block.stoneBrick.blockID), 0, BlockNotifyType.ALL);
                     }
                     
                     if (y >= 1 && ((Math.abs(x) == width) ^ (Math.abs(z) == width)))
-                        world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, 3);
+                        world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, BlockNotifyType.ALL);
                     
                     if (y > 0 && y < height && Math.abs(z) < width && Math.abs(x) < width)
-                        world.setBlock(x + xIn, y + yIn, z + zIn, 0, 0, 3);
+                        world.setBlockToAir(x + xIn, y + yIn, z + zIn);
                     
                     if (y == -1 || y == 0)
-                        world.setBlock(x + xIn, y + yIn, z + zIn, Block.stoneBrick.blockID, 0, 3);
+                        world.setBlock(x + xIn, y + yIn, z + zIn, Block.stoneBrick.blockID, 0, BlockNotifyType.ALL);
                     
                     if (y < -1)
                     {
                         int yg = CommonUtils.getHighestGroundBlock(world, x + xIn, y + yIn, z + zIn);
                         if ((Math.abs(x) == width || Math.abs(z) == width) && !world.isBlockNormalCube(x + xIn, y + yIn, z + zIn) && yg < y + yIn && yg >= yIn - height)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, Block.stoneBrick.blockID, 0, 3);
+                            world.setBlock(x + xIn, y + yIn, z + zIn, Block.stoneBrick.blockID, 0, BlockNotifyType.ALL);
                     }
                 }
     }
@@ -898,27 +899,27 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (y >= 0)
                         {
                             if (dist == range)
-                                world.setBlock(x + xIn, y + yIn, z + zIn, (FloatingRuins.harderDungeons && y > 2 ? Block.bedrock.blockID : blockID), 0, 3);
+                                world.setBlock(x + xIn, y + yIn, z + zIn, (FloatingRuins.harderDungeons && y > 2 ? Block.bedrock.blockID : blockID), 0, BlockNotifyType.ALL);
                             
                             // For wolves
                             if (y == 0 && dist < range)
-                                world.setBlock(x + xIn, y + yIn, z + zIn, Block.grass.blockID, 0, 3);
+                                world.setBlock(x + xIn, y + yIn, z + zIn, Block.grass.blockID, 0, BlockNotifyType.ALL);
                             
                             if (y > 0 && dist < range)
                             {
-                                world.setBlock(x + xIn, y + yIn, z + zIn, 0, 0, 3);
+                                world.setBlockToAir(x + xIn, y + yIn, z + zIn);
                                 if (y == 1)
-                                    world.setBlock(x + xIn, y + yIn, z + zIn, Block.snow.blockID, 0, 3);
+                                    world.setBlock(x + xIn, y + yIn, z + zIn, Block.snow.blockID, 0, BlockNotifyType.ALL);
                             }
                         }
                         else
                         {
                             if (y == -1)
-                                world.setBlock(x + xIn, yIn - 1, z + zIn, blockID, 0, 3);
+                                world.setBlock(x + xIn, yIn - 1, z + zIn, blockID, 0, BlockNotifyType.ALL);
                             
                             int yg = CommonUtils.getHighestGroundBlock(world, x + xIn, y + yIn, z + zIn);
                             if (dist == range && !world.isBlockNormalCube(x + xIn, y + yIn, z + zIn) && yg < y + yIn && yg >= yIn - range)
-                                world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, 3);
+                                world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, BlockNotifyType.ALL);
                         }
                     }
                 }
@@ -933,18 +934,18 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     if (y >= 0)
                     {
                         if ((Math.abs(x) == range - y && Math.abs(x) >= Math.abs(z)) || (Math.abs(z) == range - y && Math.abs(z) >= Math.abs(x)) || y == 0)
-                            world.setBlock(xIn + x, y + yIn, zIn + z, (FloatingRuins.harderDungeons && y > 2 ? Block.bedrock.blockID : blockID), 0, 3);
+                            world.setBlock(xIn + x, y + yIn, zIn + z, (FloatingRuins.harderDungeons && y > 2 ? Block.bedrock.blockID : blockID), 0, BlockNotifyType.ALL);
                         else if ((Math.abs(x) < range - y && Math.abs(x) >= Math.abs(z)) || (Math.abs(z) < range - y && Math.abs(z) >= Math.abs(x)))
-                            world.setBlock(xIn + x, y + yIn, zIn + z, 0, 0, 3);
+                            world.setBlockToAir(xIn + x, y + yIn, zIn + z);
                     }
                     else
                     {
                         if (y == -1)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, 3);
+                            world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, BlockNotifyType.ALL);
                         
                         int yg = CommonUtils.getHighestGroundBlock(world, x + xIn, y + yIn, z + zIn);
                         if ((Math.abs(x) == range || Math.abs(z) == range) && !world.isBlockNormalCube(x + xIn, y + yIn, z + zIn) && yg < y + yIn && yg >= yIn - range)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, 3);
+                            world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, BlockNotifyType.ALL);
                     }
                 }
     }
