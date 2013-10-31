@@ -4,14 +4,13 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeavesBase;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.common.ForgeDirection;
+import bspkrs.util.BlockNotifyType;
 import bspkrs.util.CommonUtils;
+import bspkrs.util.Coord;
 
 public class WorldGenFloatingIsland extends WorldGenerator
 {
@@ -21,6 +20,18 @@ public class WorldGenFloatingIsland extends WorldGenerator
     private final int JETSONS     = 2;
     private final int STALACTITE  = 3;
     private int[]     islandTypes = { SPHEROID, CONE, SPHEROID, SPHEROID, CONE };
+    
+    //    private final Coord srcOrigin;
+    //    private final Coord tgtOrigin;
+    //    private int         depth;
+    //    private final int   radius;
+    //    private float       depthRatio;
+    //    private int         yGround;
+    
+    public WorldGenFloatingIsland()
+    {   
+        
+    }
     
     @Override
     public boolean generate(World world, Random random, int x, int y, int z)
@@ -69,24 +80,27 @@ public class WorldGenFloatingIsland extends WorldGenerator
         return distToOrigin <= radius;
     }
     
-    private boolean isSpecialMoveableBlock(Block block)
+    private boolean isSpecialMoveableBlock(int blockID)
     {
-        return (block.blockID == Block.stoneSingleSlab.blockID) || (block.blockID == Block.stairsWoodOak.blockID) || (block.blockID == Block.stairsCobblestone.blockID)
-                || (block.blockID == Block.pressurePlatePlanks.blockID) || (block.blockID == Block.pressurePlateIron.blockID) || (block.blockID == Block.pressurePlateStone.blockID)
-                || (block.blockID == Block.fence.blockID) || (block.blockID == Block.thinGlass.blockID) || BlockLeavesBase.class.isAssignableFrom(block.getClass());
+        return blockID == Block.stoneSingleSlab.blockID || blockID == Block.stairsWoodOak.blockID || blockID == Block.stairsCobblestone.blockID
+                || blockID == Block.pressurePlatePlanks.blockID || blockID == Block.pressurePlateIron.blockID || blockID == Block.pressurePlateStone.blockID
+                || blockID == Block.fence.blockID || blockID == Block.thinGlass.blockID || BlockLeavesBase.class.isAssignableFrom(Block.blocksList[blockID].getClass());
     }
     
     public boolean genIsland(World world, int radius, int xIn, int yIn, int zIn)
     {
         FloatingRuins.baseDepth = Math.max(2, Math.min(50, FloatingRuins.baseDepth));
         FloatingRuins.depthVariation = Math.max(0, Math.min(50, FloatingRuins.depthVariation));
-        Random random = new Random();
+        Random random = new Random(xIn + zIn << 8 + yIn << 16);
         float depthRatio = random.nextInt(5) == 0 ? random.nextFloat() * 0.5F + 2.0F : random.nextFloat() * 0.2F + 0.4F;
         int depth = (int) Math.ceil(radius * depthRatio);
         int yg = CommonUtils.getHighestGroundBlock(world, xIn, yIn, zIn);
         
         if (yg == 0)
             return false;
+        
+        Coord srcOrigin = new Coord(xIn, yg, zIn);
+        Coord tgtOrigin = new Coord(xIn, yIn, zIn);
         
         if (depth > FloatingRuins.baseDepth + FloatingRuins.depthVariation || depth < FloatingRuins.baseDepth || depth > yg - 5)
         {
@@ -111,70 +125,35 @@ public class WorldGenFloatingIsland extends WorldGenerator
             for (int y = 40; y >= -depth; y--)
                 for (int z = -radius - 4; z <= radius + 4; z++)
                 {
-                    int blockID = world.getBlockId(x + xIn, yg + y, z + zIn);
+                    Coord delta = new Coord(x, y, z);
+                    Coord src = srcOrigin.add(delta);
+                    int blockID = src.getBlockID(world);
                     if (blockID > 0 && isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
                     {
-                        int metadata = world.getBlockMetadata(x + xIn, yg + y, z + zIn);
-                        if (((y <= 0)
-                        || (
-                                blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID
-                                        && (
-                                world.isBlockNormalCube(x + xIn, yg + y, z + zIn)
-                                || (blockID != 0 && isSpecialMoveableBlock(Block.blocksList[blockID]))
+                        int metadata = src.getBlockMetadata(world);
+                        if ((y <= 0)
+                                || (blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID &&
+                                (src.isBlockNormalCube(world) || (blockID != 0 && isSpecialMoveableBlock(blockID)))
                                 )
-                                )
-                                && !CommonUtils.isIDInList(blockID, metadata, FloatingRuins.blockIDBlacklist)))
+                                && !CommonUtils.isIDInList(blockID, metadata, FloatingRuins.blockIDBlacklist))
                         {
                             if (blockID == Block.mobSpawner.blockID)
-                            {
-                                TileEntityMobSpawner spawner = (TileEntityMobSpawner) world.getBlockTileEntity(x + xIn, yg + y, z + zIn);
-                                if (spawner != null)
-                                {
-                                    world.setBlock(x + xIn, y + yIn, z + zIn, Block.mobSpawner.blockID, 0, 3);
-                                    NBTTagCompound spawnerNBT = new NBTTagCompound();
-                                    spawner.getSpawnerLogic().writeToNBT(spawnerNBT);
-                                    
-                                    spawner = (TileEntityMobSpawner) world.getBlockTileEntity(x + xIn, y + yIn, z + zIn);
-                                    if (spawner != null)
-                                        spawner.getSpawnerLogic().readFromNBT(spawnerNBT);
-                                    
-                                    debug += "+S(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + ") ";
-                                }
-                            }
+                                debug += "+S(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + ") ";
                             else if (blockID == Block.chest.blockID)
-                            {
-                                TileEntityChest chest = (TileEntityChest) world.getBlockTileEntity(x + xIn, yg + y, z + zIn);
-                                ItemStack[] chestContents = new ItemStack[chest.getSizeInventory()];
-                                if (chest != null)
-                                {
-                                    for (int i = 0; i < chest.getSizeInventory(); i++)
-                                    {
-                                        chestContents[i] = chest.getStackInSlot(i);
-                                    }
-                                    world.setBlock(x + xIn, y + yIn, z + zIn, Block.chest.blockID, metadata, 3);
-                                    chest = (TileEntityChest) world.getBlockTileEntity(x + xIn, y + yIn, z + zIn);
-                                    if (chest != null)
-                                        for (int i = 0; i < chestContents.length; i++)
-                                            if (chestContents[i] != null)
-                                                chest.setInventorySlotContents(i, chestContents[i].copy());
-                                    
-                                    debug += "+C(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + ") ";
-                                }
-                            }
-                            else
-                                world.setBlock(x + xIn, y + yIn, z + zIn, blockID, metadata, 3);
-                            
-                            if (y >= -8 && !isLavaNearby && (blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID))
+                                debug += "+C(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + ") ";
+                            else if (y >= -8 && !isLavaNearby && (blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID))
                             {
                                 isLavaNearby = true;
                                 debug += "+L ";
                             }
                             
-                            world.setBlock(x + xIn, yg + y, z + zIn, 0, 0, 3);
+                            Coord tgt = tgtOrigin.add(delta);
+                            
+                            Coord.moveBlock(world, src, tgt, true);
                         }
                     }
-                    if (random.nextInt(3) == 0 && world.getBlockId(x + xIn, y + yIn, z + zIn) == Block.stone.blockID && Math.abs(x) <= 1 && Math.abs(z) <= 1 && Math.abs(y + depth / 2) <= 2)
-                        world.setBlock(x + xIn, y + yIn, z + zIn, specialOre, 0, 3);
+                    if (random.nextInt(3) == 0 && blockID == Block.stone.blockID && Math.abs(x) <= 1 && Math.abs(z) <= 1 && Math.abs(y + depth / 2) <= 2)
+                        world.setBlock(x + xIn, y + yIn, z + zIn, specialOre, 0, BlockNotifyType.NONE);
                 }
         
         // if (depthRatio < 1.0F)
@@ -182,12 +161,14 @@ public class WorldGenFloatingIsland extends WorldGenerator
             for (int y = 5; y >= -depth; y--)
                 for (int z = -radius; z <= radius; z++)
                 {
-                    int block = world.getBlockId(x + xIn, y + yIn, z + zIn);
-                    if (block != 0 && world.isAirBlock(x + xIn, (y + yIn) - 1, z + zIn))
-                        if (block == Block.gravel.blockID)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, Block.stone.blockID, 0, 3);
-                        else if (block == Block.sand.blockID)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, Block.sandStone.blockID, 0, 3);
+                    Coord delta = new Coord(x, y, z);
+                    Coord tgt = tgtOrigin.add(delta);
+                    int blockID = tgt.getBlockID(world);
+                    if (blockID != 0 && tgt.getAdjacentCoord(ForgeDirection.DOWN).isAirBlock(world))
+                        if (blockID == Block.gravel.blockID)
+                            world.setBlock(tgt.x, tgt.y, tgt.z, Block.stone.blockID, 0, BlockNotifyType.ALL);
+                        else if (blockID == Block.sand.blockID)
+                            world.setBlock(tgt.x, tgt.y, tgt.z, Block.sandStone.blockID, 0, BlockNotifyType.ALL);
                 }
         
         FloatingRuins.debug(debug);
