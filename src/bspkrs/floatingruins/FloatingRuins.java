@@ -77,7 +77,7 @@ public final class FloatingRuins
     
     private static int         chunksToRetry             = 0;
     
-    public static void generateSurface(World world, Random random, int x, int z)
+    public static void generateSurface(World world, Random random, int x, int z, boolean isWorldGen)
     {
         if ((world.getWorldInfo().getTerrainType() != WorldType.FLAT || allowInSuperFlat))
         {
@@ -88,28 +88,45 @@ public final class FloatingRuins
                 long l1 = (random.nextLong() / 2L) * 2L + 1L;
                 random.setSeed(x * l + z * l1 ^ world.getSeed());
                 
-                x += random.nextInt(16);
-                z += random.nextInt(16);
+                if (isWorldGen)
+                {
+                    x += random.nextInt(16);
+                    z += random.nextInt(16);
+                }
                 
-                int bH = Math.max(80, Math.min(215, baseHeight));
-                int hV = Math.max(0, Math.min(215 - bH, heightVariation));
-                int y = bH + random.nextInt(hV);
-                int yg = CommonUtils.getHighestGroundBlock(world, x, y, z);
-                if (random.nextInt(rarity) == 0)
+                int tgtY = baseHeight + random.nextInt(heightVariation);
+                int amIZero = random.nextInt(rarity);
+                int radius = FloatingRuins.baseRadius + random.nextInt(FloatingRuins.radiusVariation);
+                int yGround = CommonUtils.getHighestGroundBlock(world, x, tgtY, z);
+                
+                Random random2 = new Random(x + z << 8 + tgtY << 16);
+                
+                float depthRatio = random2.nextInt(5) == 0 ? random2.nextFloat() * 0.5F + 2.0F : random2.nextFloat() * 0.2F + 0.4F;
+                int depth = (int) Math.ceil(radius * depthRatio);
+                int islandType = WorldGenFloatingIsland.islandTypes[random2.nextInt(WorldGenFloatingIsland.islandTypes.length)];
+                
+                if (depth > FloatingRuins.baseDepth + FloatingRuins.depthVariation || depth < FloatingRuins.baseDepth || depth > yGround - 5)
+                {
+                    WorldType wt = world.getWorldInfo().getTerrainType();
+                    depth = Math.min(yGround - (wt == WorldType.FLAT ? 1 : 5), Math.max(FloatingRuins.baseDepth, Math.min(depth, FloatingRuins.baseDepth + random2.nextInt(FloatingRuins.depthVariation))));
+                    depthRatio = depth / (float) radius;
+                }
+                
+                if (amIZero == 0)
                 {
                     if (CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, biomeIDBlacklist))
                         chunksToRetry++;
-                    else if (isVillageNearby(world, x, yg, z, baseRadius + radiusVariation))
+                    else if (isVillageNearby(world, x, yGround, z, radius))
                         chunksToRetry++;
-                    else if (!(new WorldGenFloatingIsland()).generate(world, random, x, y, z))
+                    else if (!(new WorldGenFloatingIsland(radius, depthRatio, yGround, islandType)).generate(world, random, x, tgtY, z))
                         chunksToRetry++;
                 }
                 else if (chunksToRetry < 0)
                 {
                     if (!CommonUtils.isIDInList(world.getBiomeGenForCoords(x, z).biomeID, biomeIDBlacklist)
-                            && !isVillageNearby(world, x, yg, z, baseRadius + radiusVariation))
+                            && !isVillageNearby(world, x, yGround, z, radius))
                     {
-                        if ((new WorldGenFloatingIsland()).generate(world, random, x, y, z))
+                        if ((new WorldGenFloatingIsland(radius, depthRatio, yGround, islandType)).generate(world, random, x, tgtY, z))
                             chunksToRetry--;
                     }
                 }
@@ -122,7 +139,7 @@ public final class FloatingRuins
     {
         for (Village village : (List<Village>) world.villageCollectionObj.getVillageList())
         {
-            if (village.getCenter().getDistanceSquared(x, y, z) < (village.getVillageRadius() * village.getVillageRadius()) + radius)
+            if (Math.sqrt(village.getCenter().getDistanceSquared(x, y, z)) < village.getVillageRadius() + radius)
                 return true;
         }
         return false;

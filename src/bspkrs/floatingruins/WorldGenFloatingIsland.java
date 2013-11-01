@@ -5,7 +5,6 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ForgeDirection;
 import bspkrs.util.BlockNotifyType;
@@ -14,38 +13,115 @@ import bspkrs.util.Coord;
 
 public class WorldGenFloatingIsland extends WorldGenerator
 {
-    private boolean   isLavaNearby;
-    private final int SPHEROID    = 0;
-    private final int CONE        = 1;
-    private final int JETSONS     = 2;
-    private final int STALACTITE  = 3;
-    private int[]     islandTypes = { SPHEROID, CONE, SPHEROID, SPHEROID, CONE };
+    private boolean           isLavaNearby;
+    private static final int  SPHEROID    = 0;
+    private static final int  CONE        = 1;
+    private static final int  JETSONS     = 2;
+    private static final int  STALACTITE  = 3;
+    public static final int[] islandTypes = { SPHEROID, CONE, SPHEROID, SPHEROID, CONE };
     
-    //    private final Coord srcOrigin;
-    //    private final Coord tgtOrigin;
-    //    private int         depth;
-    //    private final int   radius;
-    //    private float       depthRatio;
-    //    private int         yGround;
+    private Coord             srcOrigin;
+    private Coord             tgtOrigin;
+    private final int         depth;
+    private final int         radius;
+    private final float       depthRatio;
+    private final int         yGround;
+    private final int         islandType;
+    private Random            random;
     
-    public WorldGenFloatingIsland()
-    {   
-        
+    public WorldGenFloatingIsland(int radius, float depthRatio, int yGround, int islandType)
+    {
+        this.radius = radius;
+        this.depthRatio = depthRatio;
+        this.yGround = yGround;
+        this.islandType = islandType;
+        this.depth = (int) Math.ceil(radius * depthRatio);
     }
     
     @Override
     public boolean generate(World world, Random random, int x, int y, int z)
     {
         boolean ran = false;
-        FloatingRuins.baseRadius = Math.max(6, Math.min(50, FloatingRuins.baseRadius));
-        FloatingRuins.radiusVariation = Math.max(0, Math.min(50, FloatingRuins.radiusVariation));
-        int r = FloatingRuins.baseRadius + random.nextInt(FloatingRuins.radiusVariation);
+        
+        this.random = new Random(x + z << 8 + y << 16);
+        
+        if (yGround == 0)
+            return false;
+        
+        srcOrigin = new Coord(x, yGround, z);
+        tgtOrigin = new Coord(x, y, z);
+        
         isLavaNearby = false;
-        if (world.isAirBlock(x, y, z) && (world.isAirBlock(x, y - r, z) || world.getBlockId(x, y - r, z) == Block.waterStill.blockID)
-                && genIsland(world, r, x, y, z))
+        if (tgtOrigin.isAirBlock(world) && (world.isAirBlock(x, y - depth, z) || world.getBlockId(x, y - depth, z) == Block.waterStill.blockID)
+                && genIsland(world, radius, x, y, z))
             ran = (new WorldGenFloatingIslandRuin(isLavaNearby)).generate(world, random, x, y, z);
         
         return ran;
+    }
+    
+    private boolean genIsland(World world, int radius, int xIn, int yIn, int zIn)
+    {
+        String debug = "Island: ";
+        if (islandType == CONE)
+            debug += "Cone ";
+        else
+            debug += "Spheroid ";
+        
+        debug += String.format("r(%d) d(%d) @%d,%d,%d ", radius, depth, xIn, yIn, zIn);
+        
+        int specialOre = getSpecialOre();
+        
+        for (int x = -radius - 4; x <= radius + 4; x++)
+            for (int y = 40; y >= -depth; y--)
+                for (int z = -radius - 4; z <= radius + 4; z++)
+                {
+                    Coord delta = new Coord(x, y, z);
+                    Coord src = srcOrigin.add(delta);
+                    int blockID = src.getBlockID(world);
+                    if (blockID > 0 && isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
+                    {
+                        int metadata = src.getBlockMetadata(world);
+                        if ((y <= 0)
+                                || (blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID &&
+                                (src.isBlockNormalCube(world) || (blockID != 0 && isSpecialMoveableBlock(blockID)))
+                                )
+                                && !CommonUtils.isIDInList(blockID, metadata, FloatingRuins.blockIDBlacklist))
+                        {
+                            
+                            Coord tgt = tgtOrigin.add(delta);
+                            if (blockID == Block.mobSpawner.blockID)
+                                debug += "+S(" + tgt + ") ";
+                            else if (blockID == Block.chest.blockID)
+                                debug += "+C(" + tgt + ") ";
+                            else if (y >= -8 && !isLavaNearby && (blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID))
+                            {
+                                isLavaNearby = true;
+                                debug += "+L ";
+                            }
+                            
+                            Coord.moveBlock(world, src, tgt, true);
+                        }
+                    }
+                    if (random.nextInt(3) == 0 && blockID == Block.stone.blockID && Math.abs(x) <= 1 && Math.abs(z) <= 1 && Math.abs(y + depth / 2) <= 2)
+                        world.setBlock(x + xIn, y + yIn, z + zIn, specialOre, 0, BlockNotifyType.NONE);
+                }
+        
+        for (int x = -radius; x <= radius; x++)
+            for (int y = 5; y >= -depth; y--)
+                for (int z = -radius; z <= radius; z++)
+                {
+                    Coord delta = new Coord(x, y, z);
+                    Coord tgt = tgtOrigin.add(delta);
+                    int blockID = tgt.getBlockID(world);
+                    if (blockID != 0 && tgt.getAdjacentCoord(ForgeDirection.DOWN).isAirBlock(world))
+                        if (blockID == Block.gravel.blockID)
+                            world.setBlock(tgt.x, tgt.y, tgt.z, Block.stone.blockID, 0, BlockNotifyType.ALL);
+                        else if (blockID == Block.sand.blockID)
+                            world.setBlock(tgt.x, tgt.y, tgt.z, Block.sandStone.blockID, 0, BlockNotifyType.ALL);
+                }
+        
+        FloatingRuins.debug(debug);
+        return true;
     }
     
     private boolean isBlockInRange(int islandType, World world, int x, int y, int z, float depthRatio, int depth, int radius)
@@ -87,97 +163,9 @@ public class WorldGenFloatingIsland extends WorldGenerator
                 || blockID == Block.fence.blockID || blockID == Block.thinGlass.blockID || BlockLeavesBase.class.isAssignableFrom(Block.blocksList[blockID].getClass());
     }
     
-    public boolean genIsland(World world, int radius, int xIn, int yIn, int zIn)
-    {
-        FloatingRuins.baseDepth = Math.max(2, Math.min(50, FloatingRuins.baseDepth));
-        FloatingRuins.depthVariation = Math.max(0, Math.min(50, FloatingRuins.depthVariation));
-        Random random = new Random(xIn + zIn << 8 + yIn << 16);
-        float depthRatio = random.nextInt(5) == 0 ? random.nextFloat() * 0.5F + 2.0F : random.nextFloat() * 0.2F + 0.4F;
-        int depth = (int) Math.ceil(radius * depthRatio);
-        int yg = CommonUtils.getHighestGroundBlock(world, xIn, yIn, zIn);
-        
-        if (yg == 0)
-            return false;
-        
-        Coord srcOrigin = new Coord(xIn, yg, zIn);
-        Coord tgtOrigin = new Coord(xIn, yIn, zIn);
-        
-        if (depth > FloatingRuins.baseDepth + FloatingRuins.depthVariation || depth < FloatingRuins.baseDepth || depth > yg - 5)
-        {
-            WorldType wt = world.getWorldInfo().getTerrainType();
-            depth = Math.min(yg - (wt == WorldType.FLAT ? 1 : 5), Math.max(FloatingRuins.baseDepth, Math.min(depth, FloatingRuins.baseDepth + world.rand.nextInt(FloatingRuins.depthVariation))));
-            depthRatio = (float) depth / (float) radius;
-        }
-        
-        int islandType = islandTypes[(new Random(xIn * yIn * zIn)).nextInt(islandTypes.length)];
-        
-        String debug = "Island: ";
-        if (islandType == CONE)
-            debug += "Cone ";
-        else
-            debug += "Spheroid ";
-        
-        debug += String.format("r(%d) d(%d) @%d,%d,%d ", radius, depth, xIn, yIn, zIn);
-        
-        int specialOre = getSpecialOre();
-        
-        for (int x = -radius - 4; x <= radius + 4; x++)
-            for (int y = 40; y >= -depth; y--)
-                for (int z = -radius - 4; z <= radius + 4; z++)
-                {
-                    Coord delta = new Coord(x, y, z);
-                    Coord src = srcOrigin.add(delta);
-                    int blockID = src.getBlockID(world);
-                    if (blockID > 0 && isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
-                    {
-                        int metadata = src.getBlockMetadata(world);
-                        if ((y <= 0)
-                                || (blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID &&
-                                (src.isBlockNormalCube(world) || (blockID != 0 && isSpecialMoveableBlock(blockID)))
-                                )
-                                && !CommonUtils.isIDInList(blockID, metadata, FloatingRuins.blockIDBlacklist))
-                        {
-                            if (blockID == Block.mobSpawner.blockID)
-                                debug += "+S(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + ") ";
-                            else if (blockID == Block.chest.blockID)
-                                debug += "+C(" + (x + xIn) + "," + (y + yIn) + "," + (z + zIn) + ") ";
-                            else if (y >= -8 && !isLavaNearby && (blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID))
-                            {
-                                isLavaNearby = true;
-                                debug += "+L ";
-                            }
-                            
-                            Coord tgt = tgtOrigin.add(delta);
-                            
-                            Coord.moveBlock(world, src, tgt, true);
-                        }
-                    }
-                    if (random.nextInt(3) == 0 && blockID == Block.stone.blockID && Math.abs(x) <= 1 && Math.abs(z) <= 1 && Math.abs(y + depth / 2) <= 2)
-                        world.setBlock(x + xIn, y + yIn, z + zIn, specialOre, 0, BlockNotifyType.NONE);
-                }
-        
-        // if (depthRatio < 1.0F)
-        for (int x = -radius; x <= radius; x++)
-            for (int y = 5; y >= -depth; y--)
-                for (int z = -radius; z <= radius; z++)
-                {
-                    Coord delta = new Coord(x, y, z);
-                    Coord tgt = tgtOrigin.add(delta);
-                    int blockID = tgt.getBlockID(world);
-                    if (blockID != 0 && tgt.getAdjacentCoord(ForgeDirection.DOWN).isAirBlock(world))
-                        if (blockID == Block.gravel.blockID)
-                            world.setBlock(tgt.x, tgt.y, tgt.z, Block.stone.blockID, 0, BlockNotifyType.ALL);
-                        else if (blockID == Block.sand.blockID)
-                            world.setBlock(tgt.x, tgt.y, tgt.z, Block.sandStone.blockID, 0, BlockNotifyType.ALL);
-                }
-        
-        FloatingRuins.debug(debug);
-        return true;
-    }
-    
     private int getSpecialOre()
     {
-        switch ((new Random()).nextInt(8))
+        switch (random.nextInt(8))
         {
             case 0:
                 return Block.oreDiamond.blockID;
