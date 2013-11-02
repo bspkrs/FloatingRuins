@@ -23,9 +23,9 @@ public class WorldGenFloatingIsland extends WorldGenerator
     private Coord             srcOrigin;
     private Coord             tgtOrigin;
     private final int         depth;
-    private final int         radius;
+    public final int          radius;
     private final float       depthRatio;
-    private final int         yGround;
+    public final int          yGround;
     private final int         islandType;
     private Random            random;
     
@@ -43,7 +43,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
     {
         boolean ran = false;
         
-        this.random = new Random(x + z << 8 + y << 16);
+        this.random = FloatingRuins.getRandom(world, x, z);
         
         if (yGround == 0)
             return false;
@@ -160,7 +160,8 @@ public class WorldGenFloatingIsland extends WorldGenerator
     {
         return blockID == Block.stoneSingleSlab.blockID || blockID == Block.stairsWoodOak.blockID || blockID == Block.stairsCobblestone.blockID
                 || blockID == Block.pressurePlatePlanks.blockID || blockID == Block.pressurePlateIron.blockID || blockID == Block.pressurePlateStone.blockID
-                || blockID == Block.fence.blockID || blockID == Block.thinGlass.blockID || BlockLeavesBase.class.isAssignableFrom(Block.blocksList[blockID].getClass());
+                || blockID == Block.fence.blockID || blockID == Block.thinGlass.blockID || BlockLeavesBase.class.isAssignableFrom(Block.blocksList[blockID].getClass())
+                || blockID == Block.tilledField.blockID;
     }
     
     private int getSpecialOre()
