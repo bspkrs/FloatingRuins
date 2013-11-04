@@ -149,7 +149,7 @@ public final class FloatingRuins
                 {
                     String debug = "";
                     int biomeID = getBlacklistBiomeIDWithinRange(world, x, z, islandGenerator.radius);
-                    if (biomeID > -1)
+                    if (isWorldGen && biomeID > -1)
                     {
                         debug = "Location %d,%d skipped due to proximity of a biomeID (%d) in the biomeIDBlackList";
                         if (isWorldGen)
@@ -159,7 +159,7 @@ public final class FloatingRuins
                         }
                         debug(debug, x, z, biomeID, chunksToRetry);
                     }
-                    else if (isVillageNearby(world, x, islandGenerator.yGround, z, islandGenerator.radius))
+                    else if (isWorldGen && isVillageNearby(world, x, islandGenerator.yGround, z, islandGenerator.radius))
                     {
                         debug = "Location %d, %d skipped due to a village being found nearby";
                         if (isWorldGen)
