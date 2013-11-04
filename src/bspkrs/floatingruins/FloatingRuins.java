@@ -270,7 +270,7 @@ public final class FloatingRuins
         {
             for (int i = radius; i > 0; i = i - 2)
             {
-                biomeID = pos.getDirectionallyOffsetCoord(fd, i).getBiomeGenBase(world).biomeID;
+                biomeID = pos.getOffsetCoord(fd, i).getBiomeGenBase(world).biomeID;
                 if (CommonUtils.isIDInList(biomeID, biomeIDBlacklist))
                     return biomeID;
             }
@@ -280,7 +280,7 @@ public final class FloatingRuins
             for (int ew = 2; ew < 4; ew++)
                 for (int r = adjRadius; r > 0; r = r - 2)
                 {
-                    biomeID = pos.getDirectionallyOffsetCoord(NSEW[ns], r).getDirectionallyOffsetCoord(NSEW[ew], r).getBiomeGenBase(world).biomeID;
+                    biomeID = pos.getOffsetCoord(NSEW[ns], r).getOffsetCoord(NSEW[ew], r).getBiomeGenBase(world).biomeID;
                     if (CommonUtils.isIDInList(biomeID, biomeIDBlacklist))
                         return biomeID;
                 }

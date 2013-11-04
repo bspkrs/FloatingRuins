@@ -1,5 +1,7 @@
 package bspkrs.floatingruins;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.LinkedList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -18,7 +20,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
     private static final int  CONE        = 1;
     private static final int  JETSONS     = 2;
     private static final int  STALACTITE  = 3;
-    public static final int[] islandTypes = { SPHEROID, CONE, SPHEROID, SPHEROID, CONE };
+    public static final int[] islandTypes = { SPHEROID, CONE, SPHEROID, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, JETSONS, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, SPHEROID, CONE };
     
     private Coord             srcOrigin;
     private Coord             tgtOrigin;
@@ -52,18 +54,95 @@ public class WorldGenFloatingIsland extends WorldGenerator
         tgtOrigin = new Coord(x, y, z);
         
         isLavaNearby = false;
-        if (tgtOrigin.isAirBlock(world) && (world.isAirBlock(x, y - depth, z) || world.getBlockId(x, y - depth, z) == Block.waterStill.blockID)
-                && genIsland(world, radius, x, y, z))
+        if (isTgtSuitableForGeneration(world, tgtOrigin) && genIsland(world, radius, x, y, z))
             ran = (new WorldGenFloatingIslandRuin(isLavaNearby)).generate(world, random, x, y, z);
         
         return ran;
     }
     
+    public boolean isTgtSuitableForGeneration(World world, Coord tgtOrigin)
+    {
+        float reciprocalRootOf2 = 0.70710678f;
+        int adjRadius = Math.round(radius * reciprocalRootOf2);
+        
+        LinkedList<SimpleEntry<Coord, Boolean>> toCheck = new LinkedList<SimpleEntry<Coord, Boolean>>();
+        
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin, Boolean.FALSE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius), Boolean.FALSE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius), Boolean.FALSE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius), Boolean.FALSE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius), Boolean.FALSE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, adjRadius).getOffsetCoord(ForgeDirection.EAST, adjRadius), Boolean.FALSE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, adjRadius).getOffsetCoord(ForgeDirection.WEST, adjRadius), Boolean.FALSE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, adjRadius).getOffsetCoord(ForgeDirection.EAST, adjRadius), Boolean.FALSE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, adjRadius).getOffsetCoord(ForgeDirection.WEST, adjRadius), Boolean.FALSE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, adjRadius).getOffsetCoord(ForgeDirection.EAST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, adjRadius).getOffsetCoord(ForgeDirection.WEST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, adjRadius).getOffsetCoord(ForgeDirection.EAST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, adjRadius).getOffsetCoord(ForgeDirection.WEST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        
+        if (depth > 15)
+        {
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, adjRadius).getOffsetCoord(ForgeDirection.EAST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, adjRadius).getOffsetCoord(ForgeDirection.WEST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, adjRadius).getOffsetCoord(ForgeDirection.EAST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, adjRadius).getOffsetCoord(ForgeDirection.WEST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+        }
+        
+        if (depth > 31)
+        {
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, adjRadius).getOffsetCoord(ForgeDirection.EAST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, adjRadius).getOffsetCoord(ForgeDirection.WEST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, adjRadius).getOffsetCoord(ForgeDirection.EAST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, adjRadius).getOffsetCoord(ForgeDirection.WEST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, adjRadius).getOffsetCoord(ForgeDirection.EAST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, adjRadius).getOffsetCoord(ForgeDirection.WEST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, adjRadius).getOffsetCoord(ForgeDirection.EAST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, adjRadius).getOffsetCoord(ForgeDirection.WEST, adjRadius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+        }
+        
+        for (SimpleEntry<Coord, Boolean> entry : toCheck)
+            if (!isTgtCoordReplaceable(world, entry.getKey(), entry.getValue()))
+                return false;
+        
+        return true;
+    }
+    
+    public boolean isTgtCoordReplaceable(World world, Coord tgt, boolean allowNonAirSpecialBlocks)
+    {
+        return tgt.isAirBlock(world) || (allowNonAirSpecialBlocks && tgt.getBlockID(world) == Block.waterStill.blockID)
+                || (allowNonAirSpecialBlocks && !tgt.isBlockOpaqueCube(world))
+                || (allowNonAirSpecialBlocks && tgt.isWood(world))
+                || (allowNonAirSpecialBlocks && tgt.isLeaves(world));
+    }
+    
     private boolean genIsland(World world, int radius, int xIn, int yIn, int zIn)
     {
-        String debug = "Island: ";
+        String debug = "Floating Island: ";
         if (islandType == CONE)
             debug += "Cone ";
+        else if (islandType == JETSONS)
+            debug += "Jetsons ";
         else
             debug += "Spheroid ";
         
@@ -138,7 +217,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
         }
         else if (islandType == JETSONS)
         {
-            return distToCenterColumn <= (y >= -1 ? radius * 1.0F : y == -2 ? Math.ceil(radius * 0.8F) : (((float) depth / Math.abs(y)) - 1.0F));
+            return distToCenterColumn <= (y >= -1 ? radius : y == -2 ? Math.ceil(radius * 0.8F) : (((float) depth / Math.abs(y)) - 1.0F));
         }
         else if (islandType == STALACTITE)
         {
@@ -158,10 +237,66 @@ public class WorldGenFloatingIsland extends WorldGenerator
     
     private boolean isSpecialMoveableBlock(int blockID)
     {
-        return blockID == Block.stoneSingleSlab.blockID || blockID == Block.stairsWoodOak.blockID || blockID == Block.stairsCobblestone.blockID
-                || blockID == Block.pressurePlatePlanks.blockID || blockID == Block.pressurePlateIron.blockID || blockID == Block.pressurePlateStone.blockID
-                || blockID == Block.fence.blockID || blockID == Block.thinGlass.blockID || BlockLeavesBase.class.isAssignableFrom(Block.blocksList[blockID].getClass())
-                || blockID == Block.tilledField.blockID;
+        return BlockLeavesBase.class.isAssignableFrom(Block.blocksList[blockID].getClass())
+                || blockID == Block.beacon.blockID
+                || blockID == Block.bed.blockID
+                || blockID == Block.brewingStand.blockID
+                || blockID == Block.cactus.blockID
+                || blockID == Block.cake.blockID
+                || blockID == Block.carrot.blockID
+                || blockID == Block.cauldron.blockID
+                || blockID == Block.cobblestoneWall.blockID
+                || blockID == Block.crops.blockID
+                || blockID == Block.deadBush.blockID
+                || blockID == Block.doorIron.blockID
+                || blockID == Block.doorWood.blockID
+                || blockID == Block.enchantmentTable.blockID
+                || blockID == Block.fence.blockID
+                || blockID == Block.fenceGate.blockID
+                || blockID == Block.fenceIron.blockID
+                || blockID == Block.flowerPot.blockID
+                || blockID == Block.hopperBlock.blockID
+                || blockID == Block.lever.blockID
+                || blockID == Block.melonStem.blockID
+                || blockID == Block.mushroomBrown.blockID
+                || blockID == Block.mushroomRed.blockID
+                || blockID == Block.netherFence.blockID
+                || blockID == Block.plantRed.blockID
+                || blockID == Block.plantYellow.blockID
+                || blockID == Block.potato.blockID
+                || blockID == Block.pressurePlateIron.blockID
+                || blockID == Block.pressurePlatePlanks.blockID
+                || blockID == Block.pressurePlateStone.blockID
+                || blockID == Block.pumpkinStem.blockID
+                || blockID == Block.redstoneComparatorActive.blockID
+                || blockID == Block.redstoneComparatorIdle.blockID
+                || blockID == Block.redstoneRepeaterActive.blockID
+                || blockID == Block.redstoneRepeaterIdle.blockID
+                || blockID == Block.redstoneWire.blockID
+                || blockID == Block.reed.blockID
+                || blockID == Block.signPost.blockID
+                || blockID == Block.signWall.blockID
+                || blockID == Block.stairsBrick.blockID
+                || blockID == Block.stairsCobblestone.blockID
+                || blockID == Block.stairsNetherBrick.blockID
+                || blockID == Block.stairsSandStone.blockID
+                || blockID == Block.stairsStoneBrick.blockID
+                || blockID == Block.stairsWoodBirch.blockID
+                || blockID == Block.stairsWoodJungle.blockID
+                || blockID == Block.stairsWoodOak.blockID
+                || blockID == Block.stairsWoodSpruce.blockID
+                || blockID == Block.stoneButton.blockID
+                || blockID == Block.stoneSingleSlab.blockID
+                || blockID == Block.thinGlass.blockID
+                || blockID == Block.tilledField.blockID
+                || blockID == Block.torchRedstoneActive.blockID
+                || blockID == Block.torchRedstoneIdle.blockID
+                || blockID == Block.trapdoor.blockID
+                || blockID == Block.tripWire.blockID
+                || blockID == Block.tripWireSource.blockID
+                || blockID == Block.waterlily.blockID
+                || blockID == Block.woodSingleSlab.blockID
+                || blockID == Block.woodenButton.blockID;
     }
     
     private int getSpecialOre()
