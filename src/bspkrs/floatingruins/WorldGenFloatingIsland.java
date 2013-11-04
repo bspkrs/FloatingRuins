@@ -147,6 +147,8 @@ public class WorldGenFloatingIsland extends WorldGenerator
     
     private boolean genIsland(World world, int radius, int xIn, int yIn, int zIn)
     {
+        int blocksMoved = 0;
+        int groundBlocksMoved = 0;
         String debug = "Floating Island: ";
         if (islandType == CONE)
             debug += "Cone ";
@@ -188,6 +190,11 @@ public class WorldGenFloatingIsland extends WorldGenerator
                             }
                             
                             Coord.moveBlock(world, src, tgt, true);
+                            
+                            if (y <= 0)
+                                groundBlocksMoved++;
+                            
+                            blocksMoved++;
                         }
                         if (random.nextInt(3) == 0 && blockID == Block.stone.blockID && Math.abs(x) <= 1 && Math.abs(z) <= 1 && Math.abs(y + depth / 4) <= 2)
                             world.setBlock(x + xIn, y + yIn, z + zIn, specialOre, 0, BlockNotifyType.NONE);
@@ -207,6 +214,8 @@ public class WorldGenFloatingIsland extends WorldGenerator
                         else if (blockID == Block.sand.blockID)
                             world.setBlock(tgt.x, tgt.y, tgt.z, Block.sandStone.blockID, 0, BlockNotifyType.ALL);
                 }
+        
+        debug += "Blocks Moved: " + blocksMoved + " (" + groundBlocksMoved + " at or below origin)";
         
         FloatingRuins.debug(debug);
         return true;
