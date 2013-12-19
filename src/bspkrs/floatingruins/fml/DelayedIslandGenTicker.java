@@ -11,13 +11,11 @@ import cpw.mods.fml.common.TickType;
 public class DelayedIslandGenTicker extends DelayedActionTicker
 {
     private IslandGenOptions opt;
-    private boolean          isWorldGen;
     
     public DelayedIslandGenTicker(EnumSet<TickType> tickTypes, int delayTicks, IslandGenOptions opt, boolean isWorldGen)
     {
         super(tickTypes, delayTicks);
         this.opt = opt;
-        this.isWorldGen = isWorldGen;
     }
     
     @Override

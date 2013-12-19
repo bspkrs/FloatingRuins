@@ -15,6 +15,7 @@ import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -68,5 +69,11 @@ public class FloatingRuinsMod
             versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
             versionChecker.checkVersionWithLogging();
         }
+    }
+    
+    @EventHandler
+    public void serverStarting(FMLServerStartingEvent event)
+    {
+        //event.registerServerCommand(new CommandFRGen());
     }
 }

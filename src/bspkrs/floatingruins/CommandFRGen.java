@@ -1,8 +1,11 @@
 package bspkrs.floatingruins;
 
+import java.util.Random;
+
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class CommandFRGen extends CommandBase
 {
@@ -29,13 +32,19 @@ public class CommandFRGen extends CommandBase
      *  /frgen random
      */
     @Override
-    public void processCommand(ICommandSender icommandsender, String[] args)
+    public void processCommand(ICommandSender sender, String[] args)
     {
         if (args.length == 1)
         {
             if (args[0].equalsIgnoreCase("random"))
             {
-                // TODO: island gen randomly
+                if (sender instanceof EntityPlayer)
+                {
+                    // TODO: fix apparent coordinate offset
+                    EntityPlayer player = (EntityPlayer) sender;
+                    Random random = FloatingRuins.getRandom(player.worldObj, (int) player.posX, (int) player.posZ);
+                    FloatingRuins.generateSurface(player.worldObj, random, (int) player.posX, (int) player.posZ, false);
+                }
             }
             else
                 throw new WrongUsageException("commands.frgen.usage");
