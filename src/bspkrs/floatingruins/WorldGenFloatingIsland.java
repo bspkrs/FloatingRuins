@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeavesBase;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.ForgeDirection;
@@ -171,10 +170,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                     if (blockID > 0 && isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
                     {
                         int metadata = src.getBlockMetadata(world);
-                        if ((y <= 0)
-                                || (blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID &&
-                                (src.isBlockNormalCube(world) || (blockID != 0 && isSpecialMoveableBlock(blockID)))
-                                )
+                        if ((y <= 0) || (blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID)
                                 && !CommonUtils.isIDInList(blockID, metadata, FloatingRuins.blockIDBlacklist))
                         {
                             
@@ -253,70 +249,6 @@ public class WorldGenFloatingIsland extends WorldGenerator
         
         // default to SPHEROID
         return distToOrigin <= radius;
-    }
-    
-    private boolean isSpecialMoveableBlock(int blockID)
-    {
-        return BlockLeavesBase.class.isAssignableFrom(Block.blocksList[blockID].getClass())
-                || blockID == Block.beacon.blockID
-                || blockID == Block.bed.blockID
-                || blockID == Block.brewingStand.blockID
-                || blockID == Block.cactus.blockID
-                || blockID == Block.cake.blockID
-                || blockID == Block.carrot.blockID
-                || blockID == Block.cauldron.blockID
-                || blockID == Block.cobblestoneWall.blockID
-                || blockID == Block.crops.blockID
-                || blockID == Block.deadBush.blockID
-                || blockID == Block.doorIron.blockID
-                || blockID == Block.doorWood.blockID
-                || blockID == Block.enchantmentTable.blockID
-                || blockID == Block.fence.blockID
-                || blockID == Block.fenceGate.blockID
-                || blockID == Block.fenceIron.blockID
-                || blockID == Block.flowerPot.blockID
-                || blockID == Block.hopperBlock.blockID
-                || blockID == Block.lever.blockID
-                || blockID == Block.melonStem.blockID
-                || blockID == Block.mushroomBrown.blockID
-                || blockID == Block.mushroomRed.blockID
-                || blockID == Block.netherFence.blockID
-                || blockID == Block.plantRed.blockID
-                || blockID == Block.plantYellow.blockID
-                || blockID == Block.potato.blockID
-                || blockID == Block.pressurePlateIron.blockID
-                || blockID == Block.pressurePlatePlanks.blockID
-                || blockID == Block.pressurePlateStone.blockID
-                || blockID == Block.pumpkinStem.blockID
-                || blockID == Block.redstoneComparatorActive.blockID
-                || blockID == Block.redstoneComparatorIdle.blockID
-                || blockID == Block.redstoneRepeaterActive.blockID
-                || blockID == Block.redstoneRepeaterIdle.blockID
-                || blockID == Block.redstoneWire.blockID
-                || blockID == Block.reed.blockID
-                || blockID == Block.signPost.blockID
-                || blockID == Block.signWall.blockID
-                || blockID == Block.stairsBrick.blockID
-                || blockID == Block.stairsCobblestone.blockID
-                || blockID == Block.stairsNetherBrick.blockID
-                || blockID == Block.stairsSandStone.blockID
-                || blockID == Block.stairsStoneBrick.blockID
-                || blockID == Block.stairsWoodBirch.blockID
-                || blockID == Block.stairsWoodJungle.blockID
-                || blockID == Block.stairsWoodOak.blockID
-                || blockID == Block.stairsWoodSpruce.blockID
-                || blockID == Block.stoneButton.blockID
-                || blockID == Block.stoneSingleSlab.blockID
-                || blockID == Block.thinGlass.blockID
-                || blockID == Block.tilledField.blockID
-                || blockID == Block.torchRedstoneActive.blockID
-                || blockID == Block.torchRedstoneIdle.blockID
-                || blockID == Block.trapdoor.blockID
-                || blockID == Block.tripWire.blockID
-                || blockID == Block.tripWireSource.blockID
-                || blockID == Block.waterlily.blockID
-                || blockID == Block.woodSingleSlab.blockID
-                || blockID == Block.woodenButton.blockID;
     }
     
     private int getSpecialOre()
