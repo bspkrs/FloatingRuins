@@ -1,9 +1,10 @@
-1.6.4.r02 - ???
+1.6.4.r02 - 19-Dec-2013
 - refactoring for /frgen command
 - added code to prevent islands from spawning in villages
 - improved biome blacklist handling code
 - improved debug logging
 - fixed failed generation retry code
+- simplified checks for movable blocks
 1.6.4.r01 - 20-Sep-2013
 - 1.6.4 update
 1.6.2.r03 - 07-Sep-2013
