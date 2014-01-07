@@ -1,0 +1,21 @@
+{
+  "modListVersion": 2,
+  "modList": [{
+    "modid": "FloatingRuins",
+    "name": "FloatingRuins",
+    "description": "Floating islands taken from the ground with ruins on top.",
+    "version": "${mod_version}",
+    "mcversion": "${minecraft_version}",
+    "url": "http://www.minecraftforum.net/topic/1009577-/",
+    "updateUrl": "",
+    "authorList": [ "DaftPVF", "bspkrs" ],
+    "credits": "Original by DaftPVF",
+    "logoFile": "",
+    "screenshots": [  ],
+    "parent": "",
+    "requiredMods": [ "bspkrsCore" ],
+    "dependencies": [ "bspkrsCore" ],
+    "dependants": [  ],
+    "useDependencyInformation": "true"
+  }]
+}
