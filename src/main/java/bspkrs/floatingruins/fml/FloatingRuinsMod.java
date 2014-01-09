@@ -16,11 +16,9 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge " + FloatingRuins.VERSION_NUMBER, dependencies = "required-after:bspkrsCore", useMetadata = true)
-@NetworkMod(clientSideRequired = false, serverSideRequired = false)
 public class FloatingRuinsMod
 {
     public static ModVersionChecker versionChecker;
@@ -61,7 +59,8 @@ public class FloatingRuinsMod
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator());
+        // fuck it... hopefully a million is high enough to be last?
+        GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator(), 1000000);
         proxy.registerTickHandler();
         
         if (bspkrsCoreMod.instance.allowUpdateCheck)

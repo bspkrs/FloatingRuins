@@ -5,9 +5,12 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
+import bspkrs.helpers.block.BlockHelper;
+import bspkrs.helpers.world.WorldHelper;
 import bspkrs.util.BlockNotifyType;
 import bspkrs.util.CommonUtils;
 import bspkrs.util.Coord;
@@ -138,7 +141,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
     
     public boolean isTgtCoordReplaceable(World world, Coord tgt, boolean allowNonAirSpecialBlocks)
     {
-        return tgt.isAirBlock(world) || (allowNonAirSpecialBlocks && tgt.getBlockID(world) == Block.waterStill.blockID)
+        return tgt.isAirBlock(world) || (allowNonAirSpecialBlocks && tgt.getBlock(world).equals(Blocks.water))
                 || (allowNonAirSpecialBlocks && !tgt.isBlockOpaqueCube(world))
                 || (allowNonAirSpecialBlocks && tgt.isWood(world))
                 || (allowNonAirSpecialBlocks && tgt.isLeaves(world));
@@ -158,7 +161,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
         
         debug += String.format("r(%d) d(%d) @%d,%d,%d ", radius, depth, xIn, yIn, zIn);
         
-        int specialOre = getSpecialOre();
+        Block specialOre = getSpecialOre();
         
         for (int x = -radius - 4; x <= radius + 4; x++)
             for (int y = 40; y >= -depth; y--)
@@ -166,20 +169,20 @@ public class WorldGenFloatingIsland extends WorldGenerator
                 {
                     Coord delta = new Coord(x, y, z);
                     Coord src = srcOrigin.add(delta);
-                    int blockID = src.getBlockID(world);
-                    if (blockID > 0 && isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
+                    Block block = src.getBlock(world);
+                    if (!src.isAirBlock(world) && isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
                     {
                         int metadata = src.getBlockMetadata(world);
-                        if ((y <= 0) || (blockID != Block.waterStill.blockID && blockID != Block.waterMoving.blockID)
-                                && !CommonUtils.isIDInList(blockID, metadata, FloatingRuins.blockIDBlacklist))
+                        if ((y <= 0) || (!block.equals(Blocks.water) && !block.equals(Blocks.flowing_water))
+                                && !CommonUtils.isIDInList(BlockHelper.getUniqueID(block), metadata, FloatingRuins.blockIDBlacklist))
                         {
                             
                             Coord tgt = tgtOrigin.add(delta);
-                            if (blockID == Block.mobSpawner.blockID)
+                            if (block.equals(Blocks.mob_spawner))
                                 debug += "+S(" + tgt + ") ";
-                            else if (blockID == Block.chest.blockID)
+                            else if (block.equals(Blocks.chest))
                                 debug += "+C(" + tgt + ") ";
-                            else if (y >= -8 && !isLavaNearby && (blockID == Block.lavaStill.blockID || blockID == Block.lavaMoving.blockID))
+                            else if (y >= -8 && !isLavaNearby && (block.equals(Blocks.lava) || block.equals(Blocks.flowing_lava)))
                             {
                                 isLavaNearby = true;
                                 debug += "+L ";
@@ -192,8 +195,8 @@ public class WorldGenFloatingIsland extends WorldGenerator
                             
                             blocksMoved++;
                         }
-                        if (random.nextInt(3) == 0 && blockID == Block.stone.blockID && Math.abs(x) <= 1 && Math.abs(z) <= 1 && Math.abs(y + depth / 4) <= 2)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, specialOre, 0, BlockNotifyType.NONE);
+                        if (random.nextInt(3) == 0 && block.equals(Blocks.stone) && Math.abs(x) <= 1 && Math.abs(z) <= 1 && Math.abs(y + depth / 4) <= 2)
+                            WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, specialOre, 0, BlockNotifyType.NONE);
                     }
                 }
         
@@ -203,12 +206,12 @@ public class WorldGenFloatingIsland extends WorldGenerator
                 {
                     Coord delta = new Coord(x, y, z);
                     Coord tgt = tgtOrigin.add(delta);
-                    int blockID = tgt.getBlockID(world);
-                    if (blockID != 0 && tgt.getAdjacentCoord(ForgeDirection.DOWN).isAirBlock(world))
-                        if (blockID == Block.gravel.blockID)
-                            world.setBlock(tgt.x, tgt.y, tgt.z, Block.stone.blockID, 0, BlockNotifyType.ALL);
-                        else if (blockID == Block.sand.blockID)
-                            world.setBlock(tgt.x, tgt.y, tgt.z, Block.sandStone.blockID, 0, BlockNotifyType.ALL);
+                    Block block = tgt.getBlock(world);
+                    if (!tgt.isAirBlock(world) && tgt.getAdjacentCoord(ForgeDirection.DOWN).isAirBlock(world))
+                        if (block.equals(Blocks.gravel))
+                            WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.stone, 0, BlockNotifyType.ALL);
+                        else if (block.equals(Blocks.sand))
+                            WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.sandstone, 0, BlockNotifyType.ALL);
                 }
         
         debug += "Blocks Moved: " + blocksMoved + " (" + groundBlocksMoved + " at or below origin)";
@@ -251,31 +254,31 @@ public class WorldGenFloatingIsland extends WorldGenerator
         return distToOrigin <= radius;
     }
     
-    private int getSpecialOre()
+    private Block getSpecialOre()
     {
         switch (random.nextInt(8))
         {
             case 0:
-                return Block.oreDiamond.blockID;
+                return Blocks.diamond_ore;
                 
             case 1:
-                return Block.oreGold.blockID;
+                return Blocks.gold_ore;
                 
             case 2:
-                return Block.oreIron.blockID;
+                return Blocks.iron_ore;
                 
             case 3:
-                return Block.oreLapis.blockID;
+                return Blocks.lapis_ore;
                 
             case 4:
-                return Block.oreRedstone.blockID;
+                return Blocks.redstone_ore;
                 
             case 5:
-                return Block.oreEmerald.blockID;
+                return Blocks.emerald_ore;
                 
             case 6:
-                return Block.oreIron.blockID;
+                return Blocks.iron_ore;
         }
-        return Block.oreCoal.blockID;
+        return Blocks.coal_ore;
     }
 }

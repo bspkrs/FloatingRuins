@@ -66,4 +66,11 @@ public class CommandFRGen extends CommandBase
             // TODO: island gen with x, y, z, radius, depth, and shape
         }
     }
+    
+    @Override
+    public int compareTo(Object o)
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }

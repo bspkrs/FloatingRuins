@@ -4,6 +4,8 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,6 +15,9 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import bspkrs.helpers.item.ItemHelper;
+import bspkrs.helpers.tileentity.TileEntityHelper;
+import bspkrs.helpers.world.WorldHelper;
 import bspkrs.util.BlockNotifyType;
 import bspkrs.util.CommonUtils;
 
@@ -36,370 +41,370 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     private boolean                  isLavaNearby;
     
     private static final ItemStack[] helms       = { null,
-                                                 new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                                 new ItemStack(Items.chainmail_helmet, 1, 0),
+                                                 new ItemStack(Items.chainmail_helmet, 1, 0),
+                                                 new ItemStack(Items.chainmail_helmet, 1, 0),
+                                                 new ItemStack(Items.chainmail_helmet, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.helmetDiamond.itemID, 1, 0),
+                                                 new ItemStack(Items.diamond_helmet, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.helmetGold.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetGold.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetGold.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetGold.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                                 new ItemStack(Items.golden_helmet, 1, 0),
+                                                 new ItemStack(Items.golden_helmet, 1, 0),
+                                                 new ItemStack(Items.golden_helmet, 1, 0),
+                                                 new ItemStack(Items.golden_helmet, 1, 0),
+                                                 new ItemStack(Items.golden_helmet, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                                 new ItemStack(Items.leather_helmet, 1, 0),
+                                                 new ItemStack(Items.leather_helmet, 1, 0),
+                                                 new ItemStack(Items.leather_helmet, 1, 0),
+                                                 new ItemStack(Items.leather_helmet, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetChain.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetChain.itemID, 1, 0),
+                                                 new ItemStack(Items.chainmail_helmet, 1, 0),
+                                                 new ItemStack(Items.chainmail_helmet, 1, 0),
+                                                 new ItemStack(Items.chainmail_helmet, 1, 0),
+                                                 new ItemStack(Items.chainmail_helmet, 1, 0),
+                                                 new ItemStack(Items.chainmail_helmet, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.helmetDiamond.itemID, 1, 0),
+                                                 new ItemStack(Items.diamond_helmet, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.helmetGold.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetGold.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetGold.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetGold.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetGold.itemID, 1, 0),
+                                                 new ItemStack(Items.golden_helmet, 1, 0),
+                                                 new ItemStack(Items.golden_helmet, 1, 0),
+                                                 new ItemStack(Items.golden_helmet, 1, 0),
+                                                 new ItemStack(Items.golden_helmet, 1, 0),
+                                                 new ItemStack(Items.golden_helmet, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetLeather.itemID, 1, 0),
+                                                 new ItemStack(Items.leather_helmet, 1, 0),
+                                                 new ItemStack(Items.leather_helmet, 1, 0),
+                                                 new ItemStack(Items.leather_helmet, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0),
-                                                 new ItemStack(Item.helmetIron.itemID, 1, 0) };
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0),
+                                                 new ItemStack(Items.iron_helmet, 1, 0) };
     
     private static final ItemStack[] plates      = { null,
-                                                 new ItemStack(Item.plateChain.itemID, 1, 0),
-                                                 new ItemStack(Item.plateChain.itemID, 1, 0),
-                                                 new ItemStack(Item.plateChain.itemID, 1, 0),
-                                                 new ItemStack(Item.plateChain.itemID, 1, 0),
+                                                 new ItemStack(Items.chainmail_chestplate, 1, 0),
+                                                 new ItemStack(Items.chainmail_chestplate, 1, 0),
+                                                 new ItemStack(Items.chainmail_chestplate, 1, 0),
+                                                 new ItemStack(Items.chainmail_chestplate, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.plateDiamond.itemID, 1, 0),
+                                                 new ItemStack(Items.diamond_chestplate, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.plateGold.itemID, 1, 0),
-                                                 new ItemStack(Item.plateGold.itemID, 1, 0),
-                                                 new ItemStack(Item.plateGold.itemID, 1, 0),
-                                                 new ItemStack(Item.plateGold.itemID, 1, 0),
-                                                 new ItemStack(Item.plateGold.itemID, 1, 0),
+                                                 new ItemStack(Items.golden_chestplate, 1, 0),
+                                                 new ItemStack(Items.golden_chestplate, 1, 0),
+                                                 new ItemStack(Items.golden_chestplate, 1, 0),
+                                                 new ItemStack(Items.golden_chestplate, 1, 0),
+                                                 new ItemStack(Items.golden_chestplate, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                                 new ItemStack(Items.leather_chestplate, 1, 0),
+                                                 new ItemStack(Items.leather_chestplate, 1, 0),
+                                                 new ItemStack(Items.leather_chestplate, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.plateChain.itemID, 1, 0),
-                                                 new ItemStack(Item.plateChain.itemID, 1, 0),
-                                                 new ItemStack(Item.plateChain.itemID, 1, 0),
-                                                 new ItemStack(Item.plateChain.itemID, 1, 0),
-                                                 new ItemStack(Item.plateChain.itemID, 1, 0),
-                                                 new ItemStack(Item.plateChain.itemID, 1, 0),
+                                                 new ItemStack(Items.chainmail_chestplate, 1, 0),
+                                                 new ItemStack(Items.chainmail_chestplate, 1, 0),
+                                                 new ItemStack(Items.chainmail_chestplate, 1, 0),
+                                                 new ItemStack(Items.chainmail_chestplate, 1, 0),
+                                                 new ItemStack(Items.chainmail_chestplate, 1, 0),
+                                                 new ItemStack(Items.chainmail_chestplate, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.plateDiamond.itemID, 1, 0),
+                                                 new ItemStack(Items.diamond_chestplate, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.plateGold.itemID, 1, 0),
-                                                 new ItemStack(Item.plateGold.itemID, 1, 0),
-                                                 new ItemStack(Item.plateGold.itemID, 1, 0),
-                                                 new ItemStack(Item.plateGold.itemID, 1, 0),
-                                                 new ItemStack(Item.plateGold.itemID, 1, 0),
+                                                 new ItemStack(Items.golden_chestplate, 1, 0),
+                                                 new ItemStack(Items.golden_chestplate, 1, 0),
+                                                 new ItemStack(Items.golden_chestplate, 1, 0),
+                                                 new ItemStack(Items.golden_chestplate, 1, 0),
+                                                 new ItemStack(Items.golden_chestplate, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.plateLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.plateLeather.itemID, 1, 0),
+                                                 new ItemStack(Items.leather_chestplate, 1, 0),
+                                                 new ItemStack(Items.leather_chestplate, 1, 0),
+                                                 new ItemStack(Items.leather_chestplate, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0),
-                                                 new ItemStack(Item.plateIron.itemID, 1, 0) };
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0),
+                                                 new ItemStack(Items.iron_chestplate, 1, 0) };
     
     private static final ItemStack[] legs        = { null,
-                                                 new ItemStack(Item.legsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.legsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.legsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.legsChain.itemID, 1, 0),
+                                                 new ItemStack(Items.chainmail_leggings, 1, 0),
+                                                 new ItemStack(Items.chainmail_leggings, 1, 0),
+                                                 new ItemStack(Items.chainmail_leggings, 1, 0),
+                                                 new ItemStack(Items.chainmail_leggings, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.legsDiamond.itemID, 1, 0),
+                                                 new ItemStack(Items.diamond_leggings, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.legsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.legsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.legsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.legsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.legsGold.itemID, 1, 0),
+                                                 new ItemStack(Items.golden_leggings, 1, 0),
+                                                 new ItemStack(Items.golden_leggings, 1, 0),
+                                                 new ItemStack(Items.golden_leggings, 1, 0),
+                                                 new ItemStack(Items.golden_leggings, 1, 0),
+                                                 new ItemStack(Items.golden_leggings, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                                 new ItemStack(Items.leather_leggings, 1, 0),
+                                                 new ItemStack(Items.leather_leggings, 1, 0),
+                                                 new ItemStack(Items.leather_leggings, 1, 0),
+                                                 new ItemStack(Items.leather_leggings, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.legsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.legsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.legsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.legsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.legsChain.itemID, 1, 0),
+                                                 new ItemStack(Items.chainmail_leggings, 1, 0),
+                                                 new ItemStack(Items.chainmail_leggings, 1, 0),
+                                                 new ItemStack(Items.chainmail_leggings, 1, 0),
+                                                 new ItemStack(Items.chainmail_leggings, 1, 0),
+                                                 new ItemStack(Items.chainmail_leggings, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.legsDiamond.itemID, 1, 0),
+                                                 new ItemStack(Items.diamond_leggings, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.legsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.legsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.legsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.legsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.legsGold.itemID, 1, 0),
+                                                 new ItemStack(Items.golden_leggings, 1, 0),
+                                                 new ItemStack(Items.golden_leggings, 1, 0),
+                                                 new ItemStack(Items.golden_leggings, 1, 0),
+                                                 new ItemStack(Items.golden_leggings, 1, 0),
+                                                 new ItemStack(Items.golden_leggings, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.legsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.legsLeather.itemID, 1, 0),
+                                                 new ItemStack(Items.leather_leggings, 1, 0),
+                                                 new ItemStack(Items.leather_leggings, 1, 0),
+                                                 new ItemStack(Items.leather_leggings, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.legsIron.itemID, 1, 0) };
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0),
+                                                 new ItemStack(Items.iron_leggings, 1, 0) };
     
     private static final ItemStack[] boots       = { null,
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.bootsDiamond.itemID, 1, 0),
+                                                 new ItemStack(Items.diamond_boots, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.bootsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                                 new ItemStack(Items.golden_boots, 1, 0),
+                                                 new ItemStack(Items.golden_boots, 1, 0),
+                                                 new ItemStack(Items.golden_boots, 1, 0),
+                                                 new ItemStack(Items.golden_boots, 1, 0),
+                                                 new ItemStack(Items.golden_boots, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                                 new ItemStack(Items.leather_boots, 1, 0),
+                                                 new ItemStack(Items.leather_boots, 1, 0),
+                                                 new ItemStack(Items.leather_boots, 1, 0),
+                                                 new ItemStack(Items.leather_boots, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsChain.itemID, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
+                                                 new ItemStack(Items.chainmail_boots, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.bootsDiamond.itemID, 1, 0),
+                                                 new ItemStack(Items.diamond_boots, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.bootsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsGold.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsGold.itemID, 1, 0),
+                                                 new ItemStack(Items.golden_boots, 1, 0),
+                                                 new ItemStack(Items.golden_boots, 1, 0),
+                                                 new ItemStack(Items.golden_boots, 1, 0),
+                                                 new ItemStack(Items.golden_boots, 1, 0),
+                                                 new ItemStack(Items.golden_boots, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsLeather.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsLeather.itemID, 1, 0),
+                                                 new ItemStack(Items.leather_boots, 1, 0),
+                                                 new ItemStack(Items.leather_boots, 1, 0),
+                                                 new ItemStack(Items.leather_boots, 1, 0),
+                                                 new ItemStack(Items.leather_boots, 1, 0),
                                                  null,
                                                  null,
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bootsIron.itemID, 1, 0) };
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0),
+                                                 new ItemStack(Items.iron_boots, 1, 0) };
     
-    private static final ItemStack[] skel_weap   = { new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.swordDiamond.itemID, 1, 0),
-                                                 new ItemStack(Item.swordDiamond.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.bow.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0) };
+    private static final ItemStack[] skel_weap   = { new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.diamond_sword, 1, 0),
+                                                 new ItemStack(Items.diamond_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.bow, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0) };
     
-    private static final ItemStack[] zombie_weap = { new ItemStack(Item.swordStone.itemID, 1, 0),
-                                                 new ItemStack(Item.swordStone.itemID, 1, 0),
-                                                 new ItemStack(Item.swordStone.itemID, 1, 0),
-                                                 new ItemStack(Item.swordStone.itemID, 1, 0),
-                                                 new ItemStack(Item.swordStone.itemID, 1, 0),
-                                                 new ItemStack(Item.swordStone.itemID, 1, 0),
-                                                 new ItemStack(Item.swordDiamond.itemID, 1, 0),
-                                                 new ItemStack(Item.swordDiamond.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordWood.itemID, 1, 0),
-                                                 new ItemStack(Item.swordWood.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordStone.itemID, 1, 0),
-                                                 new ItemStack(Item.swordStone.itemID, 1, 0),
-                                                 new ItemStack(Item.swordStone.itemID, 1, 0),
-                                                 new ItemStack(Item.swordStone.itemID, 1, 0),
-                                                 new ItemStack(Item.swordDiamond.itemID, 1, 0),
-                                                 new ItemStack(Item.swordDiamond.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordGold.itemID, 1, 0),
-                                                 new ItemStack(Item.swordWood.itemID, 1, 0),
-                                                 new ItemStack(Item.swordWood.itemID, 1, 0),
-                                                 new ItemStack(Item.swordWood.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0),
-                                                 new ItemStack(Item.swordIron.itemID, 1, 0) };
+    private static final ItemStack[] zombie_weap = { new ItemStack(Items.stone_sword, 1, 0),
+                                                 new ItemStack(Items.stone_sword, 1, 0),
+                                                 new ItemStack(Items.stone_sword, 1, 0),
+                                                 new ItemStack(Items.stone_sword, 1, 0),
+                                                 new ItemStack(Items.stone_sword, 1, 0),
+                                                 new ItemStack(Items.stone_sword, 1, 0),
+                                                 new ItemStack(Items.diamond_sword, 1, 0),
+                                                 new ItemStack(Items.diamond_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.wooden_sword, 1, 0),
+                                                 new ItemStack(Items.wooden_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.stone_sword, 1, 0),
+                                                 new ItemStack(Items.stone_sword, 1, 0),
+                                                 new ItemStack(Items.stone_sword, 1, 0),
+                                                 new ItemStack(Items.stone_sword, 1, 0),
+                                                 new ItemStack(Items.diamond_sword, 1, 0),
+                                                 new ItemStack(Items.diamond_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.golden_sword, 1, 0),
+                                                 new ItemStack(Items.wooden_sword, 1, 0),
+                                                 new ItemStack(Items.wooden_sword, 1, 0),
+                                                 new ItemStack(Items.wooden_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0),
+                                                 new ItemStack(Items.iron_sword, 1, 0) };
     
     public WorldGenFloatingIslandRuin(boolean isLavaNearby)
     {
@@ -432,12 +437,12 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     private void setDungeon(World world, Random random, int x, int y, int z)
     {
         BiomeGenBase biomegenbase = world.getWorldChunkManager().getBiomeGenAt(x, z);
-        int dungeonBlock = getDungeonBlock(biomegenbase);
-        if (dungeonBlock == Block.blockSnow.blockID)
+        Block dungeonBlock = getDungeonBlock(biomegenbase);
+        if (dungeonBlock.equals(Blocks.snow))
             setIgloo(world, x, y, z, 5, dungeonBlock);
-        else if (dungeonBlock == Block.sandStone.blockID)
+        else if (dungeonBlock.equals(Blocks.sandstone))
             setPyramid(world, x, y, z, 6, dungeonBlock);
-        else if (dungeonBlock == Block.mushroomCapRed.blockID)
+        else if (dungeonBlock.equals(Blocks.red_mushroom_block))
             CommonUtils.setHugeMushroom(world, random, x, y, z, dungeonBlock);
         else
             setBox(world, random, x, y, z, 4, 4, getDungeonBlock(biomegenbase));
@@ -448,39 +453,39 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     
     private void setChest(World world, Random random, int x, int y, int z)
     {
-        world.setBlock(x, y, z, Block.chest.blockID, 0, BlockNotifyType.ALL);
-        TileEntityChest tileentitychest = (TileEntityChest) world.getBlockTileEntity(x, y, z);
+        WorldHelper.setBlock(world, x, y, z, Blocks.chest, 0, BlockNotifyType.ALL);
+        TileEntityChest tileentitychest = (TileEntityChest) WorldHelper.getBlockTileEntity(world, x, y, z);
         addItems(tileentitychest, random);
         
-        int blockingBlockID = (FloatingRuins.harderDungeons ? Block.bedrock.blockID : Block.obsidian.blockID);
+        Block blockingBlock = (FloatingRuins.harderDungeons ? Blocks.bedrock : Blocks.obsidian);
         
-        world.setBlock(x + 1, y, z, blockingBlockID, 0, BlockNotifyType.ALL);
-        world.setBlock(x - 1, y, z, blockingBlockID, 0, BlockNotifyType.ALL);
-        world.setBlock(x, y, z + 1, blockingBlockID, 0, BlockNotifyType.ALL);
-        world.setBlock(x, y, z - 1, blockingBlockID, 0, BlockNotifyType.ALL);
-        world.setBlock(x, y - 1, z, blockingBlockID, 0, BlockNotifyType.ALL);
+        WorldHelper.setBlock(world, x + 1, y, z, blockingBlock, 0, BlockNotifyType.ALL);
+        WorldHelper.setBlock(world, x - 1, y, z, blockingBlock, 0, BlockNotifyType.ALL);
+        WorldHelper.setBlock(world, x, y, z + 1, blockingBlock, 0, BlockNotifyType.ALL);
+        WorldHelper.setBlock(world, x, y, z - 1, blockingBlock, 0, BlockNotifyType.ALL);
+        WorldHelper.setBlock(world, x, y - 1, z, blockingBlock, 0, BlockNotifyType.ALL);
         
         if (FloatingRuins.harderDungeons)
-            world.setBlock(x, y + 1, z, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
+            WorldHelper.setBlock(world, x, y + 1, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
         else
-            world.setBlock(x, y + 1, z, Block.cobblestone.blockID, 0, BlockNotifyType.ALL);
+            WorldHelper.setBlock(world, x, y + 1, z, Blocks.cobblestone, 0, BlockNotifyType.ALL);
     }
     
     private void setSpawner(World world, BiomeGenBase biomegenbase, int x, int y, int z)
     {
-        world.setBlock(x, y, z, Block.mobSpawner.blockID, 0, BlockNotifyType.ALL);
+        WorldHelper.setBlock(world, x, y, z, Blocks.mob_spawner, 0, BlockNotifyType.ALL);
         
-        world.setBlock(x + 1, y, z, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
-        world.setBlock(x - 1, y, z, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
-        world.setBlock(x, y, z + 1, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
-        world.setBlock(x, y, z - 1, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
+        WorldHelper.setBlock(world, x + 1, y, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
+        WorldHelper.setBlock(world, x - 1, y, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
+        WorldHelper.setBlock(world, x, y, z + 1, Blocks.obsidian, 0, BlockNotifyType.ALL);
+        WorldHelper.setBlock(world, x, y, z - 1, Blocks.obsidian, 0, BlockNotifyType.ALL);
         if (FloatingRuins.harderDungeons)
         {
-            world.setBlock(x, y - 1, z, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
-            world.setBlock(x, y + 1, z, Block.obsidian.blockID, 0, BlockNotifyType.ALL);
+            WorldHelper.setBlock(world, x, y - 1, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
+            WorldHelper.setBlock(world, x, y + 1, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
         }
         
-        TileEntityMobSpawner tileEntityMobSpawner = (TileEntityMobSpawner) world.getBlockTileEntity(x, y, z);
+        TileEntityMobSpawner tileEntityMobSpawner = (TileEntityMobSpawner) WorldHelper.getBlockTileEntity(world, x, y, z);
         if (tileEntityMobSpawner != null)
         {
             String[] mobIDList;
@@ -500,7 +505,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 mobIDList[i] = mobIDList[i].trim();
             
             NBTTagCompound spawnerNBT = new NBTTagCompound();
-            tileEntityMobSpawner.writeToNBT(spawnerNBT);
+            TileEntityHelper.writeToNBT(tileEntityMobSpawner, spawnerNBT);
             
             NBTTagCompound properties;
             NBTTagList spawnPotentials = new NBTTagList();
@@ -520,26 +525,26 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     properties.setTag("Equipment", equipment);
                     
                     properties.setByte("SkeletonType", (byte) 1);
-                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setTag("Properties", properties);
                     potentialSpawn.setString("Type", "Skeleton");
                     spawnerNBT.setString("EntityId", "Skeleton");
-                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                    spawnerNBT.setTag("SpawnData", properties);
                 }
                 else if (mobIDList[i].equals("Wolf"))
                 {
                     properties.setByte("Angry", (byte) 1);
-                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setTag("Properties", properties);
                     potentialSpawn.setString("Type", mobIDList[i]);
                     spawnerNBT.setString("EntityId", mobIDList[i]);
-                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                    spawnerNBT.setTag("SpawnData", properties);
                 }
                 else if (mobIDList[i].equals("ChargedCreeper"))
                 {
                     properties.setByte("powered", (byte) 1);
-                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setTag("Properties", properties);
                     potentialSpawn.setString("Type", "Creeper");
                     spawnerNBT.setString("EntityId", "Creeper");
-                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                    spawnerNBT.setTag("SpawnData", properties);
                 }
                 else if (mobIDList[i].equals("PigZombie"))
                 {
@@ -549,10 +554,10 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     debug += "+E:" + applyEquipment(equipment, zombie_weap, world.rand, true, false);
                     properties.setTag("Equipment", equipment);
                     
-                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setTag("Properties", properties);
                     potentialSpawn.setString("Type", mobIDList[i]);
                     spawnerNBT.setString("EntityId", mobIDList[i]);
-                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                    spawnerNBT.setTag("SpawnData", properties);
                 }
                 else if (mobIDList[i].equals("Zombie"))
                 {
@@ -572,10 +577,10 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         properties.setTag("Equipment", equipment);
                     }
                     
-                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setTag("Properties", properties);
                     potentialSpawn.setString("Type", mobIDList[i]);
                     spawnerNBT.setString("EntityId", mobIDList[i]);
-                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                    spawnerNBT.setTag("SpawnData", properties);
                 }
                 else if (mobIDList[i].equals("Skeleton"))
                 {
@@ -583,16 +588,16 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     debug += "+E:" + applyEquipment(equipment, skel_weap, world.rand, true, world.rand.nextBoolean());
                     properties.setTag("Equipment", equipment);
                     
-                    potentialSpawn.setCompoundTag("Properties", properties);
+                    potentialSpawn.setTag("Properties", properties);
                     potentialSpawn.setString("Type", mobIDList[i]);
                     spawnerNBT.setString("EntityId", mobIDList[i]);
-                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                    spawnerNBT.setTag("SpawnData", properties);
                 }
                 else
                 {
                     potentialSpawn.setString("Type", mobIDList[i]);
                     spawnerNBT.setString("EntityId", mobIDList[i]);
-                    spawnerNBT.setCompoundTag("SpawnData", properties);
+                    spawnerNBT.setTag("SpawnData", properties);
                 }
                 
                 spawnPotentials.appendTag(potentialSpawn);
@@ -610,110 +615,110 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 spawnerNBT.setShort("SpawnRange", (short) 7);
             }
             
-            tileEntityMobSpawner.readFromNBT(spawnerNBT);
+            TileEntityHelper.readFromNBT(tileEntityMobSpawner, spawnerNBT);
         }
     }
     
     private String applyEquipment(NBTTagList equipment, ItemStack[] weaponList, Random random, boolean giveWeapon, boolean giveArmor)
     {
         String debug = "";
-        NBTTagCompound item = new NBTTagCompound();
+        NBTTagCompound Items = new NBTTagCompound();
         
         ItemStack equip = weaponList[random.nextInt(weaponList.length)];
         if (giveWeapon)
         {
             if (equip != null)
             {
-                equip.writeToNBT(item);
+                equip.writeToNBT(Items);
                 debug += equip.getDisplayName() + ";";
             }
         }
         
-        equipment.appendTag(item);
+        equipment.appendTag(Items);
         
         if (giveArmor)
         {
-            item = new NBTTagCompound();
+            Items = new NBTTagCompound();
             equip = boots[random.nextInt(boots.length)];
             if (equip != null)
             {
-                equip.writeToNBT(item);
+                equip.writeToNBT(Items);
                 debug += equip.getDisplayName() + ";";
             }
-            equipment.appendTag(item);
+            equipment.appendTag(Items);
             
-            item = new NBTTagCompound();
+            Items = new NBTTagCompound();
             equip = legs[random.nextInt(legs.length)];
             if (equip != null)
             {
-                equip.writeToNBT(item);
+                equip.writeToNBT(Items);
                 debug += equip.getDisplayName() + ";";
             }
-            equipment.appendTag(item);
+            equipment.appendTag(Items);
             
-            item = new NBTTagCompound();
+            Items = new NBTTagCompound();
             equip = plates[random.nextInt(plates.length)];
             if (equip != null)
             {
-                equip.writeToNBT(item);
+                equip.writeToNBT(Items);
                 debug += equip.getDisplayName() + ";";
             }
-            equipment.appendTag(item);
+            equipment.appendTag(Items);
             
-            item = new NBTTagCompound();
+            Items = new NBTTagCompound();
             equip = helms[random.nextInt(helms.length)];
             if (equip != null)
             {
-                equip.writeToNBT(item);
+                equip.writeToNBT(Items);
                 debug += equip.getDisplayName() + ";";
             }
-            equipment.appendTag(item);
+            equipment.appendTag(Items);
         }
         else
         {
             for (int j = 0; j < 4; j++)
             {
-                item = new NBTTagCompound();
-                equipment.appendTag(item);
+                Items = new NBTTagCompound();
+                equipment.appendTag(Items);
             }
         }
         
         return debug;
     }
     
-    private int getDungeonBlock(BiomeGenBase biomegenbase)
+    private Block getDungeonBlock(BiomeGenBase biomegenbase)
     {
         if (biomegenbase.equals(BiomeGenBase.desert) || biomegenbase.equals(BiomeGenBase.desertHills))
-            return Block.sandStone.blockID;
+            return Blocks.sandstone;
         
         if (biomegenbase.equals(BiomeGenBase.taiga) || biomegenbase.equals(BiomeGenBase.taigaHills) || isIceBiome(biomegenbase))
-            return Block.blockSnow.blockID;
+            return Blocks.snow;
         
         if (biomegenbase.equals(BiomeGenBase.forest) || biomegenbase.equals(BiomeGenBase.forestHills))
-            return Block.cobblestone.blockID;
+            return Blocks.cobblestone;
         
         if (biomegenbase.equals(BiomeGenBase.extremeHills) || biomegenbase.equals(BiomeGenBase.extremeHillsEdge))
-            return Block.stone.blockID;
+            return Blocks.stone;
         
         if (biomegenbase.equals(BiomeGenBase.plains))
-            return Block.planks.blockID;
+            return Blocks.planks;
         
         if (biomegenbase.equals(BiomeGenBase.swampland))
-            return Block.cobblestoneMossy.blockID;
+            return Blocks.mossy_cobblestone;
         
         if (biomegenbase.equals(BiomeGenBase.ocean))
-            return Block.stoneBrick.blockID;
+            return Blocks.stonebrick;
         
         if (biomegenbase.equals(BiomeGenBase.river))
-            return Block.planks.blockID;
+            return Blocks.planks;
         
         if (biomegenbase.equals(BiomeGenBase.jungle) || biomegenbase.equals(BiomeGenBase.jungleHills))
-            return Block.cobblestoneMossy.blockID;
+            return Blocks.mossy_cobblestone;
         
         if (isMushroomBiome(biomegenbase))
-            return Block.mushroomCapRed.blockID;
+            return Blocks.red_mushroom_block;
         else
-            return Block.brick.blockID;
+            return Blocks.brick_block;
     }
     
     private boolean isIceBiome(BiomeGenBase biomegenbase)
@@ -728,22 +733,23 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     
     private void addItems(TileEntityChest tileentitychest, Random random)
     {
+        int limit = random.nextInt(4) + numberOfItems;
         int i = 0;
         do
         {
             tileentitychest.setInventorySlotContents(random.nextInt(tileentitychest.getSizeInventory()), getItems(random));
         }
-        while (++i <= numberOfItems);
+        while (++i <= limit);
     }
     
     private ItemStack getItems(Random random)
     {
         String itemStack[] = stringOfIds.split(";")[random.nextInt(stringOfIds.split(";").length)].split(",");
-        int id = 344;
+        String id = ItemHelper.getUniqueID(Items.egg);
         int size = 1;
         int meta = 0;
         if (itemStack.length > 0)
-            id = CommonUtils.parseInt(itemStack[0].trim());
+            id = itemStack[0].trim();
         
         if (itemStack.length > 1)
             size = CommonUtils.parseInt(itemStack[1].trim());
@@ -751,13 +757,15 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (itemStack.length > 2)
             meta = CommonUtils.parseInt(itemStack[2].trim());
         
-        if (Item.itemsList[id] == null)
-            id = 344;
+        Item item = ItemHelper.getItem(id);
         
-        if (!Item.itemsList[id].getHasSubtypes() && meta != 0)
+        if (item == null)
+            item = ItemHelper.getItem(ItemHelper.getUniqueID(Items.egg));
+        
+        if (!item.getHasSubtypes() && meta != 0)
             meta = 0;
         
-        return new ItemStack(id, size, meta);
+        return new ItemStack(item, size, meta);
     }
     
     public String getSpawnerType(World world, BiomeGenBase biomegenbase, int x, int z)
@@ -857,7 +865,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         }
     }
     
-    public void setBox(World world, Random random, int xIn, int yIn, int zIn, int width, int height, int blockID)
+    public void setBox(World world, Random random, int xIn, int yIn, int zIn, int width, int height, Block block)
     {
         for (int x = -width; x <= width; x++)
             for (int y = height; y >= -height; y--)
@@ -865,29 +873,29 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 {
                     if (y == height || (Math.abs(x) == width && Math.abs(z) == width && y >= 0))
                     {
-                        world.setBlock(x + xIn, y + yIn, z + zIn, Block.stoneBrick.blockID, 0, BlockNotifyType.ALL);
-                        world.setBlock(x + xIn, y + yIn + 1, z + zIn, (FloatingRuins.harderDungeons ? Block.bedrock.blockID : Block.stoneBrick.blockID), 0, BlockNotifyType.ALL);
+                        WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.stonebrick, 0, BlockNotifyType.ALL);
+                        WorldHelper.setBlock(world, x + xIn, y + yIn + 1, z + zIn, (FloatingRuins.harderDungeons ? Blocks.bedrock : Blocks.stonebrick), 0, BlockNotifyType.ALL);
                     }
                     
                     if (y >= 1 && ((Math.abs(x) == width) ^ (Math.abs(z) == width)))
-                        world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, BlockNotifyType.ALL);
+                        WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
                     
                     if (y > 0 && y < height && Math.abs(z) < width && Math.abs(x) < width)
-                        world.setBlockToAir(x + xIn, y + yIn, z + zIn);
+                        WorldHelper.setBlockToAir(world, x + xIn, y + yIn, z + zIn);
                     
                     if (y == -1 || y == 0)
-                        world.setBlock(x + xIn, y + yIn, z + zIn, Block.stoneBrick.blockID, 0, BlockNotifyType.ALL);
+                        WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.stonebrick, 0, BlockNotifyType.ALL);
                     
                     if (y < -1)
                     {
                         int yg = CommonUtils.getHighestGroundBlock(world, x + xIn, y + yIn, z + zIn);
-                        if ((Math.abs(x) == width || Math.abs(z) == width) && !world.isBlockNormalCube(x + xIn, y + yIn, z + zIn) && yg < y + yIn && yg >= yIn - height)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, Block.stoneBrick.blockID, 0, BlockNotifyType.ALL);
+                        if ((Math.abs(x) == width || Math.abs(z) == width) && !WorldHelper.isBlockNormalCube(world, x + xIn, y + yIn, z + zIn, false) && yg < y + yIn && yg >= yIn - height)
+                            WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.stonebrick, 0, BlockNotifyType.ALL);
                     }
                 }
     }
     
-    private void setIgloo(World world, int xIn, int yIn, int zIn, int range, int blockID)
+    private void setIgloo(World world, int xIn, int yIn, int zIn, int range, Block blockID)
     {
         for (int x = -range; x <= range; x++)
             for (int y = -range; y <= range; y++)
@@ -899,33 +907,33 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (y >= 0)
                         {
                             if (dist == range)
-                                world.setBlock(x + xIn, y + yIn, z + zIn, (FloatingRuins.harderDungeons && y > 2 ? Block.bedrock.blockID : blockID), 0, BlockNotifyType.ALL);
+                                WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, (FloatingRuins.harderDungeons && y > 2 ? Blocks.bedrock : blockID), 0, BlockNotifyType.ALL);
                             
                             // For wolves
                             if (y == 0 && dist < range)
-                                world.setBlock(x + xIn, y + yIn, z + zIn, Block.grass.blockID, 0, BlockNotifyType.ALL);
+                                WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.grass, 0, BlockNotifyType.ALL);
                             
                             if (y > 0 && dist < range)
                             {
-                                world.setBlockToAir(x + xIn, y + yIn, z + zIn);
+                                WorldHelper.setBlockToAir(world, x + xIn, y + yIn, z + zIn);
                                 if (y == 1)
-                                    world.setBlock(x + xIn, y + yIn, z + zIn, Block.snow.blockID, 0, BlockNotifyType.ALL);
+                                    WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.snow, 0, BlockNotifyType.ALL);
                             }
                         }
                         else
                         {
                             if (y == -1)
-                                world.setBlock(x + xIn, yIn - 1, z + zIn, blockID, 0, BlockNotifyType.ALL);
+                                WorldHelper.setBlock(world, x + xIn, yIn - 1, z + zIn, blockID, 0, BlockNotifyType.ALL);
                             
                             int yg = CommonUtils.getHighestGroundBlock(world, x + xIn, y + yIn, z + zIn);
-                            if (dist == range && !world.isBlockNormalCube(x + xIn, y + yIn, z + zIn) && yg < y + yIn && yg >= yIn - range)
-                                world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, BlockNotifyType.ALL);
+                            if (dist == range && !WorldHelper.isBlockNormalCube(world, x + xIn, y + yIn, z + zIn, false) && yg < y + yIn && yg >= yIn - range)
+                                WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, blockID, 0, BlockNotifyType.ALL);
                         }
                     }
                 }
     }
     
-    private void setPyramid(World world, int xIn, int yIn, int zIn, int range, int blockID)
+    private void setPyramid(World world, int xIn, int yIn, int zIn, int range, Block block)
     {
         for (int x = -range; x <= range; x++)
             for (int y = -range; y <= range; y++)
@@ -934,18 +942,18 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     if (y >= 0)
                     {
                         if ((Math.abs(x) == range - y && Math.abs(x) >= Math.abs(z)) || (Math.abs(z) == range - y && Math.abs(z) >= Math.abs(x)) || y == 0)
-                            world.setBlock(xIn + x, y + yIn, zIn + z, (FloatingRuins.harderDungeons && y > 2 ? Block.bedrock.blockID : blockID), 0, BlockNotifyType.ALL);
+                            WorldHelper.setBlock(world, xIn + x, y + yIn, zIn + z, (FloatingRuins.harderDungeons && y > 2 ? Blocks.bedrock : block), 0, BlockNotifyType.ALL);
                         else if ((Math.abs(x) < range - y && Math.abs(x) >= Math.abs(z)) || (Math.abs(z) < range - y && Math.abs(z) >= Math.abs(x)))
-                            world.setBlockToAir(xIn + x, y + yIn, zIn + z);
+                            WorldHelper.setBlockToAir(world, xIn + x, y + yIn, zIn + z);
                     }
                     else
                     {
                         if (y == -1)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, BlockNotifyType.ALL);
+                            WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
                         
                         int yg = CommonUtils.getHighestGroundBlock(world, x + xIn, y + yIn, z + zIn);
-                        if ((Math.abs(x) == range || Math.abs(z) == range) && !world.isBlockNormalCube(x + xIn, y + yIn, z + zIn) && yg < y + yIn && yg >= yIn - range)
-                            world.setBlock(x + xIn, y + yIn, z + zIn, blockID, 0, BlockNotifyType.ALL);
+                        if ((Math.abs(x) == range || Math.abs(z) == range) && !WorldHelper.isBlockNormalCube(world, x + xIn, y + yIn, z + zIn, false) && yg < y + yIn && yg >= yIn - range)
+                            WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
                     }
                 }
     }
