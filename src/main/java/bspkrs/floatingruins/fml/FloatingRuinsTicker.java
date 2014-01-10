@@ -1,50 +1,56 @@
 package bspkrs.floatingruins.fml;
 
-import java.util.EnumSet;
-
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ChatComponentText;
 import bspkrs.bspkrscore.fml.bspkrsCoreMod;
-import bspkrs.fml.util.TickerBase;
+import bspkrs.helpers.entity.player.EntityPlayerHelper;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class FloatingRuinsTicker extends TickerBase
+public class FloatingRuinsTicker
 {
-    private Minecraft mcClient;
+    private static boolean isRegistered = false;
+    private Minecraft      mcClient;
     
-    public FloatingRuinsTicker(EnumSet<TickType> tickTypes)
+    public FloatingRuinsTicker()
     {
-        super(tickTypes);
-        this.mcClient = FMLClientHandler.instance().getClient();
+        mcClient = FMLClientHandler.instance().getClient();
+        isRegistered = true;
+        FMLCommonHandler.instance().bus().register(this);
     }
     
-    @Override
-    public boolean onTick(TickType tick, boolean isStart)
+    @SubscribeEvent
+    public void onTick(ClientTickEvent event)
     {
-        if (isStart)
+        if (event.phase.equals(Phase.START))
+            return;
+        
+        boolean keepTicking = !(mcClient != null && mcClient.thePlayer != null && mcClient.theWorld != null);
+        
+        if (bspkrsCoreMod.instance.allowUpdateCheck && !keepTicking)
         {
-            return true;
+            if (bspkrsCoreMod.instance.allowUpdateCheck && FloatingRuinsMod.instance.versionChecker != null)
+                if (!FloatingRuinsMod.instance.versionChecker.isCurrentVersion())
+                    for (String msg : FloatingRuinsMod.instance.versionChecker.getInGameMessage())
+                        EntityPlayerHelper.addChatMessage(mcClient.thePlayer, new ChatComponentText(msg));
+            
         }
         
-        if (mcClient != null && mcClient.thePlayer != null)
+        if (!keepTicking)
         {
-            if (bspkrsCoreMod.instance.allowUpdateCheck && FloatingRuinsMod.versionChecker != null)
-                if (!FloatingRuinsMod.versionChecker.isCurrentVersion())
-                    for (String msg : FloatingRuinsMod.versionChecker.getInGameMessage())
-                        mcClient.thePlayer.addChatMessage(msg);
-            return false;
+            FMLCommonHandler.instance().bus().unregister(this);
+            isRegistered = false;
         }
-        
-        return true;
     }
     
-    @Override
-    public String getLabel()
+    public static boolean isRegistered()
     {
-        return "FloatingRuinsTicker";
+        return isRegistered;
     }
-    
 }

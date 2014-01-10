@@ -1,39 +1,42 @@
 package bspkrs.floatingruins.fml;
 
-import java.util.EnumSet;
 import java.util.Random;
 
 import net.minecraft.world.World;
 import bspkrs.floatingruins.FloatingRuins;
-import bspkrs.fml.util.DelayedActionTicker;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-public class DelayedWorldGenTicker extends DelayedActionTicker
+public class DelayedWorldGenTicker
 {
     private World  world;
     private Random random;
     private int    x;
     private int    z;
+    private int    delayTicks;
     
-    public DelayedWorldGenTicker(EnumSet<TickType> tickTypes, int delayTicks, World world, Random random, int x, int z)
+    public DelayedWorldGenTicker(int delayTicks, World world, Random random, int x, int z)
     {
-        super(tickTypes, delayTicks);
+        this.delayTicks = delayTicks;
         this.world = world;
         this.random = random;
         this.x = x;
         this.z = z;
+        FMLCommonHandler.instance().bus().register(this);
     }
     
-    @Override
-    public String getLabel()
+    @SubscribeEvent
+    public void onTick(ServerTickEvent event)
     {
-        return "DelayedWorldGenTicker";
+        if (event.phase.equals(Phase.START))
+            return;
+        
+        if (--delayTicks <= 0)
+        {
+            FloatingRuins.generateSurface(world, random, x, z, true);
+            FMLCommonHandler.instance().bus().unregister(this);
+        }
     }
-    
-    @Override
-    protected void onDelayCompletion()
-    {
-        FloatingRuins.generateSurface(world, random, x, z, true);
-    }
-    
 }

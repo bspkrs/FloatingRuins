@@ -1,34 +1,36 @@
 package bspkrs.floatingruins.fml;
 
-import java.util.EnumSet;
-
 import bspkrs.floatingruins.IslandGenOptions;
 import bspkrs.floatingruins.WorldGenFloatingIsland;
-import bspkrs.fml.util.DelayedActionTicker;
 import bspkrs.util.CommonUtils;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 
-public class DelayedIslandGenTicker extends DelayedActionTicker
+public class DelayedIslandGenTicker
 {
     private IslandGenOptions opt;
+    private int              delayTicks;
     
-    public DelayedIslandGenTicker(EnumSet<TickType> tickTypes, int delayTicks, IslandGenOptions opt, boolean isWorldGen)
+    public DelayedIslandGenTicker(int delayTicks, IslandGenOptions opt)
     {
-        super(tickTypes, delayTicks);
+        this.delayTicks = delayTicks;
         this.opt = opt;
+        FMLCommonHandler.instance().bus().register(this);
     }
     
-    @Override
-    public String getLabel()
+    @SubscribeEvent
+    public void onTick(ServerTickEvent event)
     {
-        return "DelayedIslandGenTicker";
+        if (event.phase.equals(Phase.START))
+            return;
+        
+        if (--delayTicks <= 0)
+        {
+            new WorldGenFloatingIsland(opt.radius, opt.depthRatio, CommonUtils.getHighestGroundBlock(opt.world, opt.x, opt.y, opt.z), opt.islandType)
+                    .generate(opt.world, opt.random, opt.x, opt.y, opt.z);
+            FMLCommonHandler.instance().bus().unregister(this);
+        }
     }
-    
-    @Override
-    protected void onDelayCompletion()
-    {
-        new WorldGenFloatingIsland(opt.radius, opt.depthRatio, CommonUtils.getHighestGroundBlock(opt.world, opt.x, opt.y, opt.z), opt.islandType)
-                .generate(opt.world, opt.random, opt.x, opt.y, opt.z);
-    }
-    
 }

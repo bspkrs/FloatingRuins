@@ -21,18 +21,18 @@ import cpw.mods.fml.common.registry.GameRegistry;
 @Mod(name = "FloatingRuins", modid = "FloatingRuins", version = "Forge " + FloatingRuins.VERSION_NUMBER, dependencies = "required-after:bspkrsCore", useMetadata = true)
 public class FloatingRuinsMod
 {
-    public static ModVersionChecker versionChecker;
-    private final String            versionURL = Const.VERSION_URL + "/Minecraft/" + Const.MCVERSION + "/floatingRuinsForge.version";
-    private final String            mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
+    public ModVersionChecker       versionChecker;
+    private final String           versionURL = Const.VERSION_URL + "/Minecraft/" + Const.MCVERSION + "/floatingRuinsForge.version";
+    private final String           mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
     
     @Metadata(value = "FloatingRuins")
-    public static ModMetadata       metadata;
+    public static ModMetadata      metadata;
     
     @Instance(value = "FloatingRuins")
-    public static FloatingRuinsMod  instance;
+    public static FloatingRuinsMod instance;
     
     @SidedProxy(clientSide = "bspkrs.floatingruins.fml.ClientProxy", serverSide = "bspkrs.floatingruins.fml.CommonProxy")
-    public static CommonProxy       proxy;
+    public static CommonProxy      proxy;
     
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
