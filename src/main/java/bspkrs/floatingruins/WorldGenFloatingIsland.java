@@ -28,18 +28,16 @@ public class WorldGenFloatingIsland extends WorldGenerator
     private Coord             tgtOrigin;
     private final int         depth;
     public final int          radius;
-    private final float       depthRatio;
     public final int          yGround;
     private final int         islandType;
     private Random            random;
     
-    public WorldGenFloatingIsland(int radius, float depthRatio, int yGround, int islandType)
+    public WorldGenFloatingIsland(int radius, int depth, int yGround, int islandType)
     {
         this.radius = radius;
-        this.depthRatio = depthRatio;
+        this.depth = depth;
         this.yGround = yGround;
         this.islandType = islandType;
-        this.depth = (int) Math.ceil(radius * depthRatio);
     }
     
     @Override
@@ -56,7 +54,9 @@ public class WorldGenFloatingIsland extends WorldGenerator
         tgtOrigin = new Coord(x, y, z);
         
         isLavaNearby = false;
-        if (isTgtSuitableForGeneration(world, tgtOrigin) && genIsland(world, radius, x, y, z))
+        
+        //Added a check for dungeon rarity config
+        if (isTgtSuitableForGeneration(world, tgtOrigin) && genIsland(world, radius, x, y, z) && random.nextInt(FloatingRuins.rarityDungeon) == 0)
             ran = (new WorldGenFloatingIslandRuin(isLavaNearby)).generate(world, random, x, y, z);
         
         return ran;
@@ -170,7 +170,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                     Coord delta = new Coord(x, y, z);
                     Coord src = srcOrigin.add(delta);
                     Block block = src.getBlock(world);
-                    if (!src.isAirBlock(world) && isBlockInRange(islandType, world, x, y, z, depthRatio, depth, radius))
+                    if (!src.isAirBlock(world) && isBlockInRange(islandType, world, x, y, z, depth, radius))
                     {
                         int metadata = src.getBlockMetadata(world);
                         if ((y <= 0) || (!block.equals(Blocks.water) && !block.equals(Blocks.flowing_water))
@@ -220,8 +220,9 @@ public class WorldGenFloatingIsland extends WorldGenerator
         return true;
     }
     
-    private boolean isBlockInRange(int islandType, World world, int x, int y, int z, float depthRatio, int depth, int radius)
+    private boolean isBlockInRange(int islandType, World world, int x, int y, int z, int depth, int radius)
     {
+    	float depthRatio = (float)depth/(float)radius;
         float distToCenterColumn = Math.round(Math.sqrt(CommonUtils.sqr(x) + CommonUtils.sqr(z)));
         float distToOrigin = Math.round(Math.sqrt(CommonUtils.sqr(x) + CommonUtils.sqr(z) + (y > 10 ? -2.0D : y > 5 ? -1.0D : y > 0 ? 0.0D : CommonUtils.sqr(y / depthRatio))));
         
