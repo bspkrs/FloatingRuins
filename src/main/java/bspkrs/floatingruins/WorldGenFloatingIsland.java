@@ -245,7 +245,10 @@ public class WorldGenFloatingIsland extends WorldGenerator
                         if (block.equals(Blocks.gravel))
                             WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.stone, 0, BlockNotifyType.ALL);
                         else if (block.equals(Blocks.sand))
-                            WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.sandstone, 0, BlockNotifyType.ALL);
+                        	if (tgt.getBlockMetadata(world) == 1)
+                        		WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.hardened_clay, 0, BlockNotifyType.ALL);
+                        	else
+                        		WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.sandstone, 0, BlockNotifyType.ALL);
                 }
         
         debug += "Blocks Moved: " + blocksMoved + " (" + groundBlocksMoved + " at or below origin)";
