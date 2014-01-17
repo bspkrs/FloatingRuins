@@ -18,11 +18,10 @@ import bspkrs.util.Coord;
 public class WorldGenFloatingIsland extends WorldGenerator
 {
     private boolean           isLavaNearby;
-    private static final int  SPHEROID    = 0;
-    private static final int  CONE        = 1;
-    private static final int  JETSONS     = 2;
-    private static final int  STALACTITE  = 3;
-    public static final int[] islandTypes = { SPHEROID, CONE, SPHEROID, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, JETSONS, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, SPHEROID, CONE, SPHEROID, CONE, SPHEROID, SPHEROID, CONE };
+    public static final int   SPHEROID    = 0;
+    public static final int   CONE        = 1;
+    public static final int   JETSONS     = 2;
+    public static final int   STALACTITE  = 3;
     
     private Coord             srcOrigin;
     private Coord             tgtOrigin;
@@ -151,6 +150,8 @@ public class WorldGenFloatingIsland extends WorldGenerator
     {
         int blocksMoved = 0;
         int groundBlocksMoved = 0;
+        int range;
+        int sqrRange;
         String debug = "Floating Island: ";
         if (islandType == CONE)
             debug += "Cone ";
@@ -162,15 +163,47 @@ public class WorldGenFloatingIsland extends WorldGenerator
         debug += String.format("r(%d) d(%d) @%d,%d,%d ", radius, depth, xIn, yIn, zIn);
         
         Block specialOre = getSpecialOre();
-        
-        for (int x = -radius - 4; x <= radius + 4; x++)
-            for (int y = 40; y >= -depth; y--)
-                for (int z = -radius - 4; z <= radius + 4; z++)
+
+        for (int y = 40; y >= -depth; y--)
+        {
+        	if (y >= 0)
+        		range = radius;
+        	else
+        	{
+        		switch (islandType)
+	            {
+	                case CONE: 
+	                	range = (depth + y) * radius / depth; //Simple slope equation
+	                	break;
+	                case JETSONS:
+	                    float jetDist = (((float) depth / Math.abs(y)) - 1.0F);
+	                    if (y >= -1)
+	                    	range = radius;
+	                    else if (y == -2)
+	                    	range = (int) Math.round(Math.min(Math.ceil(radius * 0.9F), jetDist));
+	                    else if (y == -3)
+	                    	range = (int) Math.round(Math.min(Math.ceil(radius * 0.8F), jetDist));
+                    	else
+                    		range = Math.round(jetDist);	                	
+	                	break;
+	                case STALACTITE: //Currently unused
+	                default: //Ellipsoid
+                		range = (int) Math.round(Math.sqrt(CommonUtils.sqr(radius)*(1.0 - (float) CommonUtils.sqr(y)/CommonUtils.sqr(depth)))); //Derived from ellipse equation
+	                	break;
+	                
+	            }
+        	}
+        	if (range < 0)
+        		range = 0;
+        	sqrRange = CommonUtils.sqr(range);
+        	
+        	for (int x = -range - 4; x <= range + 4; x++)
+                for (int z = -range - 4; z <= range + 4; z++)
                 {
                     Coord delta = new Coord(x, y, z);
                     Coord src = srcOrigin.add(delta);
                     Block block = src.getBlock(world);
-                    if (!src.isAirBlock(world) && isBlockInRange(islandType, world, x, y, z, depth, radius))
+                    if (!src.isAirBlock(world) && ((CommonUtils.sqr(x) + CommonUtils.sqr(z)) <= sqrRange))
                     {
                         int metadata = src.getBlockMetadata(world);
                         if ((y <= 0) || (!block.equals(Blocks.water) && !block.equals(Blocks.flowing_water))
@@ -199,6 +232,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                             WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, specialOre, 0, BlockNotifyType.NONE);
                     }
                 }
+        }
         
         for (int x = -radius; x <= radius; x++)
             for (int y = 5; y >= -depth; y--)

@@ -7,7 +7,7 @@ import net.minecraft.world.World;
 public final class IslandGenOptions
 {
     public final int    radius;
-    public final float  depthRatio;
+    public final int    depth;
     public final int    islandType;
     public final World  world;
     public final Random random;
@@ -15,7 +15,7 @@ public final class IslandGenOptions
     public final int    y;
     public final int    z;
     
-    public IslandGenOptions(World world, Random random, int x, int y, int z, int radius, float depthRatio, int islandType)
+    public IslandGenOptions(World world, Random random, int x, int y, int z, int radius, int depth, int islandType)
     {
         this.world = world;
         this.random = random;
@@ -23,7 +23,7 @@ public final class IslandGenOptions
         this.y = y;
         this.z = z;
         this.radius = radius;
-        this.depthRatio = depthRatio;
+        this.depth = depth;
         this.islandType = islandType;
     }
 }

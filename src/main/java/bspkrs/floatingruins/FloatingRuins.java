@@ -59,7 +59,15 @@ public final class FloatingRuins
     public final static String    depthMinDesc              = "The minimum depth/thickness of islands (Min=2, Max=depthMean).";
     public static int             depthMin                  = 5;
     public final static String    depthNormDesc      	  	= "How strongly island depth should tend to lie around depthMean. (Min=1, Max=10).";
-    public static int             depthNorm          	    = 3;    
+    public static int             depthNorm          	    = 3;  
+    public final static String    shapeSpheroidWeightDesc	= "The relative chance of an island having the spheroid shape.";
+    public static int             shapeSpheroidWeight  	    = 21;      
+    public final static String    shapeConeWeightDesc		= "The relative chance of an island having the cone shape.";
+    public static int             shapeConeWeight  	    	= 14;        
+    public final static String    shapeJetsonsWeightDesc	= "The relative chance of an island having the jetsons shape.";
+    public static int             shapeJetsonsWeight  	    = 1;         
+    public final static String    shapeStalactiteWeightDesc	= "UNIMPLEMENTED and IGNORED: The relative chance of an island having the stalactite shape.";
+    public static int             shapeStalactiteWeight  	= 0;   
     public final static String    numberOfItemsDesc         = "The number of items in a ruin's chest.";
     public static int             numberOfItems             = 4;
     public final static String    blockIDBlacklistDesc      = "Add block IDs to this list if you don't want them to be moved when a floating island is generated.  Format used: \",\" separates between id and metadata and \";\" separates between each block.";
@@ -167,8 +175,12 @@ public final class FloatingRuins
         radiusNorm = config.getInt("radiusNorm", ctgyGen, radiusNorm, 1, 10, radiusNormDesc);
         depthMax = config.getInt("depthMax", ctgyGen, depthMax, depthMean, 45, depthMaxDesc);
         depthMean = config.getInt("depthMean", ctgyGen, depthMean, depthMin, depthMax, depthMeanDesc);
-        depthMin = config.getInt("depthMin", ctgyGen, depthMin, 5, depthMean, depthMinDesc);
-        depthNorm = config.getInt("depthNorm", ctgyGen, depthNorm, 1, 10, depthNormDesc);        
+        depthMin = config.getInt("depthMin", ctgyGen, depthMin, 5, depthMean, depthMinDesc); 
+        depthNorm = config.getInt("depthNorm", ctgyGen, depthNorm, 1, 10, depthNormDesc);   
+        shapeSpheroidWeight = config.getInt("shapeSpheroidWeight", ctgyGen, shapeSpheroidWeight, 0, Integer.MAX_VALUE, shapeSpheroidWeightDesc);   
+        shapeConeWeight = config.getInt("shapeConeWeight", ctgyGen, shapeConeWeight, 0, Integer.MAX_VALUE, shapeConeWeightDesc);   
+        shapeJetsonsWeight = config.getInt("shapeJetsonsWeight", ctgyGen, shapeJetsonsWeight, 0, Integer.MAX_VALUE, shapeJetsonsWeightDesc);   
+        shapeStalactiteWeight = config.getInt("shapeStalactiteWeight", ctgyGen, shapeStalactiteWeight, 0, 0, shapeStalactiteWeightDesc);
         numberOfItems = config.getInt("numberOfItems", ctgyGen, numberOfItems, 1, 27, numberOfItemsDesc);
         stringOfIds = config.getString("stringOfIds", ctgyGen, stringOfIds, stringOfIdsDesc);
         blockIDBlacklist = config.getString("blockIDBlacklist", ctgyGen, blockIDBlacklist, blockIDBlacklistDesc);
@@ -187,7 +199,6 @@ public final class FloatingRuins
         spawnerSwampland = config.getString("spawnerSwampland", ctgyGen, spawnerSwampland, spawnerSwamplandDesc);
         spawnerTaiga = config.getString("spawnerTaiga", ctgyGen, spawnerTaiga, spawnerTaigaDesc);
         spawnerNearLava = config.getString("spawnerNearLava", ctgyGen, spawnerNearLava, spawnerNearLavaDesc);
-        
         config.save();
     }
     
@@ -202,7 +213,7 @@ public final class FloatingRuins
             if (!CommonUtils.isIDInList(world.provider.dimensionId, dimensionIDBlacklist))
             {
                 random = getRandom(world, x, z);
-                int tgtY = getWeightedInt(heightMin, heightMean, heightMax, heightNorm, random);
+                int tgtY = GetWeightedInt(heightMin, heightMean, heightMax, heightNorm, random);
                 
                 if (isWorldGen)
                 {
@@ -279,13 +290,11 @@ public final class FloatingRuins
      */
     public static WorldGenFloatingIsland getFloatingIslandGenerator(World world, Random random, int x, int tgtY, int z)
     {
-    	int radius = getWeightedInt(radiusMin, radiusMean, radiusMax, radiusNorm, random);
+    	int radius = GetWeightedInt(radiusMin, radiusMean, radiusMax, radiusNorm, random);
         int yGround = CommonUtils.getHighestGroundBlock(world, x, tgtY, z);
         
-        Random random2 = getRandom(world, x, z);
-        
-        int depth = getWeightedInt(depthMin, depthMean, depthMax, depthNorm, random);
-        int islandType = WorldGenFloatingIsland.islandTypes[random.nextInt(WorldGenFloatingIsland.islandTypes.length)];
+        int depth = GetWeightedInt(depthMin, depthMean, depthMax, depthNorm, random);
+        int islandType = GetWeightedIslandType(random);
         
         return new WorldGenFloatingIsland(radius, depth, yGround, islandType);
     }
@@ -358,9 +367,9 @@ public final class FloatingRuins
 	* 50% of ints will be greater than the input mean, 50% of ints will be less than mean
 	* the higher the norm var is, the more likely output ints will be close to mean
 	*/
-    public static int getWeightedInt(int min, int mean, int max, int norm, Random random)
+    public static int GetWeightedInt(int min, int mean, int max, int norm, Random random)
     {    	
-    	float deviation;
+    	float deviation = 0.0f;
     	float step;
     	int weightedInt;
     	
@@ -390,8 +399,18 @@ public final class FloatingRuins
     	return weightedInt;   
     }
     
-    public static int GetWeightedIslandType()
+    public static int GetWeightedIslandType(Random random)
     {
+    	int totalWeight = shapeSpheroidWeight + shapeConeWeight + shapeJetsonsWeight + shapeStalactiteWeight;
+    	int choice = random.nextInt(totalWeight);
     	
+    	if(choice >= totalWeight - shapeStalactiteWeight)
+    		return WorldGenFloatingIsland.STALACTITE;
+    	else if(choice >= totalWeight - shapeStalactiteWeight - shapeJetsonsWeight)
+    		return WorldGenFloatingIsland.JETSONS;
+    	else if(choice >= totalWeight - shapeStalactiteWeight - shapeJetsonsWeight - shapeConeWeight)
+    		return WorldGenFloatingIsland.CONE;
+    	else
+    		return WorldGenFloatingIsland.SPHEROID;
     }
 }
