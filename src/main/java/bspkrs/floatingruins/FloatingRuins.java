@@ -34,18 +34,40 @@ public final class FloatingRuins
     public static boolean         harderDungeons            = false;
     public final static String    rarityDesc                = "The probability of a floating island generating is 1 in each 'rarity' number of chunks.";
     public static int             rarity                    = 800;
-    public final static String    baseHeightDesc            = "The base world height for floating ruins (Min=80, Max=225).";
-    public static int             baseHeight                = 100;
-    public final static String    heightVariationDesc       = "The amount of height variation allowed above baseHeight (Min=0, Max=240-baseHeight).";
-    public static int             heightVariation           = 20;
-    public final static String    baseRadiusDesc            = "The minimum radius of each island.  I recommend keeping this at 7 or more (Min=5, Max=50).";
-    public static int             baseRadius                = 9;
-    public final static String    radiusVariationDesc       = "The amount of floating island radius variation.  Making this value too large will result in very large chunks of your world turning into floating islands (Min=0, Max=50).";
-    public static int             radiusVariation           = 6;
-    public final static String    baseDepthDesc             = "The minimum depth/thickness of islands (Min=2, Max=50).";
-    public static int             baseDepth                 = 5;
-    public final static String    depthVariationDesc        = "The amount of variation allowed for the depth/thickness of islands (Min=0, Max=50).";
-    public static int             depthVariation            = 45;
+    public final static String    rarityDungeonDesc         = "The probability of a floating island having a dungeon on it is 1 in each 'dungeonRarity' number of islands.";
+    public static int             rarityDungeon             = 1;
+    public final static String    heightMaxDesc      		= "The maximum world height for floating ruins (Min=heightMean, Max=240).";
+    public static int             heightMax                 = 240;
+    public final static String    heightMeanDesc        	= "The average island height. Half of the islands will be below heightMean, half of the islands will be above heightMean. (Min=heightMin, Max=heightMax).";
+    public static int             heightMean            	= 100;
+    public final static String    heightMinDesc             = "The minimum world height for floating ruins (Min=80, Max=heightMax).";
+    public static int             heightMin                 = 80;
+    public final static String    heightNormDesc        	= "How strongly island height should tend to lie around heightMean. (Min=1, Max=10).";
+    public static int             heightNorm            	= 3;
+    public final static String    radiusMaxDesc             = "The maximum radius of each island.  Making this value too large will result in very large chunks of your world turning into floating islands (Min=radiusMean, Max=50).";
+    public static int             radiusMax       	        = 50;
+    public final static String    radiusMeanDesc         	= "The average island radius. Half of the islands will be smaller than radiusMean, half of the islands will be larger than radiusMean. (Min=radiusMin, Max=radiusMax).";
+    public static int             radiusMean          	    = 9;
+    public final static String    radiusMinDesc             = "The minimum radius of each island.  I recommend keeping this at 7 or more (Min=5, Max=radiusMean).";
+    public static int             radiusMin                 = 5;
+    public final static String    radiusNormDesc      	    = "How strongly island radius should tend to lie around radiusMean. (Min=1, Max=10).";
+    public static int             radiusNorm          	    = 3;
+    public final static String    depthMaxDesc  			= "The maximum depth/thickness of islands (Min=depthMean, Max=50).";
+    public static int             depthMax                  = 45;
+    public final static String    depthMeanDesc        	    = "The average island depth. Half of the islands will be shallower than depthMean, half of the islands will be deeper than depthMean. (Min=depthMin, Max=depthMax).";
+    public static int             depthMean           	    = 9;
+    public final static String    depthMinDesc              = "The minimum depth/thickness of islands (Min=2, Max=depthMean).";
+    public static int             depthMin                  = 5;
+    public final static String    depthNormDesc      	  	= "How strongly island depth should tend to lie around depthMean. (Min=1, Max=10).";
+    public static int             depthNorm          	    = 3;  
+    public final static String    shapeSpheroidWeightDesc	= "The relative chance of an island having the spheroid shape.";
+    public static int             shapeSpheroidWeight  	    = 21;      
+    public final static String    shapeConeWeightDesc		= "The relative chance of an island having the cone shape.";
+    public static int             shapeConeWeight  	    	= 14;        
+    public final static String    shapeJetsonsWeightDesc	= "The relative chance of an island having the jetsons shape.";
+    public static int             shapeJetsonsWeight  	    = 1;         
+    public final static String    shapeStalactiteWeightDesc	= "UNIMPLEMENTED and IGNORED: The relative chance of an island having the stalactite shape.";
+    public static int             shapeStalactiteWeight  	= 0;   
     public final static String    numberOfItemsDesc         = "The number of items in a ruin's chest.";
     public static int             numberOfItems             = 4;
     public final static String    blockIDBlacklistDesc      = "Add block IDs to this list if you don't want them to be moved when a floating island is generated.  Format used: \",\" separates between id and metadata and \";\" separates between each block.";
@@ -142,12 +164,23 @@ public final class FloatingRuins
         allowMultiMobSpawners = config.getBoolean("allowMultiMobSpawners", ctgyGen, allowMultiMobSpawners, allowMultiMobSpawnersDesc);
         harderDungeons = config.getBoolean("harderDungeons", ctgyGen, harderDungeons, harderDungeonsDesc);
         rarity = config.getInt("rarity", ctgyGen, rarity, 1, Integer.MAX_VALUE, rarityDesc);
-        baseHeight = config.getInt("baseHeight", ctgyGen, baseHeight, 80, 215, baseHeightDesc);
-        heightVariation = config.getInt("heightVariation", ctgyGen, heightVariation, 0, 160, heightVariationDesc);
-        baseRadius = config.getInt("baseRadius", ctgyGen, baseRadius, 6, 50, baseRadiusDesc);
-        radiusVariation = config.getInt("radiusVariation", ctgyGen, radiusVariation, 0, 50, radiusVariationDesc);
-        baseDepth = config.getInt("baseDepth", ctgyGen, baseDepth, 2, 50, baseDepthDesc);
-        depthVariation = config.getInt("depthVariation", ctgyGen, depthVariation, 0, 50, depthVariationDesc);
+        rarityDungeon = config.getInt("rarityDungeon", ctgyGen, rarityDungeon, 1, Integer.MAX_VALUE, rarityDungeonDesc);		
+        heightMax = config.getInt("heightMax", ctgyGen, heightMax, heightMean, 240, heightMaxDesc);
+        heightMean = config.getInt("heightMean", ctgyGen, heightMean, heightMin, heightMax, heightMeanDesc);
+        heightMin = config.getInt("heightMin", ctgyGen, heightMin, 80, heightMean, heightMinDesc);
+        heightNorm = config.getInt("heightNorm", ctgyGen, heightNorm, 1, 10, heightNormDesc);
+        radiusMax = config.getInt("radiusMax", ctgyGen, radiusMax, radiusMean, 50, radiusMaxDesc);
+        radiusMean = config.getInt("radiusMean", ctgyGen, radiusMean, radiusMin, radiusMax, radiusMeanDesc);
+        radiusMin = config.getInt("radiusMin", ctgyGen, radiusMin, 5, radiusMean, radiusMinDesc);
+        radiusNorm = config.getInt("radiusNorm", ctgyGen, radiusNorm, 1, 10, radiusNormDesc);
+        depthMax = config.getInt("depthMax", ctgyGen, depthMax, depthMean, 45, depthMaxDesc);
+        depthMean = config.getInt("depthMean", ctgyGen, depthMean, depthMin, depthMax, depthMeanDesc);
+        depthMin = config.getInt("depthMin", ctgyGen, depthMin, 5, depthMean, depthMinDesc); 
+        depthNorm = config.getInt("depthNorm", ctgyGen, depthNorm, 1, 10, depthNormDesc);   
+        shapeSpheroidWeight = config.getInt("shapeSpheroidWeight", ctgyGen, shapeSpheroidWeight, 0, Integer.MAX_VALUE, shapeSpheroidWeightDesc);   
+        shapeConeWeight = config.getInt("shapeConeWeight", ctgyGen, shapeConeWeight, 0, Integer.MAX_VALUE, shapeConeWeightDesc);   
+        shapeJetsonsWeight = config.getInt("shapeJetsonsWeight", ctgyGen, shapeJetsonsWeight, 0, Integer.MAX_VALUE, shapeJetsonsWeightDesc);   
+        shapeStalactiteWeight = config.getInt("shapeStalactiteWeight", ctgyGen, shapeStalactiteWeight, 0, 0, shapeStalactiteWeightDesc);
         numberOfItems = config.getInt("numberOfItems", ctgyGen, numberOfItems, 1, 27, numberOfItemsDesc);
         stringOfIds = config.getString("stringOfIds", ctgyGen, stringOfIds, stringOfIdsDesc);
         blockIDBlacklist = config.getString("blockIDBlacklist", ctgyGen, blockIDBlacklist, blockIDBlacklistDesc);
@@ -166,7 +199,6 @@ public final class FloatingRuins
         spawnerSwampland = config.getString("spawnerSwampland", ctgyGen, spawnerSwampland, spawnerSwamplandDesc);
         spawnerTaiga = config.getString("spawnerTaiga", ctgyGen, spawnerTaiga, spawnerTaigaDesc);
         spawnerNearLava = config.getString("spawnerNearLava", ctgyGen, spawnerNearLava, spawnerNearLavaDesc);
-        
         config.save();
     }
     
@@ -181,7 +213,7 @@ public final class FloatingRuins
             if (!CommonUtils.isIDInList(world.provider.dimensionId, dimensionIDBlacklist))
             {
                 random = getRandom(world, x, z);
-                int tgtY = baseHeight + random.nextInt(heightVariation);
+                int tgtY = GetWeightedInt(heightMin, heightMean, heightMax, heightNorm, random);
                 
                 if (isWorldGen)
                 {
@@ -258,23 +290,13 @@ public final class FloatingRuins
      */
     public static WorldGenFloatingIsland getFloatingIslandGenerator(World world, Random random, int x, int tgtY, int z)
     {
-        int radius = baseRadius + random.nextInt(radiusVariation);
+    	int radius = GetWeightedInt(radiusMin, radiusMean, radiusMax, radiusNorm, random);
         int yGround = CommonUtils.getHighestGroundBlock(world, x, tgtY, z);
         
-        Random random2 = getRandom(world, x, z);
+        int depth = GetWeightedInt(depthMin, depthMean, depthMax, depthNorm, random);
+        int islandType = GetWeightedIslandType(random);
         
-        float depthRatio = random2.nextInt(5) == 0 ? random2.nextFloat() * 0.5F + 2.0F : random2.nextFloat() * 0.2F + 0.4F;
-        int depth = (int) Math.ceil(radius * depthRatio);
-        int islandType = WorldGenFloatingIsland.islandTypes[random.nextInt(WorldGenFloatingIsland.islandTypes.length)];
-        
-        if (depth > baseDepth + depthVariation || depth < baseDepth || depth > yGround - 5)
-        {
-            WorldType wt = world.getWorldInfo().getTerrainType();
-            depth = Math.min(yGround - (wt == WorldType.FLAT ? 1 : 5), baseDepth + random2.nextInt(depthVariation));
-            depthRatio = depth / (float) radius;
-        }
-        
-        return new WorldGenFloatingIsland(radius, depthRatio, yGround, islandType);
+        return new WorldGenFloatingIsland(radius, depth, yGround, islandType);
     }
     
     /**
@@ -338,5 +360,57 @@ public final class FloatingRuins
     {
         if (allowDebugLogging)
             FRLog.info("[DEBUG] " + msg, args);
+    }
+    
+    /**
+	* Gets a random int that is weighted so as to create a bell curve like distribution lying between min and max
+	* 50% of ints will be greater than the input mean, 50% of ints will be less than mean
+	* the higher the norm var is, the more likely output ints will be close to mean
+	*/
+    public static int GetWeightedInt(int min, int mean, int max, int norm, Random random)
+    {    	
+    	float deviation = 0.0f;
+    	float step;
+    	int weightedInt;
+    	
+		//The magic happens here. It creates a var (deviation) 0 - 99 that is weighted based on input norm
+    	for (int i = 0; i < norm; i++)
+    	{
+    		deviation += (float)random.nextInt(99)/(float)norm;
+    	}
+    	
+		//This here skews the data to account for mean not necessarily being in the middle of min and max
+    	if (deviation <= 50)
+    	{
+    		step = (mean - min)/50F;
+    		min = min + Math.round(step * (deviation));
+    	}
+    	else
+    	{
+    		deviation -= 50;
+    		
+    		step = (max - mean)/50F;
+    		min = mean + Math.round(step * (deviation));
+    	}
+    	
+		//Calculates the final random
+    	weightedInt = min + random.nextInt((int)Math.ceil(step));
+    	
+    	return weightedInt;   
+    }
+    
+    public static int GetWeightedIslandType(Random random)
+    {
+    	int totalWeight = shapeSpheroidWeight + shapeConeWeight + shapeJetsonsWeight + shapeStalactiteWeight;
+    	int choice = random.nextInt(totalWeight);
+    	
+    	if(choice >= totalWeight - shapeStalactiteWeight)
+    		return WorldGenFloatingIsland.STALACTITE;
+    	else if(choice >= totalWeight - shapeStalactiteWeight - shapeJetsonsWeight)
+    		return WorldGenFloatingIsland.JETSONS;
+    	else if(choice >= totalWeight - shapeStalactiteWeight - shapeJetsonsWeight - shapeConeWeight)
+    		return WorldGenFloatingIsland.CONE;
+    	else
+    		return WorldGenFloatingIsland.SPHEROID;
     }
 }

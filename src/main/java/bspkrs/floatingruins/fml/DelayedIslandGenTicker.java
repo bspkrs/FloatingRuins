@@ -28,7 +28,7 @@ public class DelayedIslandGenTicker
         
         if (--delayTicks <= 0)
         {
-            new WorldGenFloatingIsland(opt.radius, opt.depthRatio, CommonUtils.getHighestGroundBlock(opt.world, opt.x, opt.y, opt.z), opt.islandType)
+            new WorldGenFloatingIsland(opt.radius, opt.depth, CommonUtils.getHighestGroundBlock(opt.world, opt.x, opt.y, opt.z), opt.islandType)
                     .generate(opt.world, opt.random, opt.x, opt.y, opt.z);
             FMLCommonHandler.instance().bus().unregister(this);
         }
