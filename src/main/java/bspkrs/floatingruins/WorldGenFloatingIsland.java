@@ -1,7 +1,5 @@
 package bspkrs.floatingruins;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.LinkedList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -17,19 +15,19 @@ import bspkrs.util.Coord;
 
 public class WorldGenFloatingIsland extends WorldGenerator
 {
-    private boolean           isLavaNearby;
-    public static final int   SPHEROID    = 0;
-    public static final int   CONE        = 1;
-    public static final int   JETSONS     = 2;
-    public static final int   STALACTITE  = 3;
+    private boolean         isLavaNearby;
+    public static final int SPHEROID   = 0;
+    public static final int CONE       = 1;
+    public static final int JETSONS    = 2;
+    public static final int STALACTITE = 3;
     
-    private Coord             srcOrigin;
-    private Coord             tgtOrigin;
-    private final int         depth;
-    public final int          radius;
-    public final int          yGround;
-    private final int         islandType;
-    private Random            random;
+    private Coord           srcOrigin;
+    private Coord           tgtOrigin;
+    private final int       depth;
+    public final int        radius;
+    public final int        yGround;
+    private final int       islandType;
+    private Random          random;
     
     public WorldGenFloatingIsland(int radius, int depth, int yGround, int islandType)
     {
@@ -55,8 +53,12 @@ public class WorldGenFloatingIsland extends WorldGenerator
         isLavaNearby = false;
         
         //Added a check for dungeon rarity config
-        if (isTgtSuitableForGeneration(world, tgtOrigin) && genIsland(world, radius, x, y, z) && random.nextInt(FloatingRuins.rarityDungeon) == 0)
-            ran = (new WorldGenFloatingIslandRuin(isLavaNearby)).generate(world, random, x, y, z);
+        if (isTgtSuitableForGeneration(world, tgtOrigin))
+        {
+            ran = genIsland(world, radius, x, y, z);
+            if (ran && random.nextInt(FloatingRuins.rarityDungeon) == 0)
+                (new WorldGenFloatingIslandRuin(isLavaNearby)).generate(world, random, x, y, z);
+        }
         
         return ran;
     }
@@ -66,76 +68,91 @@ public class WorldGenFloatingIsland extends WorldGenerator
         //float reciprocalRootOf2 = 0.70710678f;
         //int adjRadius = Math.round(radius * reciprocalRootOf2);
         
-        LinkedList<SimpleEntry<Coord, Boolean>> toCheck = new LinkedList<SimpleEntry<Coord, Boolean>>();
+        //        LinkedList<SimpleEntry<Coord, Boolean>> toCheck = new LinkedList<SimpleEntry<Coord, Boolean>>();
         
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin, Boolean.FALSE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4), Boolean.FALSE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4), Boolean.FALSE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius + 4), Boolean.FALSE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius + 4), Boolean.FALSE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4).getOffsetCoord(ForgeDirection.EAST, radius + 4), Boolean.FALSE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4).getOffsetCoord(ForgeDirection.WEST, radius + 4), Boolean.FALSE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4).getOffsetCoord(ForgeDirection.EAST, radius + 4), Boolean.FALSE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4).getOffsetCoord(ForgeDirection.WEST, radius + 4), Boolean.FALSE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
-        
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4).getOffsetCoord(ForgeDirection.EAST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4).getOffsetCoord(ForgeDirection.WEST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4).getOffsetCoord(ForgeDirection.EAST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
-        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4).getOffsetCoord(ForgeDirection.WEST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
-        
-        if (depth > 15)
-        {
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
-        }
-        
-        if (depth > 31)
-        {
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
-            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
-        }
-        
-        for (SimpleEntry<Coord, Boolean> entry : toCheck)
-            if (!isTgtCoordReplaceable(world, entry.getKey(), entry.getValue()))
-                return false;
+        for (int y = 40; y >= -depth; y--)
+            for (int x = -radius; x <= radius; x++)
+                for (int z = -radius; z <= radius; z++)
+                {
+                    if (y == 40 || y == -depth || Math.abs(x) == radius || Math.abs(z) == radius)
+                    {
+                        Coord delta = new Coord(x, y, z);
+                        Coord tgt = tgtOrigin.add(delta);
+                        if (!isTgtCoordReplaceable(world, tgt, y < tgtOrigin.y))
+                            return false;
+                    }
+                }
         
         return true;
+        
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin, Boolean.FALSE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4), Boolean.FALSE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4), Boolean.FALSE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius + 4), Boolean.FALSE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius + 4), Boolean.FALSE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4).getOffsetCoord(ForgeDirection.EAST, radius + 4), Boolean.FALSE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4).getOffsetCoord(ForgeDirection.WEST, radius + 4), Boolean.FALSE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4).getOffsetCoord(ForgeDirection.EAST, radius + 4), Boolean.FALSE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4).getOffsetCoord(ForgeDirection.WEST, radius + 4), Boolean.FALSE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth), Boolean.TRUE));
+        //        
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4).getOffsetCoord(ForgeDirection.EAST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius + 4).getOffsetCoord(ForgeDirection.WEST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4).getOffsetCoord(ForgeDirection.EAST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
+        //        toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius + 4).getOffsetCoord(ForgeDirection.WEST, radius + 4).getOffsetCoord(ForgeDirection.UP, 40), Boolean.TRUE));
+        //        
+        //        if (depth > 15)
+        //        {
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, depth / 2), Boolean.TRUE));
+        //        }
+        //        
+        //        if (depth > 31)
+        //        {
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth / 4.0F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.NORTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.EAST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+        //            toCheck.add(new SimpleEntry<Coord, Boolean>(tgtOrigin.getOffsetCoord(ForgeDirection.SOUTH, radius).getOffsetCoord(ForgeDirection.WEST, radius).getOffsetCoord(ForgeDirection.DOWN, Math.round(depth * 0.75F)), Boolean.TRUE));
+        //        }
+        //
+        //        for (SimpleEntry<Coord, Boolean> entry : toCheck)
+        //            if (!isTgtCoordReplaceable(world, entry.getKey(), entry.getValue()))
+        //                return false;
+        //        
+        //        return true;
     }
     
     public boolean isTgtCoordReplaceable(World world, Coord tgt, boolean allowNonAirSpecialBlocks)
@@ -163,48 +180,51 @@ public class WorldGenFloatingIsland extends WorldGenerator
         debug += String.format("r(%d) d(%d) @%d,%d,%d ", radius, depth, xIn, yIn, zIn);
         
         Block specialOre = getSpecialOre();
-
+        
         for (int y = 40; y >= -depth; y--)
         {
-        	if (y >= 0)
-        		range = radius;
-        	else
-        	{
-        		switch (islandType)
-	            {
-	                case CONE: 
-	                	range = (depth + y) * radius / depth; //Simple slope equation
-	                	break;
-	                case JETSONS:
-	                    float jetDist = (((float) depth / Math.abs(y)) - 1.0F);
-	                    if (y >= -1)
-	                    	range = radius;
-	                    else if (y == -2)
-	                    	range = (int) Math.round(Math.min(Math.ceil(radius * 0.9F), jetDist));
-	                    else if (y == -3)
-	                    	range = (int) Math.round(Math.min(Math.ceil(radius * 0.8F), jetDist));
-                    	else
-                    		range = Math.round(jetDist);	                	
-	                	break;
-	                case STALACTITE: //Currently unused
-	                default: //Ellipsoid
-                		range = (int) Math.round(Math.sqrt(CommonUtils.sqr(radius)*(1.0 - (float) CommonUtils.sqr(y)/CommonUtils.sqr(depth)))); //Derived from ellipse equation
-	                	break;
-	                
-	            }
-        	}
-        	if (range < 0)
-        		range = 0;
-        	sqrRange = CommonUtils.sqr(range);
-        	
-        	for (int x = -range - 4; x <= range + 4; x++)
+            if (y >= 0)
+                range = radius;
+            else
+            {
+                switch (islandType)
+                {
+                    case CONE:
+                        range = (depth + y) * radius / depth; //Simple slope equation
+                        break;
+                    case JETSONS:
+                        float jetDist = (((float) depth / Math.abs(y)) - 1.0F);
+                        if (y >= -1)
+                            range = radius;
+                        else if (y == -2)
+                            range = (int) Math.round(Math.min(Math.ceil(radius * 0.9F), jetDist));
+                        else if (y == -3)
+                            range = (int) Math.round(Math.min(Math.ceil(radius * 0.8F), jetDist));
+                        else
+                            range = Math.round(jetDist);
+                        break;
+                    case STALACTITE: //Currently unused
+                    default: //Ellipsoid
+                        range = (int) Math.round(Math.sqrt(CommonUtils.sqr(radius) * (1.0F - (float) CommonUtils.sqr(y) / (float) CommonUtils.sqr(depth)))); //Derived from ellipse equation
+                        break;
+                
+                }
+            }
+            
+            if (range < 0)
+                range = 0;
+            
+            sqrRange = CommonUtils.sqr(range);
+            
+            for (int x = -range - 4; x <= range + 4; x++)
                 for (int z = -range - 4; z <= range + 4; z++)
                 {
                     Coord delta = new Coord(x, y, z);
                     Coord src = srcOrigin.add(delta);
-                    Block block = src.getBlock(world);
                     if (!src.isAirBlock(world) && ((CommonUtils.sqr(x) + CommonUtils.sqr(z)) <= sqrRange))
                     {
+                        
+                        Block block = src.getBlock(world);
                         int metadata = src.getBlockMetadata(world);
                         if ((y <= 0) || (!block.equals(Blocks.water) && !block.equals(Blocks.flowing_water))
                                 && !CommonUtils.isIDInList(BlockHelper.getUniqueID(block), metadata, FloatingRuins.blockIDBlacklist))
@@ -245,10 +265,10 @@ public class WorldGenFloatingIsland extends WorldGenerator
                         if (block.equals(Blocks.gravel))
                             WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.stone, 0, BlockNotifyType.ALL);
                         else if (block.equals(Blocks.sand))
-                        	if (tgt.getBlockMetadata(world) == 1)
-                        		WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.hardened_clay, 0, BlockNotifyType.ALL);
-                        	else
-                        		WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.sandstone, 0, BlockNotifyType.ALL);
+                            if (tgt.getBlockMetadata(world) == 1)
+                                WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.hardened_clay, 0, BlockNotifyType.ALL);
+                            else
+                                WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.sandstone, 0, BlockNotifyType.ALL);
                 }
         
         debug += "Blocks Moved: " + blocksMoved + " (" + groundBlocksMoved + " at or below origin)";
@@ -259,7 +279,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
     
     private boolean isBlockInRange(int islandType, World world, int x, int y, int z, int depth, int radius)
     {
-    	float depthRatio = (float)depth/(float)radius;
+        float depthRatio = (float) depth / (float) radius;
         float distToCenterColumn = Math.round(Math.sqrt(CommonUtils.sqr(x) + CommonUtils.sqr(z)));
         float distToOrigin = Math.round(Math.sqrt(CommonUtils.sqr(x) + CommonUtils.sqr(z) + (y > 10 ? -2.0D : y > 5 ? -1.0D : y > 0 ? 0.0D : CommonUtils.sqr(y / depthRatio))));
         
