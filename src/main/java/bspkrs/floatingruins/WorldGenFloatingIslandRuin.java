@@ -42,12 +42,12 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     private final String                                            spawnerNearLava;
     private boolean                                                 isLavaNearby;
     
-    private static final ArrayList<SimpleEntry<ItemStack, Integer>> helmWeights     = new ArrayList();
-    private static final ArrayList<SimpleEntry<ItemStack, Integer>> plateWeights    = new ArrayList();
-    private static final ArrayList<SimpleEntry<ItemStack, Integer>> leggingWeights  = new ArrayList();
-    private static final ArrayList<SimpleEntry<ItemStack, Integer>> bootWeights     = new ArrayList();
-    private static final ArrayList<SimpleEntry<ItemStack, Integer>> skelWeapWeights = new ArrayList();
-    private static final ArrayList<SimpleEntry<ItemStack, Integer>> zombWeapWeights = new ArrayList();
+    private static final ArrayList<SimpleEntry<ItemStack, Integer>> helmWeights     = new ArrayList<SimpleEntry<ItemStack, Integer>>();
+    private static final ArrayList<SimpleEntry<ItemStack, Integer>> plateWeights    = new ArrayList<SimpleEntry<ItemStack, Integer>>();
+    private static final ArrayList<SimpleEntry<ItemStack, Integer>> leggingWeights  = new ArrayList<SimpleEntry<ItemStack, Integer>>();
+    private static final ArrayList<SimpleEntry<ItemStack, Integer>> bootWeights     = new ArrayList<SimpleEntry<ItemStack, Integer>>();
+    private static final ArrayList<SimpleEntry<ItemStack, Integer>> skelWeapWeights = new ArrayList<SimpleEntry<ItemStack, Integer>>();
+    private static final ArrayList<SimpleEntry<ItemStack, Integer>> zombWeapWeights = new ArrayList<SimpleEntry<ItemStack, Integer>>();
     
     static
     {
