@@ -1,3 +1,7 @@
+1.7.2.r01 - 19-Jan-2014
+- updated for 1.7.2
+- new code for determining island shape
+- improved island depth/radius options
 1.6.4.r02 - 19-Dec-2013
 - refactoring for /frgen command
 - added code to prevent islands from spawning in villages
