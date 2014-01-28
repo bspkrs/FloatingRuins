@@ -595,7 +595,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 }
     }
     
-    private void setIgloo(World world, int xIn, int yIn, int zIn, int range, Block blockID)
+    private void setIgloo(World world, int xIn, int yIn, int zIn, int range, Block block)
     {
         for (int x = -range; x <= range; x++)
             for (int y = -range; y <= range; y++)
@@ -607,7 +607,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (y >= 0)
                         {
                             if (dist == range)
-                                WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, (FloatingRuins.harderDungeons && y > 2 ? Blocks.bedrock : blockID), 0, BlockNotifyType.ALL);
+                                WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, (FloatingRuins.harderDungeons && y > 2 ? Blocks.bedrock : block), 0, BlockNotifyType.ALL);
                             
                             // For wolves
                             if (y == 0 && dist < range)
@@ -617,17 +617,17 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                             {
                                 WorldHelper.setBlockToAir(world, x + xIn, y + yIn, z + zIn);
                                 if (y == 1)
-                                    WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.snow, 0, BlockNotifyType.ALL);
+                                    WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.snow_layer, 0, BlockNotifyType.ALL);
                             }
                         }
                         else
                         {
                             if (y == -1)
-                                WorldHelper.setBlock(world, x + xIn, yIn - 1, z + zIn, blockID, 0, BlockNotifyType.ALL);
+                                WorldHelper.setBlock(world, x + xIn, yIn - 1, z + zIn, block, 0, BlockNotifyType.ALL);
                             
                             int yg = CommonUtils.getHighestGroundBlock(world, x + xIn, y + yIn, z + zIn);
                             if (dist == range && !WorldHelper.isBlockNormalCube(world, x + xIn, y + yIn, z + zIn, false) && yg < y + yIn && yg >= yIn - range)
-                                WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, blockID, 0, BlockNotifyType.ALL);
+                                WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
                         }
                     }
                 }
