@@ -1,3 +1,7 @@
+1.7.2.r02 - 28-Jan-2014
+- fixed shape code to produce same shapes as before
+- toyed with default settings some
+- fixed snow blocks on the floor of igloos
 1.7.2.r01 - 19-Jan-2014
 - updated for 1.7.2
 - new code for determining island shape
