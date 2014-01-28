@@ -44,16 +44,19 @@ public class FloatingRuinsMod
         if (!CommonUtils.isObfuscatedEnv())
         { // debug settings for deobfuscated execution
           //            FloatingRuins.rarity = 44;
-          //            //FloatingRuins.harderDungeons = true;
+          //            FloatingRuins.harderDungeons = true;
           //            FloatingRuins.allowDebugLogging = true;
           //            FloatingRuins.allowInSuperFlat = true;
-          //            //FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
+          //            FloatingRuins.biomeIDBlacklist = "";// "0;1;3;4;5;6;7;8;9;13;17;";
           //            FloatingRuins.baseDepth = 30;
           //            if (file.exists())
           //                file.delete();
         }
         
         FloatingRuins.loadConfig(file);
+        
+        if (!CommonUtils.isObfuscatedEnv())
+            FloatingRuins.allowDebugLogging = true;
     }
     
     @EventHandler
