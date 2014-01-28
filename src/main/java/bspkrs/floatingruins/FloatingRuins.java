@@ -22,7 +22,7 @@ import bspkrs.util.Coord;
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String    VERSION_NUMBER            = Const.MCVERSION + ".r01";
+    public final static String    VERSION_NUMBER            = Const.MCVERSION + ".r02";
     
     public final static String    allowDebugLoggingDesc     = "Set to true if you want FloatingRuins to log info about what it's doing, false to disable";
     public static boolean         allowDebugLogging         = false;
@@ -34,10 +34,10 @@ public final class FloatingRuins
     public static boolean         harderDungeons            = false;
     public final static String    rarityDesc                = "The probability of a floating island generating is 1 in each 'rarity' number of chunks.";
     public static int             rarity                    = 800;
-    public final static String    rarityDungeonDesc         = "The probability of a floating island having a dungeon on it is 1 in each 'dungeonRarity' number of islands.";
+    public final static String    rarityDungeonDesc         = "The probability of a floating island having a dungeon on it is 1 in each 'rarityDungeon' number of islands.";
     public static int             rarityDungeon             = 1;
-    public final static String    heightMaxDesc             = "The maximum world height for floating ruins (Min=heightMean, Max=240).";
-    public static int             heightMax                 = 240;
+    public final static String    heightMaxDesc             = "The maximum world height for floating ruins (Min=heightMean, Max=225).";
+    public static int             heightMax                 = 225;
     public final static String    heightMeanDesc            = "The average island height. Half of the islands will be below heightMean, half of the islands will be above heightMean. (Min=heightMin, Max=heightMax).";
     public static int             heightMean                = 100;
     public final static String    heightMinDesc             = "The minimum world height for floating ruins (Min=80, Max=heightMax).";
@@ -165,17 +165,17 @@ public final class FloatingRuins
         harderDungeons = config.getBoolean("harderDungeons", ctgyGen, harderDungeons, harderDungeonsDesc);
         rarity = config.getInt("rarity", ctgyGen, rarity, 1, Integer.MAX_VALUE, rarityDesc);
         rarityDungeon = config.getInt("rarityDungeon", ctgyGen, rarityDungeon, 1, Integer.MAX_VALUE, rarityDungeonDesc);
-        heightMax = config.getInt("heightMax", ctgyGen, heightMax, heightMean, 240, heightMaxDesc);
         heightMean = config.getInt("heightMean", ctgyGen, heightMean, heightMin, heightMax, heightMeanDesc);
         heightMin = config.getInt("heightMin", ctgyGen, heightMin, 80, heightMean, heightMinDesc);
+        heightMax = config.getInt("heightMax", ctgyGen, heightMax, heightMean, 240, heightMaxDesc);
         heightNorm = config.getInt("heightNorm", ctgyGen, heightNorm, 1, 10, heightNormDesc);
-        radiusMax = config.getInt("radiusMax", ctgyGen, radiusMax, radiusMean, 50, radiusMaxDesc);
         radiusMean = config.getInt("radiusMean", ctgyGen, radiusMean, radiusMin, radiusMax, radiusMeanDesc);
+        radiusMax = config.getInt("radiusMax", ctgyGen, radiusMax, radiusMean, 50, radiusMaxDesc);
         radiusMin = config.getInt("radiusMin", ctgyGen, radiusMin, 5, radiusMean, radiusMinDesc);
         radiusNorm = config.getInt("radiusNorm", ctgyGen, radiusNorm, 1, 10, radiusNormDesc);
-        depthMax = config.getInt("depthMax", ctgyGen, depthMax, depthMean, 45, depthMaxDesc);
         depthMean = config.getInt("depthMean", ctgyGen, depthMean, depthMin, depthMax, depthMeanDesc);
         depthMin = config.getInt("depthMin", ctgyGen, depthMin, 5, depthMean, depthMinDesc);
+        depthMax = config.getInt("depthMax", ctgyGen, depthMax, depthMean, 45, depthMaxDesc);
         depthNorm = config.getInt("depthNorm", ctgyGen, depthNorm, 1, 10, depthNormDesc);
         shapeSpheroidWeight = config.getInt("shapeSpheroidWeight", ctgyGen, shapeSpheroidWeight, 0, Integer.MAX_VALUE, shapeSpheroidWeightDesc);
         shapeConeWeight = config.getInt("shapeConeWeight", ctgyGen, shapeConeWeight, 0, Integer.MAX_VALUE, shapeConeWeightDesc);
