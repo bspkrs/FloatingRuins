@@ -18,7 +18,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = FloatingRuins.VERSION_NUMBER, dependencies = "required-after:bspkrsCore", useMetadata = true)
+@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = FloatingRuins.VERSION_NUMBER, dependencies = "required-after:bspkrsCore", useMetadata = true,
+        guiFactory = "bspkrs.floatingruins.fml.gui.ModGuiFactoryHandler")
 public class FloatingRuinsMod
 {
     public ModVersionChecker       versionChecker;

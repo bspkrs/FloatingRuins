@@ -7,7 +7,7 @@ import bspkrs.floatingruins.FloatingRuins;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 public class DelayedWorldGenTicker
 {
@@ -28,7 +28,7 @@ public class DelayedWorldGenTicker
     }
     
     @SubscribeEvent
-    public void onTick(ServerTickEvent event)
+    public void onTick(WorldTickEvent event)
     {
         if (event.phase.equals(Phase.START))
             return;

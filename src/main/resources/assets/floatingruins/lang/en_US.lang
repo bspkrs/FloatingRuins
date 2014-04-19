@@ -1,0 +1,80 @@
+bspkrs.fr.configgui.allowDebugLogging.tooltip=Set to true if you want FloatingRuins to log info about what it's doing, false to disable %1$s[default: %2$s]
+bspkrs.fr.configgui.allowDebugLogging=Allow Debug Logging
+bspkrs.fr.configgui.allowInSuperFlat.tooltip=Set to true to allow generation of floating ruins on superflat maps, false to disable. %1$s[default: %2$s]
+bspkrs.fr.configgui.allowInSuperFlat=Allow in Super-Flat Worlds
+bspkrs.fr.configgui.allowMultiMobSpawners.tooltip=When set to true spawners will be able to spawn any of the mobs for the biome the floating island generated in, set to false to use the old logic of randomly picking just one mob. %1$s[default: %2$s]
+bspkrs.fr.configgui.allowMultiMobSpawners=Allow Multi-Mob Spawners
+bspkrs.fr.configgui.biomeIDBlacklist.tooltip=Add biome IDs where you do not want Floating Ruins to generate.  Format used: ";" separates between each biome ID. %1$s[default: %2$s]
+bspkrs.fr.configgui.biomeIDBlacklist=Biome ID Blacklist
+bspkrs.fr.configgui.blockIDBlacklist.tooltip=Add block IDs to this list if you don't want them to be moved when a floating island is generated.  Format used: "," separates between id and metadata and ";" separates between each block. %1$s[default: %2$s]
+bspkrs.fr.configgui.blockIDBlacklist=Block Blacklist
+bspkrs.fr.configgui.depthMax.tooltip=The maximum depth/thickness of islands (Min=depthMean, Max=50). %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.depthMax=Maximum Island Depth
+bspkrs.fr.configgui.depthMean.tooltip=The average island depth. Half of the islands will be shallower than depthMean, half of the islands will be deeper than depthMean. %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.depthMean=Average Island Depth
+bspkrs.fr.configgui.depthMin.tooltip=The minimum depth/thickness of islands. %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.depthMin=Minimum Island Depth
+bspkrs.fr.configgui.depthNorm.tooltip=How strongly island depth should tend to lie around depthMean. %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.depthNorm=Island Depth Normalizer
+bspkrs.fr.configgui.dimensionIDBlacklist.tooltip=Add dimension IDs where you do not want Floating Ruins to generate.  Format used: ";" separates between each dimension ID. %1$s[default: %2$s]
+bspkrs.fr.configgui.dimensionIDBlacklist=Dimension ID Blacklist
+bspkrs.fr.configgui.enabled.tooltip=Enables or disables Floating Ruins generation. %1$s[default: %2$s]
+bspkrs.fr.configgui.enabled=Enabled
+bspkrs.fr.configgui.harderDungeons.tooltip=Set to true to generate harder dungeons (roof is bedrock, chest is harder to get to, mobs spawn more aggressively), set to false to generate normal dungeons. %1$s[default: %2$s]
+bspkrs.fr.configgui.harderDungeons=Spawn Harder Dungeons
+bspkrs.fr.configgui.heightMax.tooltip=The maximum world height for floating ruins (Min=heightMean, Max=225). %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.heightMax=Maximum Island Floating Height
+bspkrs.fr.configgui.heightMean.tooltip=The average island height. Half of the islands will be below heightMean, half of the islands will be above heightMean. (Min=heightMin, Max=heightMax). %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.heightMean=Average Island Floating Height
+bspkrs.fr.configgui.heightMin.tooltip=The minimum world height for floating ruins (Min=80, Max=heightMax). %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.heightMin=Minimum Island Floating Height
+bspkrs.fr.configgui.heightNorm.tooltip=How strongly island height should tend to lie around heightMean. (Min=1, Max=10). %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.heightNorm=Floating Height Normalizer
+bspkrs.fr.configgui.numberOfItems.tooltip=The number of items in a ruin's chest. %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.numberOfItems=Minimum Number of Chest Items
+bspkrs.fr.configgui.radiusMax.tooltip=The maximum radius of each island.  Making this value too large will result in very large chunks of your world turning into floating islands (Min=radiusMean, Max=50). %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.radiusMax=Maximum Island Radius
+bspkrs.fr.configgui.radiusMean.tooltip=The average island radius. Half of the islands will be smaller than radiusMean, half of the islands will be larger than radiusMean. (Min=radiusMin, Max=radiusMax). %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.radiusMean=Average Island Radius
+bspkrs.fr.configgui.radiusMin.tooltip=The minimum radius of each island.  I recommend keeping this at 7 or more (Min=5, Max=radiusMean). %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.radiusMin=Minimum Island Radius
+bspkrs.fr.configgui.radiusNorm.tooltip=How strongly island radius should tend to lie around radiusMean. (Min=1, Max=10). %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.radiusNorm=Island Radius Normalizer
+bspkrs.fr.configgui.rarity.tooltip=The probability of a floating island generating is 1 in each 'rarity' number of chunks. %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.rarity=Island Spawn Rarity
+bspkrs.fr.configgui.rarityDungeon.tooltip=The probability of a floating island having a dungeon on it is 1 in each 'rarityDungeon' number of islands. %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.rarityDungeon=Island Dungeon Spawn Rarity
+bspkrs.fr.configgui.shapeConeWeight.tooltip=The relative chance of an island having the cone shape. %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.shapeConeWeight=Weighted Chance of Cone Shape
+bspkrs.fr.configgui.shapeJetsonsWeight.tooltip=The relative chance of an island having the jetsons shape. %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.shapeJetsonsWeight=Weighted Chance of Jetsons Shape
+bspkrs.fr.configgui.shapeSpheroidWeight.tooltip=The relative chance of an island having the spheroid shape. %1$s[range: %3$s ~ %4$s, default: %2$s]
+bspkrs.fr.configgui.shapeSpheroidWeight=Weighted Chance of Spheroid Shape
+bspkrs.fr.configgui.spawnerDefault.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerDefault=Default Spawner Mobs
+bspkrs.fr.configgui.spawnerDesert.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerDesert=Desert Spawner Mobs
+bspkrs.fr.configgui.spawnerForest.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerForest=Forest Spawner Mobs
+bspkrs.fr.configgui.spawnerHills.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerHills=Hills Spawner Mobs
+bspkrs.fr.configgui.spawnerIceBiomes.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerIceBiomes=Ice Biome Spawner Mobs
+bspkrs.fr.configgui.spawnerJungle.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerJungle=Jungle Spawner Mobs
+bspkrs.fr.configgui.spawnerMushroom.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerMushroom=Mushroom Island Spawner Mobs
+bspkrs.fr.configgui.spawnerNearLava.tooltip=If the dungeon is close enough to lava, the spawner will use these mobs. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerNearLava=Island Near Lava Spawner Mobs
+bspkrs.fr.configgui.spawnerOcean.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerOcean=Ocean Spawner Mobs
+bspkrs.fr.configgui.spawnerPlains.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerPlains=Plains Spawner Mobs
+bspkrs.fr.configgui.spawnerRiver.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerRiver=River Spawner Mobs
+bspkrs.fr.configgui.spawnerSwampland.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerSwampland=Swampland Spawner Mobs
+bspkrs.fr.configgui.spawnerTaiga.tooltip=Mob spawners can be configured using the mobs' names, each separated by a comma. Using "Default" will make the specified biome use the same settings as 'spawnerDefault'. %1$s[default: %2$s]
+bspkrs.fr.configgui.spawnerTaiga=Taiga Spawner Mobs
+bspkrs.fr.configgui.stringOfIds.tooltip=The ids for items found in chests. Format used: "," separates between item id, quantity, and metadata and ";" separates between each item. v%1$s[default: %2$s]
+bspkrs.fr.configgui.stringOfIds=Items That Can Appear In Chests

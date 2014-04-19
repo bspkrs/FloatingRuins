@@ -21,97 +21,104 @@ import bspkrs.util.config.Configuration;
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String  VERSION_NUMBER            = Const.MCVERSION + ".r03";
+    public final static String   VERSION_NUMBER               = Const.MCVERSION + ".r03";
     
-    public final static String  allowDebugLoggingDesc     = "Set to true if you want FloatingRuins to log info about what it's doing, false to disable";
-    public static boolean       allowDebugLogging         = false;
-    public final static String  allowInSuperFlatDesc      = "Set to true to allow generation of floating ruins on superflat maps, false to disable.";
-    public static boolean       allowInSuperFlat          = false;
-    public final static String  allowMultiMobSpawnersDesc = "When set to true spawners will be able to spawn any of the mobs for the biome the floating island generated in, set to false to use the old logic of randomly picking just one mob.";
-    public static boolean       allowMultiMobSpawners     = true;
-    public final static String  harderDungeonsDesc        = "Set to true to generate harder dungeons (roof is bedrock, chest is harder to get to, mobs spawn more aggressively), set to false to generate normal dungeons.";
-    public static boolean       harderDungeons            = false;
-    public final static String  rarityDesc                = "The probability of a floating island generating is 1 in each 'rarity' number of chunks.";
-    public static int           rarity                    = 800;
-    public final static String  rarityDungeonDesc         = "The probability of a floating island having a dungeon on it is 1 in each 'rarityDungeon' number of islands.";
-    public static int           rarityDungeon             = 1;
-    public final static String  heightMaxDesc             = "The maximum world height for floating ruins (Min=heightMean, Max=225).";
-    public static int           heightMax                 = 225;
-    public final static String  heightMeanDesc            = "The average island height. Half of the islands will be below heightMean, half of the islands will be above heightMean. (Min=heightMin, Max=heightMax).";
-    public static int           heightMean                = 100;
-    public final static String  heightMinDesc             = "The minimum world height for floating ruins (Min=80, Max=heightMax).";
-    public static int           heightMin                 = 80;
-    public final static String  heightNormDesc            = "How strongly island height should tend to lie around heightMean. (Min=1, Max=10).";
-    public static int           heightNorm                = 3;
-    public final static String  radiusMaxDesc             = "The maximum radius of each island.  Making this value too large will result in very large chunks of your world turning into floating islands (Min=radiusMean, Max=50).";
-    public static int           radiusMax                 = 50;
-    public final static String  radiusMeanDesc            = "The average island radius. Half of the islands will be smaller than radiusMean, half of the islands will be larger than radiusMean. (Min=radiusMin, Max=radiusMax).";
-    public static int           radiusMean                = 10;
-    public final static String  radiusMinDesc             = "The minimum radius of each island.  I recommend keeping this at 7 or more (Min=5, Max=radiusMean).";
-    public static int           radiusMin                 = 7;
-    public final static String  radiusNormDesc            = "How strongly island radius should tend to lie around radiusMean. (Min=1, Max=10).";
-    public static int           radiusNorm                = 3;
-    public final static String  depthMaxDesc              = "The maximum depth/thickness of islands (Min=depthMean, Max=50).";
-    public static int           depthMax                  = 45;
-    public final static String  depthMeanDesc             = "The average island depth. Half of the islands will be shallower than depthMean, half of the islands will be deeper than depthMean. (Min=depthMin, Max=depthMax).";
-    public static int           depthMean                 = 9;
-    public final static String  depthMinDesc              = "The minimum depth/thickness of islands (Min=2, Max=depthMean).";
-    public static int           depthMin                  = 5;
-    public final static String  depthNormDesc             = "How strongly island depth should tend to lie around depthMean. (Min=1, Max=10).";
-    public static int           depthNorm                 = 3;
-    public final static String  shapeSpheroidWeightDesc   = "The relative chance of an island having the spheroid shape.";
-    public static int           shapeSpheroidWeight       = 21;
-    public final static String  shapeConeWeightDesc       = "The relative chance of an island having the cone shape.";
-    public static int           shapeConeWeight           = 14;
-    public final static String  shapeJetsonsWeightDesc    = "The relative chance of an island having the jetsons shape.";
-    public static int           shapeJetsonsWeight        = 1;
-    public final static String  shapeStalactiteWeightDesc = "UNIMPLEMENTED and IGNORED: The relative chance of an island having the stalactite shape.";
-    public static int           shapeStalactiteWeight     = 0;
-    public final static String  numberOfItemsDesc         = "The number of items in a ruin's chest.";
-    public static int           numberOfItems             = 4;
-    public final static String  blockIDBlacklistDesc      = "Add block IDs to this list if you don't want them to be moved when a floating island is generated.  Format used: \",\" separates between id and metadata and \";\" separates between each block.";
-    public static String        blockIDBlacklist;
-    public final static String  dimensionIDBlacklistDesc  = "Add dimension IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each dimension ID.";
-    public static String        dimensionIDBlacklist      = "-1;1";
-    public final static String  biomeIDBlacklistDesc      = "Add biome IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each biome ID.";
-    public static String        biomeIDBlacklist          = "7;8;9;11;15;16;";
-    public final static String  stringOfIdsDesc           = "The ids for items found in chests. Format used: \",\" separates between item id, quantity, and metadata and \";\" separates between each item.";
-    public static String        stringOfIds;
-    public final static String  spawnerDefaultDesc        = "Mob spawners can be configured using the mobs' names, each separated by a comma. Using \"Default\" will make the specified biome use the same settings as 'spawnerDefault'.";
-    public static String        spawnerDefault            = "Creeper, Skeleton, Zombie, CaveSpider";
-    public final static String  spawnerDesertDesc         = "";
-    public static String        spawnerDesert             = "WitherSkeleton, PigZombie, Blaze";
-    public final static String  spawnerForestDesc         = "";
-    public static String        spawnerForest             = "Witch, CaveSpider";
-    public final static String  spawnerPlainsDesc         = "";
-    public static String        spawnerPlains             = "Spider, Zombie, Creeper";
-    public final static String  spawnerSwamplandDesc      = "";
-    public static String        spawnerSwampland          = "Creeper, CaveSpider, Witch";
-    public final static String  spawnerTaigaDesc          = "";
-    public static String        spawnerTaiga              = "Zombie, Creeper, Wolf";
-    public final static String  spawnerHillsDesc          = "";
-    public static String        spawnerHills              = "Default";
-    public final static String  spawnerOceanDesc          = "";
-    public static String        spawnerOcean              = "Silverfish, ChargedCreeper";
-    public final static String  spawnerRiverDesc          = "";
-    public static String        spawnerRiver              = "Silverfish, Creeper";
-    public final static String  spawnerJungleDesc         = "";
-    public static String        spawnerJungle             = "Skeleton, CaveSpider";
-    public final static String  spawnerIceBiomesDesc      = "";
-    public static String        spawnerIceBiomes          = "Zombie, Skeleton, Wolf";
-    public final static String  spawnerMushroomDesc       = "";
-    public static String        spawnerMushroom           = "MushroomCow";
-    public final static String  spawnerNearLavaDesc       = "If the dungeon is close enough to lava, the spawner will use these mobs:";
-    public static String        spawnerNearLava           = "Blaze, LavaSlime, WitherSkeleton, PigZombie";
+    private final static boolean enabledDefault               = true;
+    public static boolean        enabled                      = enabledDefault;
+    private final static boolean allowDebugLoggingDefault     = false;
+    public static boolean        allowDebugLogging            = allowDebugLoggingDefault;
+    private final static boolean allowInSuperFlatDefault      = false;
+    public static boolean        allowInSuperFlat             = allowInSuperFlatDefault;
+    private final static boolean allowMultiMobSpawnersDefault = true;
+    public static boolean        allowMultiMobSpawners        = allowMultiMobSpawnersDefault;
+    private final static boolean harderDungeonsDefault        = false;
+    public static boolean        harderDungeons               = harderDungeonsDefault;
+    private final static int     rarityDefault                = 800;
+    public static int            rarity                       = rarityDefault;
+    private final static int     rarityDungeonDefault         = 1;
+    public static int            rarityDungeon                = rarityDungeonDefault;
+    private final static int     heightMaxDefault             = 225;
+    public static int            heightMax                    = heightMaxDefault;
+    private final static int     heightMeanDefault            = 100;
+    public static int            heightMean                   = heightMeanDefault;
+    private final static int     heightMinDefault             = 80;
+    public static int            heightMin                    = heightMinDefault;
+    private final static int     heightNormDefault            = 3;
+    public static int            heightNorm                   = heightNormDefault;
+    private final static int     radiusMaxDefault             = 50;
+    public static int            radiusMax                    = radiusMaxDefault;
+    private final static int     radiusMeanDefault            = 10;
+    public static int            radiusMean                   = radiusMeanDefault;
+    private final static int     radiusMinDefault             = 7;
+    public static int            radiusMin                    = radiusMinDefault;
+    private final static int     radiusNormDefault            = 3;
+    public static int            radiusNorm                   = radiusNormDefault;
+    private final static int     depthMaxDefault              = 45;
+    public static int            depthMax                     = depthMaxDefault;
+    private final static int     depthMeanDefault             = 9;
+    public static int            depthMean                    = depthMeanDefault;
+    private final static int     depthMinDefault              = 5;
+    public static int            depthMin                     = depthMinDefault;
+    private final static int     depthNormDefault             = 3;
+    public static int            depthNorm                    = depthNormDefault;
+    private final static int     shapeSpheroidWeightDefault   = 21;
+    public static int            shapeSpheroidWeight          = shapeSpheroidWeightDefault;
+    private final static int     shapeConeWeightDefault       = 14;
+    public static int            shapeConeWeight              = shapeConeWeightDefault;
+    private final static int     shapeJetsonsWeightDefault    = 1;
+    public static int            shapeJetsonsWeight           = shapeJetsonsWeightDefault;
+    private final static int     shapeStalactiteWeightDefault = 0;
+    public static int            shapeStalactiteWeight        = shapeStalactiteWeightDefault;
+    private final static int     numberOfItemsDefault         = 4;
+    public static int            numberOfItems                = numberOfItemsDefault;
+    private final static String  blockIDBlacklistDefault;
+    public static String         blockIDBlacklist;
+    private final static String  dimensionIDBlacklistDefault  = "-1;1";
+    public static String         dimensionIDBlacklist         = dimensionIDBlacklistDefault;
+    private final static String  biomeIDBlacklistDefault      = "7;8;9;11;15;16;";
+    public static String         biomeIDBlacklist             = biomeIDBlacklistDefault;
+    private final static String  stringOfIdsDefault;
+    public static String         stringOfIds;
+    private final static String  spawnerDefaultDefault        = "Creeper, Skeleton, Zombie, CaveSpider";
+    public static String         spawnerDefault               = spawnerDefaultDefault;
+    private final static String  spawnerDesertDefault         = "WitherSkeleton, PigZombie, Blaze";
+    public static String         spawnerDesert                = spawnerDesertDefault;
+    private final static String  spawnerForestDefault         = "Witch, CaveSpider";
+    public static String         spawnerForest                = spawnerForestDefault;
+    private final static String  spawnerPlainsDefault         = "Spider, Zombie, Creeper";
+    public static String         spawnerPlains                = spawnerPlainsDefault;
+    private final static String  spawnerSwamplandDefault      = "Creeper, CaveSpider, Witch";
+    public static String         spawnerSwampland             = spawnerSwamplandDefault;
+    private final static String  spawnerTaigaDefault          = "Zombie, Creeper, Wolf";
+    public static String         spawnerTaiga                 = spawnerTaigaDefault;
+    private final static String  spawnerHillsDefault          = "Default";
+    public static String         spawnerHills                 = spawnerHillsDefault;
+    private final static String  spawnerOceanDefault          = "Silverfish, ChargedCreeper";
+    public static String         spawnerOcean                 = spawnerOceanDefault;
+    private final static String  spawnerRiverDefault          = "Silverfish, Creeper";
+    public static String         spawnerRiver                 = spawnerRiverDefault;
+    private final static String  spawnerJungleDefault         = "Skeleton, CaveSpider";
+    public static String         spawnerJungle                = spawnerJungleDefault;
+    private final static String  spawnerIceBiomesDefault      = "Zombie, Skeleton, Wolf";
+    public static String         spawnerIceBiomes             = spawnerIceBiomesDefault;
+    private final static String  spawnerMushroomDefault       = "MushroomCow";
+    public static String         spawnerMushroom              = spawnerMushroomDefault;
+    private final static String  spawnerNearLavaDefault       = "Blaze, LavaSlime, WitherSkeleton, PigZombie";
+    public static String         spawnerNearLava              = spawnerNearLavaDefault;
     
-    private static int          chunksToRetry             = 0;
+    private static int           chunksToRetry                = 0;
     
-    public static Configuration config;
+    public static Configuration  config;
+    
+    public static Configuration getConfig()
+    {
+        return config;
+    }
     
     static
     {
-        blockIDBlacklist = BlockHelper.getUniqueID(Blocks.bedrock) + ";";
-        stringOfIds = ItemHelper.getUniqueID(Items.arrow) + ", 10; " +
+        blockIDBlacklistDefault = BlockHelper.getUniqueID(Blocks.bedrock) + ";";
+        stringOfIdsDefault = ItemHelper.getUniqueID(Items.arrow) + ", 10; " +
                 ItemHelper.getUniqueID(Items.arrow) + ", 16; " +
                 ItemHelper.getUniqueID(Items.coal) + ", 6; " +
                 ItemHelper.getUniqueID(Items.diamond) + ", 1; " +
@@ -146,58 +153,67 @@ public final class FloatingRuins
                 ItemHelper.getUniqueID(Items.quartz) + ", 6; " +
                 ItemHelper.getUniqueID(Items.map) + ", 1; " +
                 BlockHelper.getUniqueID(Blocks.obsidian) + ", 4; " +
-                BlockHelper.getUniqueID(Blocks.ice) + ", 3; ";
+                BlockHelper.getUniqueID(Blocks.ice) + ", 3;";
         
     }
     
     public static void loadConfig(File file)
     {
-        String ctgyGen = Configuration.CATEGORY_GENERAL;
-        
         config = new Configuration(file);
+        
+        syncConfig();
+    }
+    
+    public static void syncConfig()
+    {
+        String ctgyGen = Configuration.CATEGORY_GENERAL;
         
         config.load();
         
-        allowDebugLogging = config.getBoolean("allowDebugLogging", ctgyGen, allowDebugLogging, allowDebugLoggingDesc);
-        allowInSuperFlat = config.getBoolean("allowInSuperFlat", ctgyGen, allowInSuperFlat, allowInSuperFlatDesc);
-        allowMultiMobSpawners = config.getBoolean("allowMultiMobSpawners", ctgyGen, allowMultiMobSpawners, allowMultiMobSpawnersDesc);
-        harderDungeons = config.getBoolean("harderDungeons", ctgyGen, harderDungeons, harderDungeonsDesc);
-        rarity = config.getInt("rarity", ctgyGen, rarity, 1, Integer.MAX_VALUE, rarityDesc);
-        rarityDungeon = config.getInt("rarityDungeon", ctgyGen, rarityDungeon, 1, Integer.MAX_VALUE, rarityDungeonDesc);
-        heightMean = config.getInt("heightMean", ctgyGen, heightMean, heightMin, heightMax, heightMeanDesc);
-        heightMin = config.getInt("heightMin", ctgyGen, heightMin, 80, heightMean, heightMinDesc);
-        heightMax = config.getInt("heightMax", ctgyGen, heightMax, heightMean, 240, heightMaxDesc);
-        heightNorm = config.getInt("heightNorm", ctgyGen, heightNorm, 1, 10, heightNormDesc);
-        radiusMean = config.getInt("radiusMean", ctgyGen, radiusMean, radiusMin, radiusMax, radiusMeanDesc);
-        radiusMax = config.getInt("radiusMax", ctgyGen, radiusMax, radiusMean, 50, radiusMaxDesc);
-        radiusMin = config.getInt("radiusMin", ctgyGen, radiusMin, 5, radiusMean, radiusMinDesc);
-        radiusNorm = config.getInt("radiusNorm", ctgyGen, radiusNorm, 1, 10, radiusNormDesc);
-        depthMean = config.getInt("depthMean", ctgyGen, depthMean, depthMin, depthMax, depthMeanDesc);
-        depthMin = config.getInt("depthMin", ctgyGen, depthMin, 5, depthMean, depthMinDesc);
-        depthMax = config.getInt("depthMax", ctgyGen, depthMax, depthMean, 45, depthMaxDesc);
-        depthNorm = config.getInt("depthNorm", ctgyGen, depthNorm, 1, 10, depthNormDesc);
-        shapeSpheroidWeight = config.getInt("shapeSpheroidWeight", ctgyGen, shapeSpheroidWeight, 0, Integer.MAX_VALUE, shapeSpheroidWeightDesc);
-        shapeConeWeight = config.getInt("shapeConeWeight", ctgyGen, shapeConeWeight, 0, Integer.MAX_VALUE, shapeConeWeightDesc);
-        shapeJetsonsWeight = config.getInt("shapeJetsonsWeight", ctgyGen, shapeJetsonsWeight, 0, Integer.MAX_VALUE, shapeJetsonsWeightDesc);
+        config.addCustomCategoryComment(ctgyGen, "ATTENTION: Editing this file manually is no longer necessary. \n" +
+                "On the Mods list screen select the entry for FloatingRuins, then click the Config button to modify these settings.");
+        
+        enabled = config.getBoolean(ConfigElement.ENABLED.key(), ctgyGen, enabledDefault, ConfigElement.ENABLED.desc(), ConfigElement.ENABLED.languageKey());
+        allowDebugLogging = config.getBoolean(ConfigElement.ALLOW_DEBUG_LOGGING.key(), ctgyGen, allowDebugLoggingDefault, ConfigElement.ALLOW_DEBUG_LOGGING.desc(), ConfigElement.ALLOW_DEBUG_LOGGING.languageKey());
+        allowInSuperFlat = config.getBoolean(ConfigElement.ALLOW_IN_SUPERFLAT.key(), ctgyGen, allowInSuperFlatDefault, ConfigElement.ALLOW_IN_SUPERFLAT.desc(), ConfigElement.ALLOW_IN_SUPERFLAT.languageKey());
+        allowMultiMobSpawners = config.getBoolean(ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.key(), ctgyGen, allowMultiMobSpawnersDefault, ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.desc(), ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.languageKey());
+        harderDungeons = config.getBoolean(ConfigElement.HARDER_DUNGEONS.key(), ctgyGen, harderDungeonsDefault, ConfigElement.HARDER_DUNGEONS.desc(), ConfigElement.HARDER_DUNGEONS.languageKey());
+        rarity = config.getInt(ConfigElement.RARITY.key(), ctgyGen, rarityDefault, 1, Integer.MAX_VALUE, ConfigElement.RARITY.desc(), ConfigElement.RARITY.languageKey());
+        rarityDungeon = config.getInt(ConfigElement.RARITY_DUNGEON.key(), ctgyGen, rarityDungeonDefault, 1, Integer.MAX_VALUE, ConfigElement.RARITY_DUNGEON.desc(), ConfigElement.RARITY_DUNGEON.languageKey());
+        heightMean = config.getInt(ConfigElement.HEIGHT_MEAN.key(), ctgyGen, heightMeanDefault, heightMin, heightMax, ConfigElement.HEIGHT_MEAN.desc(), ConfigElement.HEIGHT_MEAN.languageKey());
+        heightMin = config.getInt(ConfigElement.HEIGHT_MIN.key(), ctgyGen, heightMinDefault, 80, heightMean, ConfigElement.HEIGHT_MIN.desc(), ConfigElement.HEIGHT_MIN.languageKey());
+        heightMax = config.getInt(ConfigElement.HEIGHT_MAX.key(), ctgyGen, heightMaxDefault, heightMean, 240, ConfigElement.HEIGHT_MAX.desc(), ConfigElement.HEIGHT_MAX.languageKey());
+        heightNorm = config.getInt(ConfigElement.HEIGHT_NORM.key(), ctgyGen, heightNormDefault, 1, 10, ConfigElement.HEIGHT_NORM.desc(), ConfigElement.HEIGHT_NORM.languageKey());
+        radiusMean = config.getInt(ConfigElement.RADIUS_MEAN.key(), ctgyGen, radiusMeanDefault, radiusMin, radiusMax, ConfigElement.RADIUS_MEAN.desc(), ConfigElement.RADIUS_MEAN.languageKey());
+        radiusMax = config.getInt(ConfigElement.RADIUS_MAX.key(), ctgyGen, radiusMaxDefault, radiusMean, 50, ConfigElement.RADIUS_MAX.desc(), ConfigElement.RADIUS_MAX.languageKey());
+        radiusMin = config.getInt(ConfigElement.RADIUS_MIN.key(), ctgyGen, radiusMinDefault, 5, radiusMean, ConfigElement.RADIUS_MIN.desc(), ConfigElement.RADIUS_MIN.languageKey());
+        radiusNorm = config.getInt(ConfigElement.RADIUS_NORM.key(), ctgyGen, radiusNormDefault, 1, 10, ConfigElement.RADIUS_NORM.desc(), ConfigElement.RADIUS_NORM.languageKey());
+        depthMean = config.getInt(ConfigElement.DEPTH_MEAN.key(), ctgyGen, depthMeanDefault, depthMin, depthMax, ConfigElement.DEPTH_MEAN.desc(), ConfigElement.DEPTH_MEAN.languageKey());
+        depthMin = config.getInt(ConfigElement.DEPTH_MIN.key(), ctgyGen, depthMinDefault, 5, depthMean, ConfigElement.DEPTH_MIN.desc(), ConfigElement.DEPTH_MIN.languageKey());
+        depthMax = config.getInt(ConfigElement.DEPTH_MAX.key(), ctgyGen, depthMaxDefault, depthMean, 45, ConfigElement.DEPTH_MAX.desc(), ConfigElement.DEPTH_MAX.languageKey());
+        depthNorm = config.getInt(ConfigElement.DEPTH_NORM.key(), ctgyGen, depthNormDefault, 1, 10, ConfigElement.DEPTH_NORM.desc(), ConfigElement.DEPTH_NORM.languageKey());
+        shapeSpheroidWeight = config.getInt(ConfigElement.SHAPE_SPHEROID_WEIGHT.key(), ctgyGen, shapeSpheroidWeightDefault, 0, Integer.MAX_VALUE, ConfigElement.SHAPE_SPHEROID_WEIGHT.desc(), ConfigElement.SHAPE_SPHEROID_WEIGHT.languageKey());
+        shapeConeWeight = config.getInt(ConfigElement.SHAPE_CONE_WEIGHT.key(), ctgyGen, shapeConeWeightDefault, 0, Integer.MAX_VALUE, ConfigElement.SHAPE_CONE_WEIGHT.desc(), ConfigElement.SHAPE_CONE_WEIGHT.languageKey());
+        shapeJetsonsWeight = config.getInt(ConfigElement.SHAPE_JETSONS_WEIGHT.key(), ctgyGen, shapeJetsonsWeightDefault, 0, Integer.MAX_VALUE, ConfigElement.SHAPE_JETSONS_WEIGHT.desc(), ConfigElement.SHAPE_JETSONS_WEIGHT.languageKey());
         // shapeStalactiteWeight = config.getInt("shapeStalactiteWeight", ctgyGen, shapeStalactiteWeight, 0, 0, shapeStalactiteWeightDesc);
-        numberOfItems = config.getInt("numberOfItems", ctgyGen, numberOfItems, 1, 27, numberOfItemsDesc);
-        stringOfIds = config.getString("stringOfIds", ctgyGen, stringOfIds, stringOfIdsDesc);
-        blockIDBlacklist = config.getString("blockIDBlacklist", ctgyGen, blockIDBlacklist, blockIDBlacklistDesc);
-        dimensionIDBlacklist = config.getString("dimensionIDBlacklist", ctgyGen, dimensionIDBlacklist, dimensionIDBlacklistDesc);
-        biomeIDBlacklist = config.getString("biomeIDBlacklist", ctgyGen, biomeIDBlacklist, biomeIDBlacklistDesc);
-        spawnerDefault = config.getString("spawnerDefault", ctgyGen, spawnerDefault, spawnerDefaultDesc);
-        spawnerDesert = config.getString("spawnerDesert", ctgyGen, spawnerDesert, spawnerDesertDesc);
-        spawnerForest = config.getString("spawnerForest", ctgyGen, spawnerForest, spawnerForestDesc);
-        spawnerHills = config.getString("spawnerHills", ctgyGen, spawnerHills, spawnerHillsDesc);
-        spawnerIceBiomes = config.getString("spawnerIceBiomes", ctgyGen, spawnerIceBiomes, spawnerIceBiomesDesc);
-        spawnerJungle = config.getString("spawnerJungle", ctgyGen, spawnerJungle, spawnerJungleDesc);
-        spawnerMushroom = config.getString("spawnerMushroom", ctgyGen, spawnerMushroom, spawnerMushroomDesc);
-        spawnerOcean = config.getString("spawnerOcean", ctgyGen, spawnerOcean, spawnerOceanDesc);
-        spawnerPlains = config.getString("spawnerPlains", ctgyGen, spawnerPlains, spawnerPlainsDesc);
-        spawnerRiver = config.getString("spawnerRiver", ctgyGen, spawnerRiver, spawnerRiverDesc);
-        spawnerSwampland = config.getString("spawnerSwampland", ctgyGen, spawnerSwampland, spawnerSwamplandDesc);
-        spawnerTaiga = config.getString("spawnerTaiga", ctgyGen, spawnerTaiga, spawnerTaigaDesc);
-        spawnerNearLava = config.getString("spawnerNearLava", ctgyGen, spawnerNearLava, spawnerNearLavaDesc);
+        numberOfItems = config.getInt(ConfigElement.NUMBER_OF_ITEMS.key(), ctgyGen, numberOfItemsDefault, 1, 27, ConfigElement.NUMBER_OF_ITEMS.desc(), ConfigElement.NUMBER_OF_ITEMS.languageKey());
+        stringOfIds = config.getString(ConfigElement.STRING_OF_IDS.key(), ctgyGen, stringOfIdsDefault, ConfigElement.STRING_OF_IDS.desc(), ConfigElement.STRING_OF_IDS.languageKey());
+        blockIDBlacklist = config.getString(ConfigElement.BLOCK_ID_BLACKLIST.key(), ctgyGen, blockIDBlacklistDefault, ConfigElement.BLOCK_ID_BLACKLIST.desc(), ConfigElement.BLOCK_ID_BLACKLIST.languageKey());
+        dimensionIDBlacklist = config.getString(ConfigElement.DIMENSION_ID_BLACKLIST.key(), ctgyGen, dimensionIDBlacklistDefault, ConfigElement.DIMENSION_ID_BLACKLIST.desc(), ConfigElement.DIMENSION_ID_BLACKLIST.languageKey());
+        biomeIDBlacklist = config.getString(ConfigElement.BIOME_ID_BLACKLIST.key(), ctgyGen, biomeIDBlacklistDefault, ConfigElement.BIOME_ID_BLACKLIST.desc(), ConfigElement.BIOME_ID_BLACKLIST.languageKey());
+        spawnerDefault = config.getString(ConfigElement.SPAWNER_DEFAULT.key(), ctgyGen, spawnerDefaultDefault, ConfigElement.SPAWNER_DEFAULT.desc(), ConfigElement.SPAWNER_DEFAULT.languageKey());
+        spawnerDesert = config.getString(ConfigElement.SPAWNER_DESERT.key(), ctgyGen, spawnerDesertDefault, ConfigElement.SPAWNER_DESERT.desc(), ConfigElement.SPAWNER_DESERT.languageKey());
+        spawnerForest = config.getString(ConfigElement.SPAWNER_FOREST.key(), ctgyGen, spawnerForestDefault, ConfigElement.SPAWNER_FOREST.desc(), ConfigElement.SPAWNER_FOREST.languageKey());
+        spawnerHills = config.getString(ConfigElement.SPAWNER_HILLS.key(), ctgyGen, spawnerHillsDefault, ConfigElement.SPAWNER_HILLS.desc(), ConfigElement.SPAWNER_HILLS.languageKey());
+        spawnerIceBiomes = config.getString(ConfigElement.SPAWNER_ICE_BIOMES.key(), ctgyGen, spawnerIceBiomesDefault, ConfigElement.SPAWNER_ICE_BIOMES.desc(), ConfigElement.SPAWNER_ICE_BIOMES.languageKey());
+        spawnerJungle = config.getString(ConfigElement.SPAWNER_JUNGLE.key(), ctgyGen, spawnerJungleDefault, ConfigElement.SPAWNER_JUNGLE.desc(), ConfigElement.SPAWNER_JUNGLE.languageKey());
+        spawnerMushroom = config.getString(ConfigElement.SPAWNER_MUSHROOM.key(), ctgyGen, spawnerMushroomDefault, ConfigElement.SPAWNER_MUSHROOM.desc(), ConfigElement.SPAWNER_MUSHROOM.languageKey());
+        spawnerOcean = config.getString(ConfigElement.SPAWNER_OCEAN.key(), ctgyGen, spawnerOceanDefault, ConfigElement.SPAWNER_OCEAN.desc(), ConfigElement.SPAWNER_OCEAN.languageKey());
+        spawnerPlains = config.getString(ConfigElement.SPAWNER_PLAINS.key(), ctgyGen, spawnerPlainsDefault, ConfigElement.SPAWNER_PLAINS.desc(), ConfigElement.SPAWNER_PLAINS.languageKey());
+        spawnerRiver = config.getString(ConfigElement.SPAWNER_RIVER.key(), ctgyGen, spawnerRiverDefault, ConfigElement.SPAWNER_RIVER.desc(), ConfigElement.SPAWNER_RIVER.languageKey());
+        spawnerSwampland = config.getString(ConfigElement.SPAWNER_SWAMPLAND.key(), ctgyGen, spawnerSwamplandDefault, ConfigElement.SPAWNER_SWAMPLAND.desc(), ConfigElement.SPAWNER_SWAMPLAND.languageKey());
+        spawnerTaiga = config.getString(ConfigElement.SPAWNER_TAIGA.key(), ctgyGen, spawnerTaigaDefault, ConfigElement.SPAWNER_TAIGA.desc(), ConfigElement.SPAWNER_TAIGA.languageKey());
+        spawnerNearLava = config.getString(ConfigElement.SPAWNER_NEAR_LAVA.key(), ctgyGen, spawnerNearLavaDefault, ConfigElement.SPAWNER_NEAR_LAVA.desc(), ConfigElement.SPAWNER_NEAR_LAVA.languageKey());
         
         config.save();
     }
