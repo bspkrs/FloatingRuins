@@ -1,3 +1,6 @@
+1.7.2.r03 - 18-Apr-2014
+- added config GUI
+- added tooltip localizations
 1.7.2.r02 - 28-Jan-2014
 - fixed shape code to produce same shapes as before
 - toyed with default settings some
