@@ -63,8 +63,9 @@ public class FloatingRuinsMod
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        // fuck it... hopefully a million is high enough to be last?
+        // hopefully a million is high enough to be last?
         GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator(), 1000000);
+        
         proxy.registerTickHandler();
         
         if (bspkrsCoreMod.instance.allowUpdateCheck)

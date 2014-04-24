@@ -93,17 +93,18 @@ public class WorldGenFloatingIsland extends WorldGenerator
     public boolean isTgtCoordReplaceable(World world, Coord tgt,
             boolean allowNonAirSpecialBlocks)
     {
-        return tgt.isAirBlock(world)
+        return tgt.chunkExists(world) && (tgt.isAirBlock(world)
                 || (allowNonAirSpecialBlocks && tgt.getBlock(world).equals(Blocks.water))
                 || (allowNonAirSpecialBlocks && !tgt.isBlockOpaqueCube(world))
                 || (allowNonAirSpecialBlocks && tgt.isWood(world))
-                || (allowNonAirSpecialBlocks && tgt.isLeaves(world));
+                || (allowNonAirSpecialBlocks && tgt.isLeaves(world)));
     }
     
     private boolean genIsland(World world, int radius, int xIn, int yIn, int zIn)
     {
         int blocksMoved = 0;
         int groundBlocksMoved = 0;
+        int blockNotifications = 0;
         float range;
         float sqrRange;
         String debug = "Floating Island: ";
@@ -160,7 +161,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                     Coord src = srcOrigin.add(delta);
                     if (!src.isAirBlock(world)
                             //&& ((CommonUtils.sqr(x) + CommonUtils.sqr(z)) <= sqrRange))
-                            && isBlockInRange(islandType, world, x, y, z, depth, radius))
+                            && isBlockInRange(islandType, world, delta, depth, radius))
                     {
                         
                         Block block = src.getBlock(world);
@@ -181,7 +182,17 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                 debug += "+L ";
                             }
                             
-                            Coord.moveBlock(world, src, tgt, true);
+                            if (y >= 0 || !isBlockInRange(islandType, world, delta.getAdjacentCoord(ForgeDirection.DOWN), depth, radius)
+                                    || !isBlockInRange(islandType, world, delta.getAdjacentCoord(ForgeDirection.NORTH), depth, radius)
+                                    || !isBlockInRange(islandType, world, delta.getAdjacentCoord(ForgeDirection.SOUTH), depth, radius)
+                                    || !isBlockInRange(islandType, world, delta.getAdjacentCoord(ForgeDirection.EAST), depth, radius)
+                                    || !isBlockInRange(islandType, world, delta.getAdjacentCoord(ForgeDirection.WEST), depth, radius))
+                            {
+                                Coord.moveBlock(world, src, tgt, true);
+                                blockNotifications++;
+                            }
+                            else
+                                Coord.moveBlock(world, src, tgt, true, BlockNotifyType.NONE);
                             
                             if (y <= 0)
                                 groundBlocksMoved++;
@@ -211,38 +222,39 @@ public class WorldGenFloatingIsland extends WorldGenerator
                                 WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.sandstone, 0, BlockNotifyType.ALL);
                 }
         
-        debug += "Blocks Moved: " + blocksMoved + " (" + groundBlocksMoved + " at or below origin)";
+        debug += "Blocks Moved: " + blocksMoved + " (" + groundBlocksMoved + " at or below origin, " + blockNotifications + " block notifications)";
         
         FloatingRuins.debug(debug);
         return true;
     }
     
-    private boolean isBlockInRange(int islandType, World world, int x, int y, int z, int depth, int radius)
+    private boolean isBlockInRange(int islandType, World world, Coord delta, int depth, int radius)
     {
         float depthRatio = (float) depth / (float) radius;
-        float distToCenterColumn = Math.round(Math.sqrt(CommonUtils.sqr(x) + CommonUtils.sqr(z)));
-        float distToOrigin = Math.round(Math.sqrt(CommonUtils.sqr(x) + CommonUtils.sqr(z) + (y > 10 ? -2.0D : y > 5 ? -1.0D : y > 0 ? 0.0D : CommonUtils.sqr(y / depthRatio))));
+        float distToCenterColumn = Math.round(Math.sqrt(CommonUtils.sqr(delta.x) + CommonUtils.sqr(delta.z)));
+        float distToOrigin = Math.round(Math.sqrt(CommonUtils.sqr(delta.x) + CommonUtils.sqr(delta.z) + (delta.y > 10 ? -2.0D : delta.y > 5 ? -1.0D :
+                delta.y > 0 ? 0.0D : CommonUtils.sqr(delta.y / depthRatio))));
         
         if (islandType == CONE)
         {
-            if (y >= -1)
-                return distToCenterColumn <= radius + (y > 9 ? 3.5D : (y > 5 ? 2.5D : (y > 1 ? 1.5D : 0)));
+            if (delta.y >= -1)
+                return distToCenterColumn <= radius + (delta.y > 9 ? 3.5D : (delta.y > 5 ? 2.5D : (delta.y > 1 ? 1.5D : 0)));
             else
-                return distToCenterColumn <= (1.0F - Math.abs((y + 1.0F) / (depth - 1.0F))) * radius;
+                return distToCenterColumn <= (1.0F - Math.abs((delta.y + 1.0F) / (depth - 1.0F))) * radius;
         }
         else if (islandType == JETSONS)
         {
-            float jetDist = (((float) depth / Math.abs(y)) - 1.0F);
-            return distToCenterColumn <= (y >= -1 ? radius : y == -2 ? Math.min(Math.ceil(radius * 0.9F), jetDist) : y == -3 ? Math.min(Math.ceil(radius * 0.8F), jetDist) : jetDist);
+            float jetDist = (((float) depth / Math.abs(delta.y)) - 1.0F);
+            return distToCenterColumn <= (delta.y >= -1 ? radius : delta.y == -2 ? Math.min(Math.ceil(radius * 0.9F), jetDist) : delta.y == -3 ? Math.min(Math.ceil(radius * 0.8F), jetDist) : jetDist);
         }
         else if (islandType == STALACTITE)
         {
-            if (y >= -2)
+            if (delta.y >= -2)
                 return distToCenterColumn <= radius;
-            else if (Math.abs(y) <= depth * 0.4F)
+            else if (Math.abs(delta.y) <= depth * 0.4F)
                 return distToOrigin <= radius;
-            else if ((new Random((x + z) / (z == 0 ? 1 : z))).nextInt(Math
-                    .abs(x * z)) == 0)
+            else if ((new Random((delta.x + delta.z) / (delta.z == 0 ? 1 : delta.z))).nextInt(Math
+                    .abs(delta.x * delta.z)) == 0)
                 return distToOrigin <= radius;
             else
                 return false;

@@ -21,7 +21,7 @@ import bspkrs.util.config.Configuration;
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String   VERSION_NUMBER               = Const.MCVERSION + ".r03";
+    public final static String   VERSION_NUMBER               = Const.MCVERSION + ".r04";
     
     private final static boolean enabledDefault               = true;
     public static boolean        enabled                      = enabledDefault;
