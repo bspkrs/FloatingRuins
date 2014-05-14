@@ -19,7 +19,7 @@ public class DelayedWorldGenTicker
     
     public DelayedWorldGenTicker(int delayTicks, World world, Random random, int x, int z)
     {
-        this.delayTicks = delayTicks;
+        this.delayTicks = Math.max(delayTicks, 1);
         this.world = world;
         this.random = random;
         this.x = x;
@@ -33,7 +33,7 @@ public class DelayedWorldGenTicker
         if (event.phase.equals(Phase.START))
             return;
         
-        if (--delayTicks <= 0)
+        if (--delayTicks == 0)
         {
             FloatingRuins.generateSurface(world, random, x, z, true);
             FMLCommonHandler.instance().bus().unregister(this);

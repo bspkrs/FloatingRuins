@@ -10,10 +10,10 @@ import net.minecraft.village.Village;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.common.util.ForgeDirection;
+import bspkrs.floatingruins.fml.Reference;
 import bspkrs.helpers.block.BlockHelper;
 import bspkrs.helpers.item.ItemHelper;
 import bspkrs.util.CommonUtils;
-import bspkrs.util.Const;
 import bspkrs.util.Coord;
 import bspkrs.util.config.Configuration;
 
@@ -21,8 +21,6 @@ import bspkrs.util.config.Configuration;
 // 1470679938 (large biomes)
 public final class FloatingRuins
 {
-    public final static String   VERSION_NUMBER               = Const.MCVERSION + ".r04";
-    
     private final static boolean enabledDefault               = true;
     public static boolean        enabled                      = enabledDefault;
     private final static boolean allowDebugLoggingDefault     = false;
@@ -108,13 +106,6 @@ public final class FloatingRuins
     
     private static int           chunksToRetry                = 0;
     
-    public static Configuration  config;
-    
-    public static Configuration getConfig()
-    {
-        return config;
-    }
-    
     static
     {
         blockIDBlacklistDefault = BlockHelper.getUniqueID(Blocks.bedrock) + ";";
@@ -157,9 +148,9 @@ public final class FloatingRuins
         
     }
     
-    public static void loadConfig(File file)
+    public static void initConfig(File file)
     {
-        config = new Configuration(file);
+        Reference.config = new Configuration(file);
         
         syncConfig();
     }
@@ -168,54 +159,54 @@ public final class FloatingRuins
     {
         String ctgyGen = Configuration.CATEGORY_GENERAL;
         
-        config.load();
+        Reference.config.load();
         
-        config.addCustomCategoryComment(ctgyGen, "ATTENTION: Editing this file manually is no longer necessary. \n" +
+        Reference.config.addCustomCategoryComment(ctgyGen, "ATTENTION: Editing this file manually is no longer necessary. \n" +
                 "On the Mods list screen select the entry for FloatingRuins, then click the Config button to modify these settings.");
         
-        enabled = config.getBoolean(ConfigElement.ENABLED.key(), ctgyGen, enabledDefault, ConfigElement.ENABLED.desc(), ConfigElement.ENABLED.languageKey());
-        allowDebugLogging = config.getBoolean(ConfigElement.ALLOW_DEBUG_LOGGING.key(), ctgyGen, allowDebugLoggingDefault, ConfigElement.ALLOW_DEBUG_LOGGING.desc(), ConfigElement.ALLOW_DEBUG_LOGGING.languageKey());
-        allowInSuperFlat = config.getBoolean(ConfigElement.ALLOW_IN_SUPERFLAT.key(), ctgyGen, allowInSuperFlatDefault, ConfigElement.ALLOW_IN_SUPERFLAT.desc(), ConfigElement.ALLOW_IN_SUPERFLAT.languageKey());
-        allowMultiMobSpawners = config.getBoolean(ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.key(), ctgyGen, allowMultiMobSpawnersDefault, ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.desc(), ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.languageKey());
-        harderDungeons = config.getBoolean(ConfigElement.HARDER_DUNGEONS.key(), ctgyGen, harderDungeonsDefault, ConfigElement.HARDER_DUNGEONS.desc(), ConfigElement.HARDER_DUNGEONS.languageKey());
-        rarity = config.getInt(ConfigElement.RARITY.key(), ctgyGen, rarityDefault, 1, Integer.MAX_VALUE, ConfigElement.RARITY.desc(), ConfigElement.RARITY.languageKey());
-        rarityDungeon = config.getInt(ConfigElement.RARITY_DUNGEON.key(), ctgyGen, rarityDungeonDefault, 1, Integer.MAX_VALUE, ConfigElement.RARITY_DUNGEON.desc(), ConfigElement.RARITY_DUNGEON.languageKey());
-        heightMean = config.getInt(ConfigElement.HEIGHT_MEAN.key(), ctgyGen, heightMeanDefault, heightMin, heightMax, ConfigElement.HEIGHT_MEAN.desc(), ConfigElement.HEIGHT_MEAN.languageKey());
-        heightMin = config.getInt(ConfigElement.HEIGHT_MIN.key(), ctgyGen, heightMinDefault, 80, heightMean, ConfigElement.HEIGHT_MIN.desc(), ConfigElement.HEIGHT_MIN.languageKey());
-        heightMax = config.getInt(ConfigElement.HEIGHT_MAX.key(), ctgyGen, heightMaxDefault, heightMean, 240, ConfigElement.HEIGHT_MAX.desc(), ConfigElement.HEIGHT_MAX.languageKey());
-        heightNorm = config.getInt(ConfigElement.HEIGHT_NORM.key(), ctgyGen, heightNormDefault, 1, 10, ConfigElement.HEIGHT_NORM.desc(), ConfigElement.HEIGHT_NORM.languageKey());
-        radiusMean = config.getInt(ConfigElement.RADIUS_MEAN.key(), ctgyGen, radiusMeanDefault, radiusMin, radiusMax, ConfigElement.RADIUS_MEAN.desc(), ConfigElement.RADIUS_MEAN.languageKey());
-        radiusMax = config.getInt(ConfigElement.RADIUS_MAX.key(), ctgyGen, radiusMaxDefault, radiusMean, 50, ConfigElement.RADIUS_MAX.desc(), ConfigElement.RADIUS_MAX.languageKey());
-        radiusMin = config.getInt(ConfigElement.RADIUS_MIN.key(), ctgyGen, radiusMinDefault, 5, radiusMean, ConfigElement.RADIUS_MIN.desc(), ConfigElement.RADIUS_MIN.languageKey());
-        radiusNorm = config.getInt(ConfigElement.RADIUS_NORM.key(), ctgyGen, radiusNormDefault, 1, 10, ConfigElement.RADIUS_NORM.desc(), ConfigElement.RADIUS_NORM.languageKey());
-        depthMean = config.getInt(ConfigElement.DEPTH_MEAN.key(), ctgyGen, depthMeanDefault, depthMin, depthMax, ConfigElement.DEPTH_MEAN.desc(), ConfigElement.DEPTH_MEAN.languageKey());
-        depthMin = config.getInt(ConfigElement.DEPTH_MIN.key(), ctgyGen, depthMinDefault, 5, depthMean, ConfigElement.DEPTH_MIN.desc(), ConfigElement.DEPTH_MIN.languageKey());
-        depthMax = config.getInt(ConfigElement.DEPTH_MAX.key(), ctgyGen, depthMaxDefault, depthMean, 45, ConfigElement.DEPTH_MAX.desc(), ConfigElement.DEPTH_MAX.languageKey());
-        depthNorm = config.getInt(ConfigElement.DEPTH_NORM.key(), ctgyGen, depthNormDefault, 1, 10, ConfigElement.DEPTH_NORM.desc(), ConfigElement.DEPTH_NORM.languageKey());
-        shapeSpheroidWeight = config.getInt(ConfigElement.SHAPE_SPHEROID_WEIGHT.key(), ctgyGen, shapeSpheroidWeightDefault, 0, Integer.MAX_VALUE, ConfigElement.SHAPE_SPHEROID_WEIGHT.desc(), ConfigElement.SHAPE_SPHEROID_WEIGHT.languageKey());
-        shapeConeWeight = config.getInt(ConfigElement.SHAPE_CONE_WEIGHT.key(), ctgyGen, shapeConeWeightDefault, 0, Integer.MAX_VALUE, ConfigElement.SHAPE_CONE_WEIGHT.desc(), ConfigElement.SHAPE_CONE_WEIGHT.languageKey());
-        shapeJetsonsWeight = config.getInt(ConfigElement.SHAPE_JETSONS_WEIGHT.key(), ctgyGen, shapeJetsonsWeightDefault, 0, Integer.MAX_VALUE, ConfigElement.SHAPE_JETSONS_WEIGHT.desc(), ConfigElement.SHAPE_JETSONS_WEIGHT.languageKey());
-        // shapeStalactiteWeight = config.getInt("shapeStalactiteWeight", ctgyGen, shapeStalactiteWeight, 0, 0, shapeStalactiteWeightDesc);
-        numberOfItems = config.getInt(ConfigElement.NUMBER_OF_ITEMS.key(), ctgyGen, numberOfItemsDefault, 1, 27, ConfigElement.NUMBER_OF_ITEMS.desc(), ConfigElement.NUMBER_OF_ITEMS.languageKey());
-        stringOfIds = config.getString(ConfigElement.STRING_OF_IDS.key(), ctgyGen, stringOfIdsDefault, ConfigElement.STRING_OF_IDS.desc(), ConfigElement.STRING_OF_IDS.languageKey());
-        blockIDBlacklist = config.getString(ConfigElement.BLOCK_ID_BLACKLIST.key(), ctgyGen, blockIDBlacklistDefault, ConfigElement.BLOCK_ID_BLACKLIST.desc(), ConfigElement.BLOCK_ID_BLACKLIST.languageKey());
-        dimensionIDBlacklist = config.getString(ConfigElement.DIMENSION_ID_BLACKLIST.key(), ctgyGen, dimensionIDBlacklistDefault, ConfigElement.DIMENSION_ID_BLACKLIST.desc(), ConfigElement.DIMENSION_ID_BLACKLIST.languageKey());
-        biomeIDBlacklist = config.getString(ConfigElement.BIOME_ID_BLACKLIST.key(), ctgyGen, biomeIDBlacklistDefault, ConfigElement.BIOME_ID_BLACKLIST.desc(), ConfigElement.BIOME_ID_BLACKLIST.languageKey());
-        spawnerDefault = config.getString(ConfigElement.SPAWNER_DEFAULT.key(), ctgyGen, spawnerDefaultDefault, ConfigElement.SPAWNER_DEFAULT.desc(), ConfigElement.SPAWNER_DEFAULT.languageKey());
-        spawnerDesert = config.getString(ConfigElement.SPAWNER_DESERT.key(), ctgyGen, spawnerDesertDefault, ConfigElement.SPAWNER_DESERT.desc(), ConfigElement.SPAWNER_DESERT.languageKey());
-        spawnerForest = config.getString(ConfigElement.SPAWNER_FOREST.key(), ctgyGen, spawnerForestDefault, ConfigElement.SPAWNER_FOREST.desc(), ConfigElement.SPAWNER_FOREST.languageKey());
-        spawnerHills = config.getString(ConfigElement.SPAWNER_HILLS.key(), ctgyGen, spawnerHillsDefault, ConfigElement.SPAWNER_HILLS.desc(), ConfigElement.SPAWNER_HILLS.languageKey());
-        spawnerIceBiomes = config.getString(ConfigElement.SPAWNER_ICE_BIOMES.key(), ctgyGen, spawnerIceBiomesDefault, ConfigElement.SPAWNER_ICE_BIOMES.desc(), ConfigElement.SPAWNER_ICE_BIOMES.languageKey());
-        spawnerJungle = config.getString(ConfigElement.SPAWNER_JUNGLE.key(), ctgyGen, spawnerJungleDefault, ConfigElement.SPAWNER_JUNGLE.desc(), ConfigElement.SPAWNER_JUNGLE.languageKey());
-        spawnerMushroom = config.getString(ConfigElement.SPAWNER_MUSHROOM.key(), ctgyGen, spawnerMushroomDefault, ConfigElement.SPAWNER_MUSHROOM.desc(), ConfigElement.SPAWNER_MUSHROOM.languageKey());
-        spawnerOcean = config.getString(ConfigElement.SPAWNER_OCEAN.key(), ctgyGen, spawnerOceanDefault, ConfigElement.SPAWNER_OCEAN.desc(), ConfigElement.SPAWNER_OCEAN.languageKey());
-        spawnerPlains = config.getString(ConfigElement.SPAWNER_PLAINS.key(), ctgyGen, spawnerPlainsDefault, ConfigElement.SPAWNER_PLAINS.desc(), ConfigElement.SPAWNER_PLAINS.languageKey());
-        spawnerRiver = config.getString(ConfigElement.SPAWNER_RIVER.key(), ctgyGen, spawnerRiverDefault, ConfigElement.SPAWNER_RIVER.desc(), ConfigElement.SPAWNER_RIVER.languageKey());
-        spawnerSwampland = config.getString(ConfigElement.SPAWNER_SWAMPLAND.key(), ctgyGen, spawnerSwamplandDefault, ConfigElement.SPAWNER_SWAMPLAND.desc(), ConfigElement.SPAWNER_SWAMPLAND.languageKey());
-        spawnerTaiga = config.getString(ConfigElement.SPAWNER_TAIGA.key(), ctgyGen, spawnerTaigaDefault, ConfigElement.SPAWNER_TAIGA.desc(), ConfigElement.SPAWNER_TAIGA.languageKey());
-        spawnerNearLava = config.getString(ConfigElement.SPAWNER_NEAR_LAVA.key(), ctgyGen, spawnerNearLavaDefault, ConfigElement.SPAWNER_NEAR_LAVA.desc(), ConfigElement.SPAWNER_NEAR_LAVA.languageKey());
+        enabled = Reference.config.getBoolean(ConfigElement.ENABLED.key(), ctgyGen, enabledDefault, ConfigElement.ENABLED.desc(), ConfigElement.ENABLED.languageKey());
+        allowDebugLogging = Reference.config.getBoolean(ConfigElement.ALLOW_DEBUG_LOGGING.key(), ctgyGen, allowDebugLoggingDefault, ConfigElement.ALLOW_DEBUG_LOGGING.desc(), ConfigElement.ALLOW_DEBUG_LOGGING.languageKey());
+        allowInSuperFlat = Reference.config.getBoolean(ConfigElement.ALLOW_IN_SUPERFLAT.key(), ctgyGen, allowInSuperFlatDefault, ConfigElement.ALLOW_IN_SUPERFLAT.desc(), ConfigElement.ALLOW_IN_SUPERFLAT.languageKey());
+        allowMultiMobSpawners = Reference.config.getBoolean(ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.key(), ctgyGen, allowMultiMobSpawnersDefault, ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.desc(), ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.languageKey());
+        harderDungeons = Reference.config.getBoolean(ConfigElement.HARDER_DUNGEONS.key(), ctgyGen, harderDungeonsDefault, ConfigElement.HARDER_DUNGEONS.desc(), ConfigElement.HARDER_DUNGEONS.languageKey());
+        rarity = Reference.config.getInt(ConfigElement.RARITY.key(), ctgyGen, rarityDefault, 1, Integer.MAX_VALUE, ConfigElement.RARITY.desc(), ConfigElement.RARITY.languageKey());
+        rarityDungeon = Reference.config.getInt(ConfigElement.RARITY_DUNGEON.key(), ctgyGen, rarityDungeonDefault, 1, Integer.MAX_VALUE, ConfigElement.RARITY_DUNGEON.desc(), ConfigElement.RARITY_DUNGEON.languageKey());
+        heightMean = Reference.config.getInt(ConfigElement.HEIGHT_MEAN.key(), ctgyGen, heightMeanDefault, heightMin, heightMax, ConfigElement.HEIGHT_MEAN.desc(), ConfigElement.HEIGHT_MEAN.languageKey());
+        heightMin = Reference.config.getInt(ConfigElement.HEIGHT_MIN.key(), ctgyGen, heightMinDefault, 80, heightMean, ConfigElement.HEIGHT_MIN.desc(), ConfigElement.HEIGHT_MIN.languageKey());
+        heightMax = Reference.config.getInt(ConfigElement.HEIGHT_MAX.key(), ctgyGen, heightMaxDefault, heightMean, 240, ConfigElement.HEIGHT_MAX.desc(), ConfigElement.HEIGHT_MAX.languageKey());
+        heightNorm = Reference.config.getInt(ConfigElement.HEIGHT_NORM.key(), ctgyGen, heightNormDefault, 1, 10, ConfigElement.HEIGHT_NORM.desc(), ConfigElement.HEIGHT_NORM.languageKey());
+        radiusMean = Reference.config.getInt(ConfigElement.RADIUS_MEAN.key(), ctgyGen, radiusMeanDefault, radiusMin, radiusMax, ConfigElement.RADIUS_MEAN.desc(), ConfigElement.RADIUS_MEAN.languageKey());
+        radiusMax = Reference.config.getInt(ConfigElement.RADIUS_MAX.key(), ctgyGen, radiusMaxDefault, radiusMean, 50, ConfigElement.RADIUS_MAX.desc(), ConfigElement.RADIUS_MAX.languageKey());
+        radiusMin = Reference.config.getInt(ConfigElement.RADIUS_MIN.key(), ctgyGen, radiusMinDefault, 5, radiusMean, ConfigElement.RADIUS_MIN.desc(), ConfigElement.RADIUS_MIN.languageKey());
+        radiusNorm = Reference.config.getInt(ConfigElement.RADIUS_NORM.key(), ctgyGen, radiusNormDefault, 1, 10, ConfigElement.RADIUS_NORM.desc(), ConfigElement.RADIUS_NORM.languageKey());
+        depthMean = Reference.config.getInt(ConfigElement.DEPTH_MEAN.key(), ctgyGen, depthMeanDefault, depthMin, depthMax, ConfigElement.DEPTH_MEAN.desc(), ConfigElement.DEPTH_MEAN.languageKey());
+        depthMin = Reference.config.getInt(ConfigElement.DEPTH_MIN.key(), ctgyGen, depthMinDefault, 5, depthMean, ConfigElement.DEPTH_MIN.desc(), ConfigElement.DEPTH_MIN.languageKey());
+        depthMax = Reference.config.getInt(ConfigElement.DEPTH_MAX.key(), ctgyGen, depthMaxDefault, depthMean, 45, ConfigElement.DEPTH_MAX.desc(), ConfigElement.DEPTH_MAX.languageKey());
+        depthNorm = Reference.config.getInt(ConfigElement.DEPTH_NORM.key(), ctgyGen, depthNormDefault, 1, 10, ConfigElement.DEPTH_NORM.desc(), ConfigElement.DEPTH_NORM.languageKey());
+        shapeSpheroidWeight = Reference.config.getInt(ConfigElement.SHAPE_SPHEROID_WEIGHT.key(), ctgyGen, shapeSpheroidWeightDefault, 0, Integer.MAX_VALUE, ConfigElement.SHAPE_SPHEROID_WEIGHT.desc(), ConfigElement.SHAPE_SPHEROID_WEIGHT.languageKey());
+        shapeConeWeight = Reference.config.getInt(ConfigElement.SHAPE_CONE_WEIGHT.key(), ctgyGen, shapeConeWeightDefault, 0, Integer.MAX_VALUE, ConfigElement.SHAPE_CONE_WEIGHT.desc(), ConfigElement.SHAPE_CONE_WEIGHT.languageKey());
+        shapeJetsonsWeight = Reference.config.getInt(ConfigElement.SHAPE_JETSONS_WEIGHT.key(), ctgyGen, shapeJetsonsWeightDefault, 0, Integer.MAX_VALUE, ConfigElement.SHAPE_JETSONS_WEIGHT.desc(), ConfigElement.SHAPE_JETSONS_WEIGHT.languageKey());
+        // shapeStalactiteWeight = Reference.config.getInt("shapeStalactiteWeight", ctgyGen, shapeStalactiteWeight, 0, 0, shapeStalactiteWeightDesc);
+        numberOfItems = Reference.config.getInt(ConfigElement.NUMBER_OF_ITEMS.key(), ctgyGen, numberOfItemsDefault, 1, 27, ConfigElement.NUMBER_OF_ITEMS.desc(), ConfigElement.NUMBER_OF_ITEMS.languageKey());
+        stringOfIds = Reference.config.getString(ConfigElement.STRING_OF_IDS.key(), ctgyGen, stringOfIdsDefault, ConfigElement.STRING_OF_IDS.desc(), ConfigElement.STRING_OF_IDS.languageKey());
+        blockIDBlacklist = Reference.config.getString(ConfigElement.BLOCK_ID_BLACKLIST.key(), ctgyGen, blockIDBlacklistDefault, ConfigElement.BLOCK_ID_BLACKLIST.desc(), ConfigElement.BLOCK_ID_BLACKLIST.languageKey());
+        dimensionIDBlacklist = Reference.config.getString(ConfigElement.DIMENSION_ID_BLACKLIST.key(), ctgyGen, dimensionIDBlacklistDefault, ConfigElement.DIMENSION_ID_BLACKLIST.desc(), ConfigElement.DIMENSION_ID_BLACKLIST.languageKey());
+        biomeIDBlacklist = Reference.config.getString(ConfigElement.BIOME_ID_BLACKLIST.key(), ctgyGen, biomeIDBlacklistDefault, ConfigElement.BIOME_ID_BLACKLIST.desc(), ConfigElement.BIOME_ID_BLACKLIST.languageKey());
+        spawnerDefault = Reference.config.getString(ConfigElement.SPAWNER_DEFAULT.key(), ctgyGen, spawnerDefaultDefault, ConfigElement.SPAWNER_DEFAULT.desc(), ConfigElement.SPAWNER_DEFAULT.languageKey());
+        spawnerDesert = Reference.config.getString(ConfigElement.SPAWNER_DESERT.key(), ctgyGen, spawnerDesertDefault, ConfigElement.SPAWNER_DESERT.desc(), ConfigElement.SPAWNER_DESERT.languageKey());
+        spawnerForest = Reference.config.getString(ConfigElement.SPAWNER_FOREST.key(), ctgyGen, spawnerForestDefault, ConfigElement.SPAWNER_FOREST.desc(), ConfigElement.SPAWNER_FOREST.languageKey());
+        spawnerHills = Reference.config.getString(ConfigElement.SPAWNER_HILLS.key(), ctgyGen, spawnerHillsDefault, ConfigElement.SPAWNER_HILLS.desc(), ConfigElement.SPAWNER_HILLS.languageKey());
+        spawnerIceBiomes = Reference.config.getString(ConfigElement.SPAWNER_ICE_BIOMES.key(), ctgyGen, spawnerIceBiomesDefault, ConfigElement.SPAWNER_ICE_BIOMES.desc(), ConfigElement.SPAWNER_ICE_BIOMES.languageKey());
+        spawnerJungle = Reference.config.getString(ConfigElement.SPAWNER_JUNGLE.key(), ctgyGen, spawnerJungleDefault, ConfigElement.SPAWNER_JUNGLE.desc(), ConfigElement.SPAWNER_JUNGLE.languageKey());
+        spawnerMushroom = Reference.config.getString(ConfigElement.SPAWNER_MUSHROOM.key(), ctgyGen, spawnerMushroomDefault, ConfigElement.SPAWNER_MUSHROOM.desc(), ConfigElement.SPAWNER_MUSHROOM.languageKey());
+        spawnerOcean = Reference.config.getString(ConfigElement.SPAWNER_OCEAN.key(), ctgyGen, spawnerOceanDefault, ConfigElement.SPAWNER_OCEAN.desc(), ConfigElement.SPAWNER_OCEAN.languageKey());
+        spawnerPlains = Reference.config.getString(ConfigElement.SPAWNER_PLAINS.key(), ctgyGen, spawnerPlainsDefault, ConfigElement.SPAWNER_PLAINS.desc(), ConfigElement.SPAWNER_PLAINS.languageKey());
+        spawnerRiver = Reference.config.getString(ConfigElement.SPAWNER_RIVER.key(), ctgyGen, spawnerRiverDefault, ConfigElement.SPAWNER_RIVER.desc(), ConfigElement.SPAWNER_RIVER.languageKey());
+        spawnerSwampland = Reference.config.getString(ConfigElement.SPAWNER_SWAMPLAND.key(), ctgyGen, spawnerSwamplandDefault, ConfigElement.SPAWNER_SWAMPLAND.desc(), ConfigElement.SPAWNER_SWAMPLAND.languageKey());
+        spawnerTaiga = Reference.config.getString(ConfigElement.SPAWNER_TAIGA.key(), ctgyGen, spawnerTaigaDefault, ConfigElement.SPAWNER_TAIGA.desc(), ConfigElement.SPAWNER_TAIGA.languageKey());
+        spawnerNearLava = Reference.config.getString(ConfigElement.SPAWNER_NEAR_LAVA.key(), ctgyGen, spawnerNearLavaDefault, ConfigElement.SPAWNER_NEAR_LAVA.desc(), ConfigElement.SPAWNER_NEAR_LAVA.languageKey());
         
-        config.save();
+        Reference.config.save();
     }
     
     /**

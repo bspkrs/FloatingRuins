@@ -7,6 +7,7 @@ import bspkrs.floatingruins.FloatingRuins;
 import bspkrs.util.CommonUtils;
 import bspkrs.util.Const;
 import bspkrs.util.ModVersionChecker;
+import bspkrs.util.config.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -16,9 +17,10 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(name = "FloatingRuins", modid = "FloatingRuins", version = FloatingRuins.VERSION_NUMBER, dependencies = "required-after:bspkrsCore", useMetadata = true,
+@Mod(modid = Reference.MODID, name = Reference.NAME, version = "@MOD_VERSION@", dependencies = "required-after:bspkrsCore@[@BSCORE_VERSION@,)", useMetadata = true,
         guiFactory = "bspkrs.floatingruins.fml.gui.ModGuiFactoryHandler")
 public class FloatingRuinsMod
 {
@@ -26,13 +28,13 @@ public class FloatingRuinsMod
     private final String           versionURL = Const.VERSION_URL + "/Minecraft/" + Const.MCVERSION + "/floatingRuinsForge.version";
     private final String           mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
     
-    @Metadata(value = "FloatingRuins")
+    @Metadata(value = Reference.MODID)
     public static ModMetadata      metadata;
     
-    @Instance(value = "FloatingRuins")
+    @Instance(value = Reference.MODID)
     public static FloatingRuinsMod instance;
     
-    @SidedProxy(clientSide = "bspkrs.floatingruins.fml.ClientProxy", serverSide = "bspkrs.floatingruins.fml.CommonProxy")
+    @SidedProxy(clientSide = Reference.PROXY_CLIENT, serverSide = Reference.PROXY_COMMON)
     public static CommonProxy      proxy;
     
     @EventHandler
@@ -54,7 +56,7 @@ public class FloatingRuinsMod
           //                file.delete();
         }
         
-        FloatingRuins.loadConfig(file);
+        FloatingRuins.initConfig(file);
         
         if (!CommonUtils.isObfuscatedEnv())
             FloatingRuins.allowDebugLogging = true;
@@ -79,5 +81,15 @@ public class FloatingRuinsMod
     public void serverStarting(FMLServerStartingEvent event)
     {
         //event.registerServerCommand(new CommandFRGen());
+    }
+    
+    @SubscribeEvent
+    public void onConfigChanged(OnConfigChangedEvent event)
+    {
+        if (event.modID.equals(Reference.MODID))
+        {
+            Reference.config.save();
+            FloatingRuins.syncConfig();
+        }
     }
 }

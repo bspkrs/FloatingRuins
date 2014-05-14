@@ -33,17 +33,13 @@ public class FloatingRuinsTicker
         
         boolean keepTicking = !(mcClient != null && mcClient.thePlayer != null && mcClient.theWorld != null);
         
-        if (bspkrsCoreMod.instance.allowUpdateCheck && !keepTicking)
+        if (!keepTicking && isRegistered)
         {
             if (bspkrsCoreMod.instance.allowUpdateCheck && FloatingRuinsMod.instance.versionChecker != null)
                 if (!FloatingRuinsMod.instance.versionChecker.isCurrentVersion())
                     for (String msg : FloatingRuinsMod.instance.versionChecker.getInGameMessage())
                         EntityPlayerHelper.addChatMessage(mcClient.thePlayer, new ChatComponentText(msg));
             
-        }
-        
-        if (!keepTicking)
-        {
             FMLCommonHandler.instance().bus().unregister(this);
             isRegistered = false;
         }

@@ -15,7 +15,7 @@ public class DelayedIslandGenTicker
     
     public DelayedIslandGenTicker(int delayTicks, IslandGenOptions opt)
     {
-        this.delayTicks = delayTicks;
+        this.delayTicks = Math.max(delayTicks, 1);
         this.opt = opt;
         FMLCommonHandler.instance().bus().register(this);
     }
@@ -26,7 +26,7 @@ public class DelayedIslandGenTicker
         if (event.phase.equals(Phase.START))
             return;
         
-        if (--delayTicks <= 0)
+        if (--delayTicks == 0)
         {
             new WorldGenFloatingIsland(opt.radius, opt.depth, CommonUtils.getHighestGroundBlock(opt.world, opt.x, opt.y, opt.z), opt.islandType)
                     .generate(opt.world, opt.random, opt.x, opt.y, opt.z);
