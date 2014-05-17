@@ -303,6 +303,10 @@ public final class FloatingRuins
         int depth = getWeightedInt(depthMin, depthMean, depthMax, depthNorm, random);
         int islandType = getWeightedIslandType(random);
         
+        WorldType wt = world.getWorldInfo().getTerrainType();
+        if (depth > yGround - (wt == WorldType.FLAT ? 1 : 5))
+            depth = yGround - (wt == WorldType.FLAT ? 1 : 5);
+        
         return new WorldGenFloatingIsland(radius, depth, yGround, islandType);
     }
     

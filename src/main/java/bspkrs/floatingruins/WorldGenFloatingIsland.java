@@ -166,8 +166,8 @@ public class WorldGenFloatingIsland extends WorldGenerator
                         
                         Block block = src.getBlock(world);
                         int metadata = src.getBlockMetadata(world);
-                        if ((y <= 0)
-                                || (!block.equals(Blocks.water) && !block.equals(Blocks.flowing_water))
+                        if (((y <= 0)
+                                || (!block.equals(Blocks.water) && !block.equals(Blocks.flowing_water)))
                                 && !CommonUtils.isIDInList(BlockHelper.getUniqueID(block), metadata, FloatingRuins.blockIDBlacklist))
                         {
                             

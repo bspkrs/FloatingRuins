@@ -8,6 +8,7 @@ import bspkrs.util.CommonUtils;
 import bspkrs.util.Const;
 import bspkrs.util.ModVersionChecker;
 import bspkrs.util.config.ConfigChangedEvent.OnConfigChangedEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -67,6 +68,8 @@ public class FloatingRuinsMod
     {
         // hopefully a million is high enough to be last?
         GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator(), 1000000);
+        
+        FMLCommonHandler.instance().bus().register(instance);
         
         proxy.registerTickHandler();
         
