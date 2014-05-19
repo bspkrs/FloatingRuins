@@ -64,6 +64,8 @@ public enum ConfigElement
             "Add dimension IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each dimension ID.", DIMENSION_LIST),
     BIOME_ID_BLACKLIST("biomeIDBlacklist", "bspkrs.fr.configgui.biomeIDBlacklist",
             "Add biome IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each biome ID.", BIOME_LIST),
+    USE_CUSTOM_ITEM_LIST("useCustomItemList", "bspkrs.fr.configgui.useCustomItemList",
+            "Whether or not to use the custom list of items. When true the custom list below will be used, when false items will be chosen from the various lists used to choose random chest items for regular dungeons/desert ruins/etc.", BOOLEAN),
     STRING_OF_IDS("stringOfIds", "bspkrs.fr.configgui.stringOfIds",
             "The ids for items found in chests. Format used: \",\" separates between item id, quantity, and metadata and \";\" separates between each item.", ITEMSTACK_LIST),
     SPAWNER_DEFAULT("spawnerDefault", "bspkrs.fr.configgui.spawnerDefault",

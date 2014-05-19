@@ -2,6 +2,7 @@ package bspkrs.floatingruins;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -17,6 +18,9 @@ import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.common.ChestGenHooks;
 import bspkrs.helpers.item.ItemHelper;
 import bspkrs.helpers.tileentity.TileEntityHelper;
 import bspkrs.helpers.world.WorldHelper;
@@ -42,50 +46,14 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     private final String                                            spawnerNearLava;
     private boolean                                                 isLavaNearby;
     
+    private static final String[]                                   allowedCtgys;
+    
     private static final ArrayList<SimpleEntry<ItemStack, Integer>> helmWeights     = new ArrayList<SimpleEntry<ItemStack, Integer>>();
     private static final ArrayList<SimpleEntry<ItemStack, Integer>> plateWeights    = new ArrayList<SimpleEntry<ItemStack, Integer>>();
     private static final ArrayList<SimpleEntry<ItemStack, Integer>> leggingWeights  = new ArrayList<SimpleEntry<ItemStack, Integer>>();
     private static final ArrayList<SimpleEntry<ItemStack, Integer>> bootWeights     = new ArrayList<SimpleEntry<ItemStack, Integer>>();
     private static final ArrayList<SimpleEntry<ItemStack, Integer>> skelWeapWeights = new ArrayList<SimpleEntry<ItemStack, Integer>>();
     private static final ArrayList<SimpleEntry<ItemStack, Integer>> zombWeapWeights = new ArrayList<SimpleEntry<ItemStack, Integer>>();
-    
-    static
-    {
-        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_helmet, 1, 0), 3));
-        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_helmet, 1, 0), 7));
-        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_helmet, 1, 0), 9));
-        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_helmet, 1, 0), 12));
-        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_helmet, 1, 0), 16));
-        
-        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_chestplate, 1, 0), 3));
-        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_chestplate, 1, 0), 7));
-        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_chestplate, 1, 0), 9));
-        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_chestplate, 1, 0), 12));
-        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_chestplate, 1, 0), 16));
-        
-        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_leggings, 1, 0), 3));
-        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_leggings, 1, 0), 7));
-        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_leggings, 1, 0), 9));
-        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_leggings, 1, 0), 12));
-        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_leggings, 1, 0), 16));
-        
-        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_boots, 1, 0), 3));
-        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_boots, 1, 0), 7));
-        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_boots, 1, 0), 9));
-        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_boots, 1, 0), 12));
-        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_boots, 1, 0), 16));
-        
-        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.bow, 1, 0), 46));
-        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_sword, 1, 0), 11));
-        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_sword, 1, 0), 2));
-        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_sword, 1, 0), 5));
-        
-        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.stone_sword, 1, 0), 10));
-        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_sword, 1, 0), 4));
-        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_sword, 1, 0), 10));
-        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.wooden_sword, 1, 0), 5));
-        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_sword, 1, 0), 11));
-    }
     
     public static ItemStack getWeightedItemStack(Random random, ArrayList<SimpleEntry<ItemStack, Integer>> list)
     {
@@ -192,10 +160,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
             if (FloatingRuins.allowMultiMobSpawners)
                 mobIDList = getSpawnerMobList(world, biomegenbase);
             else
-            {
-                mobIDList = new String[1];
-                mobIDList[0] = getSpawnerType(world, biomegenbase, x, z);
-            }
+                mobIDList = new String[] { getSpawnerType(world, biomegenbase, x, z) };
             
             if (mobIDList.length == 1 && mobIDList[0].trim().equalsIgnoreCase("Default"))
                 mobIDList = FloatingRuins.spawnerDefault.split(",");
@@ -388,47 +353,37 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     
     private Block getDungeonBlock(BiomeGenBase biomegenbase)
     {
-        if (biomegenbase.equals(BiomeGenBase.desert) || biomegenbase.equals(BiomeGenBase.desertHills))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.PLAINS))
+            return Blocks.planks;
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.DESERT))
             return Blocks.sandstone;
         
-        if (biomegenbase.equals(BiomeGenBase.taiga) || biomegenbase.equals(BiomeGenBase.taigaHills) || isIceBiome(biomegenbase))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FROZEN))
             return Blocks.snow;
         
-        if (biomegenbase.equals(BiomeGenBase.forest) || biomegenbase.equals(BiomeGenBase.forestHills))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
             return Blocks.cobblestone;
         
-        if (biomegenbase.equals(BiomeGenBase.extremeHills) || biomegenbase.equals(BiomeGenBase.extremeHillsEdge))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.JUNGLE))
+            return Blocks.mossy_cobblestone;
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SWAMP))
+            return Blocks.mossy_cobblestone;
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.MOUNTAIN) || BiomeDictionary.isBiomeOfType(biomegenbase, Type.HILLS))
             return Blocks.stone;
         
-        if (biomegenbase.equals(BiomeGenBase.plains))
-            return Blocks.planks;
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.WATER))
+            if (biomegenbase.getClass().getSimpleName().toLowerCase(Locale.US).contains("ocean"))
+                return Blocks.stonebrick;
+            else
+                return Blocks.planks;
         
-        if (biomegenbase.equals(BiomeGenBase.swampland))
-            return Blocks.mossy_cobblestone;
-        
-        if (biomegenbase.equals(BiomeGenBase.ocean))
-            return Blocks.stonebrick;
-        
-        if (biomegenbase.equals(BiomeGenBase.river))
-            return Blocks.planks;
-        
-        if (biomegenbase.equals(BiomeGenBase.jungle) || biomegenbase.equals(BiomeGenBase.jungleHills))
-            return Blocks.mossy_cobblestone;
-        
-        if (isMushroomBiome(biomegenbase))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.MUSHROOM))
             return Blocks.red_mushroom_block;
         else
             return Blocks.brick_block;
-    }
-    
-    private boolean isIceBiome(BiomeGenBase biomegenbase)
-    {
-        return biomegenbase.equals(BiomeGenBase.frozenOcean) || biomegenbase.equals(BiomeGenBase.frozenRiver) || biomegenbase.equals(BiomeGenBase.icePlains) || biomegenbase.equals(BiomeGenBase.iceMountains);
-    }
-    
-    private boolean isMushroomBiome(BiomeGenBase biomegenbase)
-    {
-        return biomegenbase.equals(BiomeGenBase.mushroomIsland) || biomegenbase.equals(BiomeGenBase.mushroomIslandShore);
     }
     
     private void addItems(TileEntityChest tileentitychest, Random random)
@@ -437,9 +392,14 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         int i = 0;
         do
         {
-            tileentitychest.setInventorySlotContents(random.nextInt(tileentitychest.getSizeInventory()), getItems(random));
+            if (FloatingRuins.useCustomItemList)
+                tileentitychest.setInventorySlotContents(random.nextInt(tileentitychest.getSizeInventory()), getItems(random));
+            else
+                tileentitychest.setInventorySlotContents(random.nextInt(tileentitychest.getSizeInventory()),
+                        ChestGenHooks.getOneItem(allowedCtgys[random.nextInt(allowedCtgys.length)], random));
         }
         while (++i <= limit);
+        
     }
     
     private ItemStack getItems(Random random)
@@ -473,37 +433,37 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (isLavaNearby)
             return getMobString(spawnerNearLava, world, x, z);
         
-        if (biomegenbase.equals(BiomeGenBase.desert) || biomegenbase.equals(BiomeGenBase.desertHills))
-            return getMobString(spawnerDesert, world, x, z);
-        
-        if (biomegenbase.equals(BiomeGenBase.forest) || biomegenbase.equals(BiomeGenBase.forestHills))
-            return getMobString(spawnerForest, world, x, z);
-        
-        if (biomegenbase.equals(BiomeGenBase.plains))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.PLAINS))
             return getMobString(spawnerPlains, world, x, z);
         
-        if (biomegenbase.equals(BiomeGenBase.swampland))
-            return getMobString(spawnerSwampland, world, x, z);
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.DESERT))
+            return getMobString(spawnerDesert, world, x, z);
         
-        if (biomegenbase.equals(BiomeGenBase.taiga) || biomegenbase.equals(BiomeGenBase.taigaHills))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FROZEN) && BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
             return getMobString(spawnerTaiga, world, x, z);
         
-        if (biomegenbase.equals(BiomeGenBase.extremeHills) || biomegenbase.equals(BiomeGenBase.extremeHillsEdge))
-            return getMobString(spawnerHills, world, x, z);
-        
-        if (biomegenbase.equals(BiomeGenBase.ocean))
-            return getMobString(spawnerOcean, world, x, z);
-        
-        if (biomegenbase.equals(BiomeGenBase.river))
-            return getMobString(spawnerRiver, world, x, z);
-        
-        if (biomegenbase.equals(BiomeGenBase.jungle) || biomegenbase.equals(BiomeGenBase.jungleHills))
-            return getMobString(spawnerJungle, world, x, z);
-        
-        if (isIceBiome(biomegenbase))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FROZEN))
             return getMobString(spawnerIceBiomes, world, x, z);
         
-        if (isMushroomBiome(biomegenbase))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
+            return getMobString(spawnerForest, world, x, z);
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.JUNGLE))
+            return getMobString(spawnerJungle, world, x, z);
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SWAMP))
+            return getMobString(spawnerSwampland, world, x, z);
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.MOUNTAIN) || BiomeDictionary.isBiomeOfType(biomegenbase, Type.HILLS))
+            return getMobString(spawnerHills, world, x, z);
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.WATER))
+            if (biomegenbase.getClass().getSimpleName().toLowerCase(Locale.US).contains("ocean"))
+                return getMobString(spawnerOcean, world, x, z);
+            else
+                return getMobString(spawnerRiver, world, x, z);
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.MUSHROOM))
             return getMobString(spawnerMushroom, world, x, z);
         else
             return getMobString(spawnerDefault, world, x, z);
@@ -514,37 +474,37 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (isLavaNearby)
             return spawnerNearLava.split(",");
         
-        if (biomegenbase.equals(BiomeGenBase.desert) || biomegenbase.equals(BiomeGenBase.desertHills))
-            return spawnerDesert.split(",");
-        
-        if (biomegenbase.equals(BiomeGenBase.forest) || biomegenbase.equals(BiomeGenBase.forestHills))
-            return spawnerForest.split(",");
-        
-        if (biomegenbase.equals(BiomeGenBase.plains))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.PLAINS))
             return spawnerPlains.split(",");
         
-        if (biomegenbase.equals(BiomeGenBase.swampland))
-            return spawnerSwampland.split(",");
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.DESERT))
+            return spawnerDesert.split(",");
         
-        if (biomegenbase.equals(BiomeGenBase.taiga) || biomegenbase.equals(BiomeGenBase.taigaHills))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FROZEN) && BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
             return spawnerTaiga.split(",");
         
-        if (biomegenbase.equals(BiomeGenBase.extremeHills) || biomegenbase.equals(BiomeGenBase.extremeHillsEdge))
-            return spawnerHills.split(",");
-        
-        if (biomegenbase.equals(BiomeGenBase.ocean))
-            return spawnerOcean.split(",");
-        
-        if (biomegenbase.equals(BiomeGenBase.river))
-            return spawnerRiver.split(",");
-        
-        if (biomegenbase.equals(BiomeGenBase.jungle) || biomegenbase.equals(BiomeGenBase.jungleHills))
-            return spawnerJungle.split(",");
-        
-        if (isIceBiome(biomegenbase))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FROZEN))
             return spawnerIceBiomes.split(",");
         
-        if (isMushroomBiome(biomegenbase))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
+            return spawnerForest.split(",");
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.JUNGLE))
+            return spawnerJungle.split(",");
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SWAMP))
+            return spawnerSwampland.split(",");
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.MOUNTAIN) || BiomeDictionary.isBiomeOfType(biomegenbase, Type.HILLS))
+            return spawnerHills.split(",");
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.WATER))
+            if (biomegenbase.getClass().getSimpleName().toLowerCase(Locale.US).contains("ocean"))
+                return spawnerOcean.split(",");
+            else
+                return spawnerRiver.split(",");
+        
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.MUSHROOM))
             return spawnerMushroom.split(",");
         else
             return spawnerDefault.split(",");
@@ -656,5 +616,56 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                             WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
                     }
                 }
+    }
+    
+    static
+    {
+        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_helmet, 1, 0), 3));
+        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_helmet, 1, 0), 7));
+        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_helmet, 1, 0), 9));
+        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_helmet, 1, 0), 12));
+        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_helmet, 1, 0), 16));
+        
+        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_chestplate, 1, 0), 3));
+        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_chestplate, 1, 0), 7));
+        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_chestplate, 1, 0), 9));
+        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_chestplate, 1, 0), 12));
+        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_chestplate, 1, 0), 16));
+        
+        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_leggings, 1, 0), 3));
+        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_leggings, 1, 0), 7));
+        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_leggings, 1, 0), 9));
+        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_leggings, 1, 0), 12));
+        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_leggings, 1, 0), 16));
+        
+        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_boots, 1, 0), 3));
+        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_boots, 1, 0), 7));
+        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_boots, 1, 0), 9));
+        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_boots, 1, 0), 12));
+        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_boots, 1, 0), 16));
+        
+        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.bow, 1, 0), 46));
+        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_sword, 1, 0), 11));
+        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_sword, 1, 0), 2));
+        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_sword, 1, 0), 5));
+        
+        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.stone_sword, 1, 0), 10));
+        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_sword, 1, 0), 4));
+        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_sword, 1, 0), 10));
+        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.wooden_sword, 1, 0), 5));
+        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_sword, 1, 0), 11));
+        
+        allowedCtgys = new String[] {
+            // ChestGenHooks.BONUS_CHEST,
+            ChestGenHooks.DUNGEON_CHEST,
+            ChestGenHooks.MINESHAFT_CORRIDOR,
+            ChestGenHooks.PYRAMID_DESERT_CHEST,
+            ChestGenHooks.PYRAMID_JUNGLE_CHEST,
+            // ChestGenHooks.PYRAMID_JUNGLE_DISPENSER,
+            // ChestGenHooks.STRONGHOLD_CORRIDOR,
+            // ChestGenHooks.STRONGHOLD_CROSSING,
+            ChestGenHooks.STRONGHOLD_LIBRARY,
+            ChestGenHooks.VILLAGE_BLACKSMITH
+        };
     }
 }
