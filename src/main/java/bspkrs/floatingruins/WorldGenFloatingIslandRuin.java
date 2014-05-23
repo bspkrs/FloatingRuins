@@ -21,11 +21,9 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.ChestGenHooks;
-import bspkrs.helpers.item.ItemHelper;
-import bspkrs.helpers.tileentity.TileEntityHelper;
-import bspkrs.helpers.world.WorldHelper;
 import bspkrs.util.BlockNotifyType;
 import bspkrs.util.CommonUtils;
+import cpw.mods.fml.common.registry.GameData;
 
 public class WorldGenFloatingIslandRuin extends WorldGenerator
 {
@@ -121,39 +119,39 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     
     private void setChest(World world, Random random, int x, int y, int z)
     {
-        WorldHelper.setBlock(world, x, y, z, Blocks.chest, 0, BlockNotifyType.ALL);
-        TileEntityChest tileentitychest = (TileEntityChest) WorldHelper.getBlockTileEntity(world, x, y, z);
+        world.setBlock(x, y, z, Blocks.chest, 0, BlockNotifyType.ALL);
+        TileEntityChest tileentitychest = (TileEntityChest) world.getTileEntity(x, y, z);
         addItems(tileentitychest, random);
         
         Block blockingBlock = (FloatingRuins.harderDungeons ? Blocks.bedrock : Blocks.obsidian);
         
-        WorldHelper.setBlock(world, x + 1, y, z, blockingBlock, 0, BlockNotifyType.ALL);
-        WorldHelper.setBlock(world, x - 1, y, z, blockingBlock, 0, BlockNotifyType.ALL);
-        WorldHelper.setBlock(world, x, y, z + 1, blockingBlock, 0, BlockNotifyType.ALL);
-        WorldHelper.setBlock(world, x, y, z - 1, blockingBlock, 0, BlockNotifyType.ALL);
-        WorldHelper.setBlock(world, x, y - 1, z, blockingBlock, 0, BlockNotifyType.ALL);
+        world.setBlock(x + 1, y, z, blockingBlock, 0, BlockNotifyType.ALL);
+        world.setBlock(x - 1, y, z, blockingBlock, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y, z + 1, blockingBlock, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y, z - 1, blockingBlock, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y - 1, z, blockingBlock, 0, BlockNotifyType.ALL);
         
         if (FloatingRuins.harderDungeons)
-            WorldHelper.setBlock(world, x, y + 1, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
+            world.setBlock(x, y + 1, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
         else
-            WorldHelper.setBlock(world, x, y + 1, z, Blocks.cobblestone, 0, BlockNotifyType.ALL);
+            world.setBlock(x, y + 1, z, Blocks.cobblestone, 0, BlockNotifyType.ALL);
     }
     
     private void setSpawner(World world, BiomeGenBase biomegenbase, int x, int y, int z)
     {
-        WorldHelper.setBlock(world, x, y, z, Blocks.mob_spawner, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y, z, Blocks.mob_spawner, 0, BlockNotifyType.ALL);
         
-        WorldHelper.setBlock(world, x + 1, y, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
-        WorldHelper.setBlock(world, x - 1, y, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
-        WorldHelper.setBlock(world, x, y, z + 1, Blocks.obsidian, 0, BlockNotifyType.ALL);
-        WorldHelper.setBlock(world, x, y, z - 1, Blocks.obsidian, 0, BlockNotifyType.ALL);
+        world.setBlock(x + 1, y, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
+        world.setBlock(x - 1, y, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y, z + 1, Blocks.obsidian, 0, BlockNotifyType.ALL);
+        world.setBlock(x, y, z - 1, Blocks.obsidian, 0, BlockNotifyType.ALL);
         if (FloatingRuins.harderDungeons)
         {
-            WorldHelper.setBlock(world, x, y - 1, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
-            WorldHelper.setBlock(world, x, y + 1, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
+            world.setBlock(x, y - 1, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
+            world.setBlock(x, y + 1, z, Blocks.obsidian, 0, BlockNotifyType.ALL);
         }
         
-        TileEntityMobSpawner tileEntityMobSpawner = (TileEntityMobSpawner) WorldHelper.getBlockTileEntity(world, x, y, z);
+        TileEntityMobSpawner tileEntityMobSpawner = (TileEntityMobSpawner) world.getTileEntity(x, y, z);
         if (tileEntityMobSpawner != null)
         {
             String[] mobIDList;
@@ -170,7 +168,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 mobIDList[i] = mobIDList[i].trim();
             
             NBTTagCompound spawnerNBT = new NBTTagCompound();
-            TileEntityHelper.writeToNBT(tileEntityMobSpawner, spawnerNBT);
+            tileEntityMobSpawner.writeToNBT(spawnerNBT);
             
             NBTTagCompound properties;
             NBTTagList spawnPotentials = new NBTTagList();
@@ -280,7 +278,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 spawnerNBT.setShort("SpawnRange", (short) 7);
             }
             
-            TileEntityHelper.readFromNBT(tileEntityMobSpawner, spawnerNBT);
+            tileEntityMobSpawner.readFromNBT(spawnerNBT);
         }
     }
     
@@ -405,7 +403,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     private ItemStack getItems(Random random)
     {
         String itemStack[] = stringOfIds.split(";")[random.nextInt(stringOfIds.split(";").length)].split(",");
-        String id = ItemHelper.getUniqueID(Items.egg);
+        String id = GameData.itemRegistry.getNameForObject(Items.egg);
         int size = 1;
         int meta = 0;
         if (itemStack.length > 0)
@@ -417,10 +415,10 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (itemStack.length > 2)
             meta = CommonUtils.parseInt(itemStack[2].trim());
         
-        Item item = ItemHelper.getItem(id);
+        Item item = GameData.itemRegistry.getObject(id);
         
         if (item == null)
-            item = ItemHelper.getItem(ItemHelper.getUniqueID(Items.egg));
+            item = Items.egg;
         
         if (!item.getHasSubtypes() && meta != 0)
             meta = 0;
@@ -533,24 +531,24 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                 {
                     if (y == height || (Math.abs(x) == width && Math.abs(z) == width && y >= 0))
                     {
-                        WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.stonebrick, 0, BlockNotifyType.ALL);
-                        WorldHelper.setBlock(world, x + xIn, y + yIn + 1, z + zIn, (FloatingRuins.harderDungeons ? Blocks.bedrock : Blocks.stonebrick), 0, BlockNotifyType.ALL);
+                        world.setBlock(x + xIn, y + yIn, z + zIn, Blocks.stonebrick, 0, BlockNotifyType.ALL);
+                        world.setBlock(x + xIn, y + yIn + 1, z + zIn, (FloatingRuins.harderDungeons ? Blocks.bedrock : Blocks.stonebrick), 0, BlockNotifyType.ALL);
                     }
                     
                     if (y >= 1 && ((Math.abs(x) == width) ^ (Math.abs(z) == width)))
-                        WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
+                        world.setBlock(x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
                     
                     if (y > 0 && y < height && Math.abs(z) < width && Math.abs(x) < width)
-                        WorldHelper.setBlockToAir(world, x + xIn, y + yIn, z + zIn);
+                        world.setBlockToAir(x + xIn, y + yIn, z + zIn);
                     
                     if (y == -1 || y == 0)
-                        WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.stonebrick, 0, BlockNotifyType.ALL);
+                        world.setBlock(x + xIn, y + yIn, z + zIn, Blocks.stonebrick, 0, BlockNotifyType.ALL);
                     
                     if (y < -1)
                     {
                         int yg = CommonUtils.getHighestGroundBlock(world, x + xIn, y + yIn, z + zIn);
-                        if ((Math.abs(x) == width || Math.abs(z) == width) && !WorldHelper.isBlockNormalCube(world, x + xIn, y + yIn, z + zIn, false) && yg < y + yIn && yg >= yIn - height)
-                            WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.stonebrick, 0, BlockNotifyType.ALL);
+                        if ((Math.abs(x) == width || Math.abs(z) == width) && !world.isBlockNormalCubeDefault(x + xIn, y + yIn, z + zIn, false) && yg < y + yIn && yg >= yIn - height)
+                            world.setBlock(x + xIn, y + yIn, z + zIn, Blocks.stonebrick, 0, BlockNotifyType.ALL);
                     }
                 }
     }
@@ -567,27 +565,27 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (y >= 0)
                         {
                             if (dist == range)
-                                WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, (FloatingRuins.harderDungeons && y > 2 ? Blocks.bedrock : block), 0, BlockNotifyType.ALL);
+                                world.setBlock(x + xIn, y + yIn, z + zIn, (FloatingRuins.harderDungeons && y > 2 ? Blocks.bedrock : block), 0, BlockNotifyType.ALL);
                             
                             // For wolves
                             if (y == 0 && dist < range)
-                                WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.grass, 0, BlockNotifyType.ALL);
+                                world.setBlock(x + xIn, y + yIn, z + zIn, Blocks.grass, 0, BlockNotifyType.ALL);
                             
                             if (y > 0 && dist < range)
                             {
-                                WorldHelper.setBlockToAir(world, x + xIn, y + yIn, z + zIn);
+                                world.setBlockToAir(x + xIn, y + yIn, z + zIn);
                                 if (y == 1)
-                                    WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, Blocks.snow_layer, 0, BlockNotifyType.ALL);
+                                    world.setBlock(x + xIn, y + yIn, z + zIn, Blocks.snow_layer, 0, BlockNotifyType.ALL);
                             }
                         }
                         else
                         {
                             if (y == -1)
-                                WorldHelper.setBlock(world, x + xIn, yIn - 1, z + zIn, block, 0, BlockNotifyType.ALL);
+                                world.setBlock(x + xIn, yIn - 1, z + zIn, block, 0, BlockNotifyType.ALL);
                             
                             int yg = CommonUtils.getHighestGroundBlock(world, x + xIn, y + yIn, z + zIn);
-                            if (dist == range && !WorldHelper.isBlockNormalCube(world, x + xIn, y + yIn, z + zIn, false) && yg < y + yIn && yg >= yIn - range)
-                                WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
+                            if (dist == range && !world.isBlockNormalCubeDefault(x + xIn, y + yIn, z + zIn, false) && yg < y + yIn && yg >= yIn - range)
+                                world.setBlock(x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
                         }
                     }
                 }
@@ -602,18 +600,18 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     if (y >= 0)
                     {
                         if ((Math.abs(x) == range - y && Math.abs(x) >= Math.abs(z)) || (Math.abs(z) == range - y && Math.abs(z) >= Math.abs(x)) || y == 0)
-                            WorldHelper.setBlock(world, xIn + x, y + yIn, zIn + z, (FloatingRuins.harderDungeons && y > 2 ? Blocks.bedrock : block), 0, BlockNotifyType.ALL);
+                            world.setBlock(xIn + x, y + yIn, zIn + z, (FloatingRuins.harderDungeons && y > 2 ? Blocks.bedrock : block), 0, BlockNotifyType.ALL);
                         else if ((Math.abs(x) < range - y && Math.abs(x) >= Math.abs(z)) || (Math.abs(z) < range - y && Math.abs(z) >= Math.abs(x)))
-                            WorldHelper.setBlockToAir(world, xIn + x, y + yIn, zIn + z);
+                            world.setBlockToAir(xIn + x, y + yIn, zIn + z);
                     }
                     else
                     {
                         if (y == -1)
-                            WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
+                            world.setBlock(x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
                         
                         int yg = CommonUtils.getHighestGroundBlock(world, x + xIn, y + yIn, z + zIn);
-                        if ((Math.abs(x) == range || Math.abs(z) == range) && !WorldHelper.isBlockNormalCube(world, x + xIn, y + yIn, z + zIn, false) && yg < y + yIn && yg >= yIn - range)
-                            WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
+                        if ((Math.abs(x) == range || Math.abs(z) == range) && !world.isBlockNormalCubeDefault(x + xIn, y + yIn, z + zIn, false) && yg < y + yIn && yg >= yIn - range)
+                            world.setBlock(x + xIn, y + yIn, z + zIn, block, 0, BlockNotifyType.ALL);
                     }
                 }
     }

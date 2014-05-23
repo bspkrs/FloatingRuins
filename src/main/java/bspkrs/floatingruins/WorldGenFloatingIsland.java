@@ -7,11 +7,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.util.ForgeDirection;
-import bspkrs.helpers.block.BlockHelper;
-import bspkrs.helpers.world.WorldHelper;
 import bspkrs.util.BlockNotifyType;
 import bspkrs.util.CommonUtils;
 import bspkrs.util.Coord;
+import cpw.mods.fml.common.registry.GameData;
 
 public class WorldGenFloatingIsland extends WorldGenerator
 {
@@ -168,7 +167,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                         int metadata = src.getBlockMetadata(world);
                         if (((y <= 0)
                                 || (!block.equals(Blocks.water) && !block.equals(Blocks.flowing_water)))
-                                && !CommonUtils.isIDInList(BlockHelper.getUniqueID(block), metadata, FloatingRuins.blockIDBlacklist))
+                                && !CommonUtils.isIDInList(GameData.blockRegistry.getNameForObject(block), metadata, FloatingRuins.blockIDBlacklist))
                         {
                             
                             Coord tgt = tgtOrigin.add(delta);
@@ -200,7 +199,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                             blocksMoved++;
                         }
                         if (random.nextInt(3) == 0 && block.equals(Blocks.stone) && Math.abs(x) <= 1 && Math.abs(z) <= 1 && Math.abs(y + depth / 4) <= 2)
-                            WorldHelper.setBlock(world, x + xIn, y + yIn, z + zIn, specialOre, 0, BlockNotifyType.NONE);
+                            world.setBlock(x + xIn, y + yIn, z + zIn, specialOre, 0, BlockNotifyType.NONE);
                     }
                 }
         }
@@ -214,12 +213,12 @@ public class WorldGenFloatingIsland extends WorldGenerator
                     Block block = tgt.getBlock(world);
                     if (!tgt.isAirBlock(world) && tgt.getAdjacentCoord(ForgeDirection.DOWN).isAirBlock(world))
                         if (block.equals(Blocks.gravel))
-                            WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.stone, 0, BlockNotifyType.ALL);
+                            world.setBlock(tgt.x, tgt.y, tgt.z, Blocks.stone, 0, BlockNotifyType.ALL);
                         else if (block.equals(Blocks.sand))
                             if (tgt.getBlockMetadata(world) == 1)
-                                WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.hardened_clay, 0, BlockNotifyType.ALL);
+                                world.setBlock(tgt.x, tgt.y, tgt.z, Blocks.hardened_clay, 0, BlockNotifyType.ALL);
                             else
-                                WorldHelper.setBlock(world, tgt.x, tgt.y, tgt.z, Blocks.sandstone, 0, BlockNotifyType.ALL);
+                                world.setBlock(tgt.x, tgt.y, tgt.z, Blocks.sandstone, 0, BlockNotifyType.ALL);
                 }
         
         debug += "Blocks Moved: " + blocksMoved + " (" + groundBlocksMoved + " at or below origin, " + blockNotifications + " block notifications)";
