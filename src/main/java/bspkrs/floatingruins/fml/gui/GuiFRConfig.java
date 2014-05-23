@@ -10,7 +10,7 @@ public class GuiFRConfig extends GuiConfig
 {
     public GuiFRConfig(GuiScreen parent) throws NoSuchMethodException, SecurityException
     {
-        super(parent, (new ConfigProperty(Reference.config.getCategory(Configuration.CATEGORY_GENERAL))).getConfigPropertiesList(true),
+        super(parent, (new ConfigProperty(Reference.config.getCategory(Configuration.CATEGORY_GENERAL))).getConfigPropertiesList(false),
                 true, Reference.MODID, true, GuiConfig.getAbridgedConfigPath(Reference.config.toString()));
     }
 }
