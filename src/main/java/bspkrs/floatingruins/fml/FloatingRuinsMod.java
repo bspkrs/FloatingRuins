@@ -92,7 +92,7 @@ public class FloatingRuinsMod
         if (event.modID.equals(Reference.MODID))
         {
             Reference.config.save();
-            FloatingRuins.syncConfig();
+            FloatingRuins.syncConfig(false);
         }
     }
 }

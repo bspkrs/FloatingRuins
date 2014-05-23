@@ -1,8 +1,10 @@
 package bspkrs.floatingruins;
 
 import java.io.File;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
@@ -12,11 +14,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.common.util.ForgeDirection;
 import bspkrs.floatingruins.fml.Reference;
-import bspkrs.helpers.block.BlockHelper;
-import bspkrs.helpers.item.ItemHelper;
 import bspkrs.util.CommonUtils;
 import bspkrs.util.Coord;
 import bspkrs.util.config.Configuration;
+import cpw.mods.fml.common.registry.GameData;
 
 // Test Seed: 5460896710218081688
 // 1470679938 (large biomes)
@@ -44,13 +45,13 @@ public final class FloatingRuins
     public static int            heightMin                    = heightMinDefault;
     private final static int     heightNormDefault            = 3;
     public static int            heightNorm                   = heightNormDefault;
-    private final static int     radiusMaxDefault             = 50;
+    private final static int     radiusMaxDefault             = 23;
     public static int            radiusMax                    = radiusMaxDefault;
     private final static int     radiusMeanDefault            = 10;
     public static int            radiusMean                   = radiusMeanDefault;
     private final static int     radiusMinDefault             = 7;
     public static int            radiusMin                    = radiusMinDefault;
-    private final static int     radiusNormDefault            = 3;
+    private final static int     radiusNormDefault            = 5;
     public static int            radiusNorm                   = radiusNormDefault;
     private final static int     depthMaxDefault              = 45;
     public static int            depthMax                     = depthMaxDefault;
@@ -109,192 +110,165 @@ public final class FloatingRuins
     
     private static int           chunksToRetry                = 0;
     
-    static
-    {
-        blockIDBlacklistDefault = BlockHelper.getUniqueID(Blocks.bedrock) + ";";
-        stringOfIdsDefault = ItemHelper.getUniqueID(Items.arrow) + ", 10; " +
-                ItemHelper.getUniqueID(Items.arrow) + ", 16; " +
-                ItemHelper.getUniqueID(Items.coal) + ", 6; " +
-                ItemHelper.getUniqueID(Items.diamond) + ", 1; " +
-                ItemHelper.getUniqueID(Items.iron_ingot) + ", 3; " +
-                ItemHelper.getUniqueID(Items.gold_ingot) + ", 2; " +
-                ItemHelper.getUniqueID(Items.mushroom_stew) + ", 2; " +
-                ItemHelper.getUniqueID(Items.feather) + ", 1; " +
-                ItemHelper.getUniqueID(Items.chainmail_helmet) + ", 1; " +
-                ItemHelper.getUniqueID(Items.chainmail_chestplate) + ", 1; " +
-                ItemHelper.getUniqueID(Items.chainmail_leggings) + ", 1; " +
-                ItemHelper.getUniqueID(Items.chainmail_boots) + ", 1; " +
-                ItemHelper.getUniqueID(Items.painting) + ", 2; " +
-                ItemHelper.getUniqueID(Items.painting) + ", 5; " +
-                ItemHelper.getUniqueID(Items.golden_apple) + ", 1; " +
-                ItemHelper.getUniqueID(Items.golden_apple) + ", 3; " +
-                ItemHelper.getUniqueID(Items.bucket) + ", 2; " +
-                ItemHelper.getUniqueID(Items.lava_bucket) + ", 1; " +
-                ItemHelper.getUniqueID(Items.milk_bucket) + ", 1; " +
-                ItemHelper.getUniqueID(Items.book) + ", 4; " +
-                ItemHelper.getUniqueID(Items.slime_ball) + ", 6; " +
-                ItemHelper.getUniqueID(Items.egg) + ", 4; " +
-                ItemHelper.getUniqueID(Items.egg) + ", 8; " +
-                ItemHelper.getUniqueID(Items.glowstone_dust) + ", 12; " +
-                ItemHelper.getUniqueID(Items.glowstone_dust) + ", 8; " +
-                ItemHelper.getUniqueID(Items.cooked_fished) + ", 3; " +
-                ItemHelper.getUniqueID(Items.dye) + ", 5, 0; " +
-                ItemHelper.getUniqueID(Items.cake) + ", 2; " +
-                ItemHelper.getUniqueID(Items.blaze_rod) + ", 2; " +
-                ItemHelper.getUniqueID(Items.nether_wart) + ", 6; " +
-                ItemHelper.getUniqueID(Items.emerald) + ", 4; " +
-                ItemHelper.getUniqueID(Items.emerald) + ", 6; " +
-                ItemHelper.getUniqueID(Items.quartz) + ", 6; " +
-                ItemHelper.getUniqueID(Items.map) + ", 1; " +
-                BlockHelper.getUniqueID(Blocks.obsidian) + ", 4; " +
-                BlockHelper.getUniqueID(Blocks.ice) + ", 3;";
-        
-    }
-    
     public static void initConfig(File file)
     {
-        Reference.config = new Configuration(file);
+        Reference.config = new Configuration(file, Reference.CONFIG_VERSION);
         
-        syncConfig();
+        if (!Reference.CONFIG_VERSION.equals(Reference.config.getLoadedConfigVersion()))
+        {
+            FRLog.info("Your FloatingRuins config file is out of date and will be altered.");
+            for (ConfigElement ce : ConfigElement.values())
+                if (Reference.config.moveProperty(Reference.CTGY_GEN, ce.key(), ce.ctgy()))
+                    FRLog.debug("Property %s moved from %s to %s", ce.key(), Reference.CTGY_GEN, ce.ctgy());
+        }
+        
+        syncConfig(true);
     }
     
-    public static void syncConfig()
+    public static void syncConfig(boolean init)
     {
-        String ctgyGen = Configuration.CATEGORY_GENERAL;
+        if (!init)
+            Reference.config.load();
         
-        Reference.config.load();
-        
-        Reference.config.addCustomCategoryComment(ctgyGen, "ATTENTION: Editing this file manually is no longer necessary. \n" +
+        Reference.config.setCategoryComment(Reference.CTGY_GEN, "ATTENTION: Editing this file manually is no longer necessary. \n" +
                 "On the Mods list screen select the entry for FloatingRuins, then click the Config button to modify these settings.");
         
-        LinkedHashSet<String> orderedKeys = new LinkedHashSet<String>(ConfigElement.values().length);
+        HashMap<String, List<String>> orderedKeys = new HashMap<String, List<String>>();
+        orderedKeys.put(Reference.CTGY_GEN, new ArrayList<String>());
+        orderedKeys.put(Reference.CTGY_ISLANDS, new ArrayList<String>());
+        orderedKeys.put(Reference.CTGY_ISLAND_SIZE, new ArrayList<String>());
+        orderedKeys.put(Reference.CTGY_DUNGEONS, new ArrayList<String>());
         
-        enabled = Reference.config.getBoolean(ConfigElement.ENABLED.key(), ctgyGen, enabledDefault,
+        enabled = Reference.config.getBoolean(ConfigElement.ENABLED.key(), ConfigElement.ENABLED.ctgy(), enabledDefault,
                 ConfigElement.ENABLED.desc(), ConfigElement.ENABLED.languageKey());
-        orderedKeys.add(ConfigElement.ENABLED.key());
-        allowDebugLogging = Reference.config.getBoolean(ConfigElement.ALLOW_DEBUG_LOGGING.key(), ctgyGen, allowDebugLoggingDefault,
+        orderedKeys.get(ConfigElement.ENABLED.ctgy()).add(ConfigElement.ENABLED.key());
+        allowDebugLogging = Reference.config.getBoolean(ConfigElement.ALLOW_DEBUG_LOGGING.key(), ConfigElement.ALLOW_DEBUG_LOGGING.ctgy(), allowDebugLoggingDefault,
                 ConfigElement.ALLOW_DEBUG_LOGGING.desc(), ConfigElement.ALLOW_DEBUG_LOGGING.languageKey());
-        orderedKeys.add(ConfigElement.ALLOW_DEBUG_LOGGING.key());
-        allowInSuperFlat = Reference.config.getBoolean(ConfigElement.ALLOW_IN_SUPERFLAT.key(), ctgyGen, allowInSuperFlatDefault,
+        orderedKeys.get(ConfigElement.ALLOW_DEBUG_LOGGING.ctgy()).add(ConfigElement.ALLOW_DEBUG_LOGGING.key());
+        allowInSuperFlat = Reference.config.getBoolean(ConfigElement.ALLOW_IN_SUPERFLAT.key(), ConfigElement.ALLOW_IN_SUPERFLAT.ctgy(), allowInSuperFlatDefault,
                 ConfigElement.ALLOW_IN_SUPERFLAT.desc(), ConfigElement.ALLOW_IN_SUPERFLAT.languageKey());
-        orderedKeys.add(ConfigElement.ALLOW_IN_SUPERFLAT.key());
-        allowMultiMobSpawners = Reference.config.getBoolean(ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.key(), ctgyGen, allowMultiMobSpawnersDefault,
+        orderedKeys.get(ConfigElement.ALLOW_IN_SUPERFLAT.ctgy()).add(ConfigElement.ALLOW_IN_SUPERFLAT.key());
+        allowMultiMobSpawners = Reference.config.getBoolean(ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.key(), ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.ctgy(), allowMultiMobSpawnersDefault,
                 ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.desc(), ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.languageKey());
-        orderedKeys.add(ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.key());
-        rarity = Reference.config.getInt(ConfigElement.RARITY.key(), ctgyGen, rarityDefault, 1, Integer.MAX_VALUE,
+        orderedKeys.get(ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.ctgy()).add(ConfigElement.ALLOW_MULTI_MOB_SPAWNERS.key());
+        rarity = Reference.config.getInt(ConfigElement.RARITY.key(), ConfigElement.RARITY.ctgy(), rarityDefault, 1, Integer.MAX_VALUE,
                 ConfigElement.RARITY.desc(), ConfigElement.RARITY.languageKey());
-        orderedKeys.add(ConfigElement.RARITY.key());
-        rarityDungeon = Reference.config.getInt(ConfigElement.RARITY_DUNGEON.key(), ctgyGen, rarityDungeonDefault, 1, Integer.MAX_VALUE,
+        orderedKeys.get(ConfigElement.RARITY.ctgy()).add(ConfigElement.RARITY.key());
+        rarityDungeon = Reference.config.getInt(ConfigElement.RARITY_DUNGEON.key(), ConfigElement.RARITY_DUNGEON.ctgy(), rarityDungeonDefault, 1, Integer.MAX_VALUE,
                 ConfigElement.RARITY_DUNGEON.desc(), ConfigElement.RARITY_DUNGEON.languageKey());
-        orderedKeys.add(ConfigElement.RARITY_DUNGEON.key());
-        harderDungeons = Reference.config.getBoolean(ConfigElement.HARDER_DUNGEONS.key(), ctgyGen, harderDungeonsDefault,
+        orderedKeys.get(ConfigElement.RARITY_DUNGEON.ctgy()).add(ConfigElement.RARITY_DUNGEON.key());
+        harderDungeons = Reference.config.getBoolean(ConfigElement.HARDER_DUNGEONS.key(), ConfigElement.HARDER_DUNGEONS.ctgy(), harderDungeonsDefault,
                 ConfigElement.HARDER_DUNGEONS.desc(), ConfigElement.HARDER_DUNGEONS.languageKey());
-        orderedKeys.add(ConfigElement.HARDER_DUNGEONS.key());
-        heightMean = Reference.config.getInt(ConfigElement.HEIGHT_MEAN.key(), ctgyGen, heightMeanDefault, heightMin, heightMax,
+        orderedKeys.get(ConfigElement.HARDER_DUNGEONS.ctgy()).add(ConfigElement.HARDER_DUNGEONS.key());
+        heightMean = Reference.config.getInt(ConfigElement.HEIGHT_MEAN.key(), ConfigElement.HEIGHT_MEAN.ctgy(), heightMeanDefault, heightMin, heightMax,
                 ConfigElement.HEIGHT_MEAN.desc(), ConfigElement.HEIGHT_MEAN.languageKey());
-        orderedKeys.add(ConfigElement.HEIGHT_MEAN.key());
-        heightMin = Reference.config.getInt(ConfigElement.HEIGHT_MIN.key(), ctgyGen, heightMinDefault, 80, heightMean,
+        orderedKeys.get(ConfigElement.HEIGHT_MEAN.ctgy()).add(ConfigElement.HEIGHT_MEAN.key());
+        heightMin = Reference.config.getInt(ConfigElement.HEIGHT_MIN.key(), ConfigElement.HEIGHT_MIN.ctgy(), heightMinDefault, 80, heightMean,
                 ConfigElement.HEIGHT_MIN.desc(), ConfigElement.HEIGHT_MIN.languageKey());
-        orderedKeys.add(ConfigElement.HEIGHT_MIN.key());
-        heightMax = Reference.config.getInt(ConfigElement.HEIGHT_MAX.key(), ctgyGen, heightMaxDefault, heightMean, 240,
+        orderedKeys.get(ConfigElement.HEIGHT_MIN.ctgy()).add(ConfigElement.HEIGHT_MIN.key());
+        heightMax = Reference.config.getInt(ConfigElement.HEIGHT_MAX.key(), ConfigElement.HEIGHT_MAX.ctgy(), heightMaxDefault, heightMean, 240,
                 ConfigElement.HEIGHT_MAX.desc(), ConfigElement.HEIGHT_MAX.languageKey());
-        orderedKeys.add(ConfigElement.HEIGHT_MAX.key());
-        heightNorm = Reference.config.getInt(ConfigElement.HEIGHT_NORM.key(), ctgyGen, heightNormDefault, 1, 10,
+        orderedKeys.get(ConfigElement.HEIGHT_MAX.ctgy()).add(ConfigElement.HEIGHT_MAX.key());
+        heightNorm = Reference.config.getInt(ConfigElement.HEIGHT_NORM.key(), ConfigElement.HEIGHT_NORM.ctgy(), heightNormDefault, 1, 10,
                 ConfigElement.HEIGHT_NORM.desc(), ConfigElement.HEIGHT_NORM.languageKey());
-        orderedKeys.add(ConfigElement.HEIGHT_NORM.key());
-        radiusMean = Reference.config.getInt(ConfigElement.RADIUS_MEAN.key(), ctgyGen, radiusMeanDefault, radiusMin, radiusMax,
+        orderedKeys.get(ConfigElement.HEIGHT_NORM.ctgy()).add(ConfigElement.HEIGHT_NORM.key());
+        radiusMean = Reference.config.getInt(ConfigElement.RADIUS_MEAN.key(), ConfigElement.RADIUS_MEAN.ctgy(), radiusMeanDefault, radiusMin, radiusMax,
                 ConfigElement.RADIUS_MEAN.desc(), ConfigElement.RADIUS_MEAN.languageKey());
-        orderedKeys.add(ConfigElement.RADIUS_MEAN.key());
-        radiusMax = Reference.config.getInt(ConfigElement.RADIUS_MAX.key(), ctgyGen, radiusMaxDefault, radiusMean, 50,
+        orderedKeys.get(ConfigElement.RADIUS_MEAN.ctgy()).add(ConfigElement.RADIUS_MEAN.key());
+        radiusMax = Reference.config.getInt(ConfigElement.RADIUS_MAX.key(), ConfigElement.RADIUS_MAX.ctgy(), radiusMaxDefault, radiusMean, 50,
                 ConfigElement.RADIUS_MAX.desc(), ConfigElement.RADIUS_MAX.languageKey());
-        orderedKeys.add(ConfigElement.RADIUS_MAX.key());
-        radiusMin = Reference.config.getInt(ConfigElement.RADIUS_MIN.key(), ctgyGen, radiusMinDefault, 5, radiusMean,
+        orderedKeys.get(ConfigElement.RADIUS_MAX.ctgy()).add(ConfigElement.RADIUS_MAX.key());
+        radiusMin = Reference.config.getInt(ConfigElement.RADIUS_MIN.key(), ConfigElement.RADIUS_MIN.ctgy(), radiusMinDefault, 5, radiusMean,
                 ConfigElement.RADIUS_MIN.desc(), ConfigElement.RADIUS_MIN.languageKey());
-        orderedKeys.add(ConfigElement.RADIUS_MIN.key());
-        radiusNorm = Reference.config.getInt(ConfigElement.RADIUS_NORM.key(), ctgyGen, radiusNormDefault, 1, 10,
+        orderedKeys.get(ConfigElement.RADIUS_MIN.ctgy()).add(ConfigElement.RADIUS_MIN.key());
+        radiusNorm = Reference.config.getInt(ConfigElement.RADIUS_NORM.key(), ConfigElement.RADIUS_NORM.ctgy(), radiusNormDefault, 1, 10,
                 ConfigElement.RADIUS_NORM.desc(), ConfigElement.RADIUS_NORM.languageKey());
-        orderedKeys.add(ConfigElement.RADIUS_NORM.key());
-        depthMean = Reference.config.getInt(ConfigElement.DEPTH_MEAN.key(), ctgyGen, depthMeanDefault, depthMin, depthMax,
+        orderedKeys.get(ConfigElement.RADIUS_NORM.ctgy()).add(ConfigElement.RADIUS_NORM.key());
+        depthMean = Reference.config.getInt(ConfigElement.DEPTH_MEAN.key(), ConfigElement.DEPTH_MEAN.ctgy(), depthMeanDefault, depthMin, depthMax,
                 ConfigElement.DEPTH_MEAN.desc(), ConfigElement.DEPTH_MEAN.languageKey());
-        orderedKeys.add(ConfigElement.DEPTH_MEAN.key());
-        depthMin = Reference.config.getInt(ConfigElement.DEPTH_MIN.key(), ctgyGen, depthMinDefault, 5, depthMean,
+        orderedKeys.get(ConfigElement.DEPTH_MEAN.ctgy()).add(ConfigElement.DEPTH_MEAN.key());
+        depthMin = Reference.config.getInt(ConfigElement.DEPTH_MIN.key(), ConfigElement.DEPTH_MIN.ctgy(), depthMinDefault, 5, depthMean,
                 ConfigElement.DEPTH_MIN.desc(), ConfigElement.DEPTH_MIN.languageKey());
-        orderedKeys.add(ConfigElement.DEPTH_MIN.key());
-        depthMax = Reference.config.getInt(ConfigElement.DEPTH_MAX.key(), ctgyGen, depthMaxDefault, depthMean, 45,
+        orderedKeys.get(ConfigElement.DEPTH_MIN.ctgy()).add(ConfigElement.DEPTH_MIN.key());
+        depthMax = Reference.config.getInt(ConfigElement.DEPTH_MAX.key(), ConfigElement.DEPTH_MAX.ctgy(), depthMaxDefault, depthMean, 45,
                 ConfigElement.DEPTH_MAX.desc(), ConfigElement.DEPTH_MAX.languageKey());
-        orderedKeys.add(ConfigElement.DEPTH_MAX.key());
-        depthNorm = Reference.config.getInt(ConfigElement.DEPTH_NORM.key(), ctgyGen, depthNormDefault, 1, 10,
+        orderedKeys.get(ConfigElement.DEPTH_MAX.ctgy()).add(ConfigElement.DEPTH_MAX.key());
+        depthNorm = Reference.config.getInt(ConfigElement.DEPTH_NORM.key(), ConfigElement.DEPTH_NORM.ctgy(), depthNormDefault, 1, 10,
                 ConfigElement.DEPTH_NORM.desc(), ConfigElement.DEPTH_NORM.languageKey());
-        orderedKeys.add(ConfigElement.DEPTH_NORM.key());
-        shapeSpheroidWeight = Reference.config.getInt(ConfigElement.SHAPE_SPHEROID_WEIGHT.key(), ctgyGen, shapeSpheroidWeightDefault, 0, Integer.MAX_VALUE,
+        orderedKeys.get(ConfigElement.DEPTH_NORM.ctgy()).add(ConfigElement.DEPTH_NORM.key());
+        shapeSpheroidWeight = Reference.config.getInt(ConfigElement.SHAPE_SPHEROID_WEIGHT.key(), ConfigElement.SHAPE_SPHEROID_WEIGHT.ctgy(), shapeSpheroidWeightDefault, 0, Integer.MAX_VALUE,
                 ConfigElement.SHAPE_SPHEROID_WEIGHT.desc(), ConfigElement.SHAPE_SPHEROID_WEIGHT.languageKey());
-        orderedKeys.add(ConfigElement.SHAPE_SPHEROID_WEIGHT.key());
-        shapeConeWeight = Reference.config.getInt(ConfigElement.SHAPE_CONE_WEIGHT.key(), ctgyGen, shapeConeWeightDefault, 0, Integer.MAX_VALUE,
+        orderedKeys.get(ConfigElement.SHAPE_SPHEROID_WEIGHT.ctgy()).add(ConfigElement.SHAPE_SPHEROID_WEIGHT.key());
+        shapeConeWeight = Reference.config.getInt(ConfigElement.SHAPE_CONE_WEIGHT.key(), ConfigElement.SHAPE_CONE_WEIGHT.ctgy(), shapeConeWeightDefault, 0, Integer.MAX_VALUE,
                 ConfigElement.SHAPE_CONE_WEIGHT.desc(), ConfigElement.SHAPE_CONE_WEIGHT.languageKey());
-        orderedKeys.add(ConfigElement.SHAPE_CONE_WEIGHT.key());
-        shapeJetsonsWeight = Reference.config.getInt(ConfigElement.SHAPE_JETSONS_WEIGHT.key(), ctgyGen, shapeJetsonsWeightDefault, 0, Integer.MAX_VALUE,
+        orderedKeys.get(ConfigElement.SHAPE_CONE_WEIGHT.ctgy()).add(ConfigElement.SHAPE_CONE_WEIGHT.key());
+        shapeJetsonsWeight = Reference.config.getInt(ConfigElement.SHAPE_JETSONS_WEIGHT.key(), ConfigElement.SHAPE_JETSONS_WEIGHT.ctgy(), shapeJetsonsWeightDefault, 0, Integer.MAX_VALUE,
                 ConfigElement.SHAPE_JETSONS_WEIGHT.desc(), ConfigElement.SHAPE_JETSONS_WEIGHT.languageKey());
-        orderedKeys.add(ConfigElement.SHAPE_JETSONS_WEIGHT.key());
+        orderedKeys.get(ConfigElement.SHAPE_JETSONS_WEIGHT.ctgy()).add(ConfigElement.SHAPE_JETSONS_WEIGHT.key());
         // shapeStalactiteWeight = Reference.config.getInt("shapeStalactiteWeight", ctgyGen, shapeStalactiteWeight, 0, 0, shapeStalactiteWeightDesc);
-        useCustomItemList = Reference.config.getBoolean(ConfigElement.USE_CUSTOM_ITEM_LIST.key(), ctgyGen, useCustomItemListDefault,
+        useCustomItemList = Reference.config.getBoolean(ConfigElement.USE_CUSTOM_ITEM_LIST.key(), ConfigElement.USE_CUSTOM_ITEM_LIST.ctgy(), useCustomItemListDefault,
                 ConfigElement.USE_CUSTOM_ITEM_LIST.desc(), ConfigElement.USE_CUSTOM_ITEM_LIST.languageKey());
-        orderedKeys.add(ConfigElement.USE_CUSTOM_ITEM_LIST.key());
-        stringOfIds = Reference.config.getString(ConfigElement.STRING_OF_IDS.key(), ctgyGen, stringOfIdsDefault,
+        orderedKeys.get(ConfigElement.USE_CUSTOM_ITEM_LIST.ctgy()).add(ConfigElement.USE_CUSTOM_ITEM_LIST.key());
+        stringOfIds = Reference.config.getString(ConfigElement.STRING_OF_IDS.key(), ConfigElement.STRING_OF_IDS.ctgy(), stringOfIdsDefault,
                 ConfigElement.STRING_OF_IDS.desc(), ConfigElement.STRING_OF_IDS.languageKey());
-        orderedKeys.add(ConfigElement.STRING_OF_IDS.key());
-        numberOfItems = Reference.config.getInt(ConfigElement.NUMBER_OF_ITEMS.key(), ctgyGen, numberOfItemsDefault, 1, 27,
+        orderedKeys.get(ConfigElement.STRING_OF_IDS.ctgy()).add(ConfigElement.STRING_OF_IDS.key());
+        numberOfItems = Reference.config.getInt(ConfigElement.NUMBER_OF_ITEMS.key(), ConfigElement.NUMBER_OF_ITEMS.ctgy(), numberOfItemsDefault, 1, 27,
                 ConfigElement.NUMBER_OF_ITEMS.desc(), ConfigElement.NUMBER_OF_ITEMS.languageKey());
-        orderedKeys.add(ConfigElement.NUMBER_OF_ITEMS.key());
-        blockIDBlacklist = Reference.config.getString(ConfigElement.BLOCK_ID_BLACKLIST.key(), ctgyGen, blockIDBlacklistDefault,
+        orderedKeys.get(ConfigElement.NUMBER_OF_ITEMS.ctgy()).add(ConfigElement.NUMBER_OF_ITEMS.key());
+        blockIDBlacklist = Reference.config.getString(ConfigElement.BLOCK_ID_BLACKLIST.key(), ConfigElement.BLOCK_ID_BLACKLIST.ctgy(), blockIDBlacklistDefault,
                 ConfigElement.BLOCK_ID_BLACKLIST.desc(), ConfigElement.BLOCK_ID_BLACKLIST.languageKey());
-        orderedKeys.add(ConfigElement.BLOCK_ID_BLACKLIST.key());
-        dimensionIDBlacklist = Reference.config.getString(ConfigElement.DIMENSION_ID_BLACKLIST.key(), ctgyGen, dimensionIDBlacklistDefault,
+        orderedKeys.get(ConfigElement.BLOCK_ID_BLACKLIST.ctgy()).add(ConfigElement.BLOCK_ID_BLACKLIST.key());
+        dimensionIDBlacklist = Reference.config.getString(ConfigElement.DIMENSION_ID_BLACKLIST.key(), ConfigElement.DIMENSION_ID_BLACKLIST.ctgy(), dimensionIDBlacklistDefault,
                 ConfigElement.DIMENSION_ID_BLACKLIST.desc(), ConfigElement.DIMENSION_ID_BLACKLIST.languageKey());
-        orderedKeys.add(ConfigElement.DIMENSION_ID_BLACKLIST.key());
-        biomeIDBlacklist = Reference.config.getString(ConfigElement.BIOME_ID_BLACKLIST.key(), ctgyGen, biomeIDBlacklistDefault,
+        orderedKeys.get(ConfigElement.DIMENSION_ID_BLACKLIST.ctgy()).add(ConfigElement.DIMENSION_ID_BLACKLIST.key());
+        biomeIDBlacklist = Reference.config.getString(ConfigElement.BIOME_ID_BLACKLIST.key(), ConfigElement.BIOME_ID_BLACKLIST.ctgy(), biomeIDBlacklistDefault,
                 ConfigElement.BIOME_ID_BLACKLIST.desc(), ConfigElement.BIOME_ID_BLACKLIST.languageKey());
-        orderedKeys.add(ConfigElement.BIOME_ID_BLACKLIST.key());
-        spawnerDefault = Reference.config.getString(ConfigElement.SPAWNER_DEFAULT.key(), ctgyGen, spawnerDefaultDefault,
+        orderedKeys.get(ConfigElement.BIOME_ID_BLACKLIST.ctgy()).add(ConfigElement.BIOME_ID_BLACKLIST.key());
+        spawnerDefault = Reference.config.getString(ConfigElement.SPAWNER_DEFAULT.key(), ConfigElement.SPAWNER_DEFAULT.ctgy(), spawnerDefaultDefault,
                 ConfigElement.SPAWNER_DEFAULT.desc(), ConfigElement.SPAWNER_DEFAULT.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_DEFAULT.key());
-        spawnerDesert = Reference.config.getString(ConfigElement.SPAWNER_DESERT.key(), ctgyGen, spawnerDesertDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_DEFAULT.ctgy()).add(ConfigElement.SPAWNER_DEFAULT.key());
+        spawnerDesert = Reference.config.getString(ConfigElement.SPAWNER_DESERT.key(), ConfigElement.SPAWNER_DESERT.ctgy(), spawnerDesertDefault,
                 ConfigElement.SPAWNER_DESERT.desc(), ConfigElement.SPAWNER_DESERT.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_DESERT.key());
-        spawnerForest = Reference.config.getString(ConfigElement.SPAWNER_FOREST.key(), ctgyGen, spawnerForestDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_DESERT.ctgy()).add(ConfigElement.SPAWNER_DESERT.key());
+        spawnerForest = Reference.config.getString(ConfigElement.SPAWNER_FOREST.key(), ConfigElement.SPAWNER_FOREST.ctgy(), spawnerForestDefault,
                 ConfigElement.SPAWNER_FOREST.desc(), ConfigElement.SPAWNER_FOREST.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_FOREST.key());
-        spawnerHills = Reference.config.getString(ConfigElement.SPAWNER_HILLS.key(), ctgyGen, spawnerHillsDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_FOREST.ctgy()).add(ConfigElement.SPAWNER_FOREST.key());
+        spawnerHills = Reference.config.getString(ConfigElement.SPAWNER_HILLS.key(), ConfigElement.SPAWNER_HILLS.ctgy(), spawnerHillsDefault,
                 ConfigElement.SPAWNER_HILLS.desc(), ConfigElement.SPAWNER_HILLS.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_HILLS.key());
-        spawnerIceBiomes = Reference.config.getString(ConfigElement.SPAWNER_ICE_BIOMES.key(), ctgyGen, spawnerIceBiomesDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_HILLS.ctgy()).add(ConfigElement.SPAWNER_HILLS.key());
+        spawnerIceBiomes = Reference.config.getString(ConfigElement.SPAWNER_ICE_BIOMES.key(), ConfigElement.SPAWNER_ICE_BIOMES.ctgy(), spawnerIceBiomesDefault,
                 ConfigElement.SPAWNER_ICE_BIOMES.desc(), ConfigElement.SPAWNER_ICE_BIOMES.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_ICE_BIOMES.key());
-        spawnerJungle = Reference.config.getString(ConfigElement.SPAWNER_JUNGLE.key(), ctgyGen, spawnerJungleDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_ICE_BIOMES.ctgy()).add(ConfigElement.SPAWNER_ICE_BIOMES.key());
+        spawnerJungle = Reference.config.getString(ConfigElement.SPAWNER_JUNGLE.key(), ConfigElement.SPAWNER_JUNGLE.ctgy(), spawnerJungleDefault,
                 ConfigElement.SPAWNER_JUNGLE.desc(), ConfigElement.SPAWNER_JUNGLE.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_JUNGLE.key());
-        spawnerMushroom = Reference.config.getString(ConfigElement.SPAWNER_MUSHROOM.key(), ctgyGen, spawnerMushroomDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_JUNGLE.ctgy()).add(ConfigElement.SPAWNER_JUNGLE.key());
+        spawnerMushroom = Reference.config.getString(ConfigElement.SPAWNER_MUSHROOM.key(), ConfigElement.SPAWNER_MUSHROOM.ctgy(), spawnerMushroomDefault,
                 ConfigElement.SPAWNER_MUSHROOM.desc(), ConfigElement.SPAWNER_MUSHROOM.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_MUSHROOM.key());
-        spawnerOcean = Reference.config.getString(ConfigElement.SPAWNER_OCEAN.key(), ctgyGen, spawnerOceanDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_MUSHROOM.ctgy()).add(ConfigElement.SPAWNER_MUSHROOM.key());
+        spawnerOcean = Reference.config.getString(ConfigElement.SPAWNER_OCEAN.key(), ConfigElement.SPAWNER_OCEAN.ctgy(), spawnerOceanDefault,
                 ConfigElement.SPAWNER_OCEAN.desc(), ConfigElement.SPAWNER_OCEAN.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_OCEAN.key());
-        spawnerPlains = Reference.config.getString(ConfigElement.SPAWNER_PLAINS.key(), ctgyGen, spawnerPlainsDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_OCEAN.ctgy()).add(ConfigElement.SPAWNER_OCEAN.key());
+        spawnerPlains = Reference.config.getString(ConfigElement.SPAWNER_PLAINS.key(), ConfigElement.SPAWNER_PLAINS.ctgy(), spawnerPlainsDefault,
                 ConfigElement.SPAWNER_PLAINS.desc(), ConfigElement.SPAWNER_PLAINS.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_PLAINS.key());
-        spawnerRiver = Reference.config.getString(ConfigElement.SPAWNER_RIVER.key(), ctgyGen, spawnerRiverDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_PLAINS.ctgy()).add(ConfigElement.SPAWNER_PLAINS.key());
+        spawnerRiver = Reference.config.getString(ConfigElement.SPAWNER_RIVER.key(), ConfigElement.SPAWNER_RIVER.ctgy(), spawnerRiverDefault,
                 ConfigElement.SPAWNER_RIVER.desc(), ConfigElement.SPAWNER_RIVER.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_RIVER.key());
-        spawnerSwampland = Reference.config.getString(ConfigElement.SPAWNER_SWAMPLAND.key(), ctgyGen, spawnerSwamplandDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_RIVER.ctgy()).add(ConfigElement.SPAWNER_RIVER.key());
+        spawnerSwampland = Reference.config.getString(ConfigElement.SPAWNER_SWAMPLAND.key(), ConfigElement.SPAWNER_SWAMPLAND.ctgy(), spawnerSwamplandDefault,
                 ConfigElement.SPAWNER_SWAMPLAND.desc(), ConfigElement.SPAWNER_SWAMPLAND.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_SWAMPLAND.key());
-        spawnerTaiga = Reference.config.getString(ConfigElement.SPAWNER_TAIGA.key(), ctgyGen, spawnerTaigaDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_SWAMPLAND.ctgy()).add(ConfigElement.SPAWNER_SWAMPLAND.key());
+        spawnerTaiga = Reference.config.getString(ConfigElement.SPAWNER_TAIGA.key(), ConfigElement.SPAWNER_TAIGA.ctgy(), spawnerTaigaDefault,
                 ConfigElement.SPAWNER_TAIGA.desc(), ConfigElement.SPAWNER_TAIGA.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_TAIGA.key());
-        spawnerNearLava = Reference.config.getString(ConfigElement.SPAWNER_NEAR_LAVA.key(), ctgyGen, spawnerNearLavaDefault,
+        orderedKeys.get(ConfigElement.SPAWNER_TAIGA.ctgy()).add(ConfigElement.SPAWNER_TAIGA.key());
+        spawnerNearLava = Reference.config.getString(ConfigElement.SPAWNER_NEAR_LAVA.key(), ConfigElement.SPAWNER_NEAR_LAVA.ctgy(), spawnerNearLavaDefault,
                 ConfigElement.SPAWNER_NEAR_LAVA.desc(), ConfigElement.SPAWNER_NEAR_LAVA.languageKey());
-        orderedKeys.add(ConfigElement.SPAWNER_NEAR_LAVA.key());
+        orderedKeys.get(ConfigElement.SPAWNER_NEAR_LAVA.ctgy()).add(ConfigElement.SPAWNER_NEAR_LAVA.key());
         
-        Reference.config.setCategoryPropertyOrder(ctgyGen, orderedKeys);
+        for (Entry<String, List<String>> entry : orderedKeys.entrySet())
+        {
+            Reference.config.setCategoryPropertyOrder(entry.getKey(), entry.getValue());
+            Reference.config.setCategoryLanguageKey(entry.getKey(), "bspkrs.fr.configgui.ctgy." + entry.getKey());
+        }
         
         Reference.config.save();
     }
@@ -513,5 +487,47 @@ public final class FloatingRuins
             return WorldGenFloatingIsland.CONE;
         else
             return WorldGenFloatingIsland.SPHEROID;
+    }
+    
+    static
+    {
+        blockIDBlacklistDefault = GameData.blockRegistry.getNameForObject(Blocks.bedrock) + ";";
+        stringOfIdsDefault = GameData.itemRegistry.getNameForObject(Items.arrow) + ", 10; " +
+                GameData.itemRegistry.getNameForObject(Items.arrow) + ", 16; " +
+                GameData.itemRegistry.getNameForObject(Items.coal) + ", 6; " +
+                GameData.itemRegistry.getNameForObject(Items.diamond) + ", 1; " +
+                GameData.itemRegistry.getNameForObject(Items.iron_ingot) + ", 3; " +
+                GameData.itemRegistry.getNameForObject(Items.gold_ingot) + ", 2; " +
+                GameData.itemRegistry.getNameForObject(Items.mushroom_stew) + ", 2; " +
+                GameData.itemRegistry.getNameForObject(Items.feather) + ", 1; " +
+                GameData.itemRegistry.getNameForObject(Items.chainmail_helmet) + ", 1; " +
+                GameData.itemRegistry.getNameForObject(Items.chainmail_chestplate) + ", 1; " +
+                GameData.itemRegistry.getNameForObject(Items.chainmail_leggings) + ", 1; " +
+                GameData.itemRegistry.getNameForObject(Items.chainmail_boots) + ", 1; " +
+                GameData.itemRegistry.getNameForObject(Items.painting) + ", 2; " +
+                GameData.itemRegistry.getNameForObject(Items.painting) + ", 5; " +
+                GameData.itemRegistry.getNameForObject(Items.golden_apple) + ", 1; " +
+                GameData.itemRegistry.getNameForObject(Items.golden_apple) + ", 3; " +
+                GameData.itemRegistry.getNameForObject(Items.bucket) + ", 2; " +
+                GameData.itemRegistry.getNameForObject(Items.lava_bucket) + ", 1; " +
+                GameData.itemRegistry.getNameForObject(Items.milk_bucket) + ", 1; " +
+                GameData.itemRegistry.getNameForObject(Items.book) + ", 4; " +
+                GameData.itemRegistry.getNameForObject(Items.slime_ball) + ", 6; " +
+                GameData.itemRegistry.getNameForObject(Items.egg) + ", 4; " +
+                GameData.itemRegistry.getNameForObject(Items.egg) + ", 8; " +
+                GameData.itemRegistry.getNameForObject(Items.glowstone_dust) + ", 12; " +
+                GameData.itemRegistry.getNameForObject(Items.glowstone_dust) + ", 8; " +
+                GameData.itemRegistry.getNameForObject(Items.cooked_fished) + ", 3; " +
+                GameData.itemRegistry.getNameForObject(Items.dye) + ", 5, 0; " +
+                GameData.itemRegistry.getNameForObject(Items.cake) + ", 2; " +
+                GameData.itemRegistry.getNameForObject(Items.blaze_rod) + ", 2; " +
+                GameData.itemRegistry.getNameForObject(Items.nether_wart) + ", 6; " +
+                GameData.itemRegistry.getNameForObject(Items.emerald) + ", 4; " +
+                GameData.itemRegistry.getNameForObject(Items.emerald) + ", 6; " +
+                GameData.itemRegistry.getNameForObject(Items.quartz) + ", 6; " +
+                GameData.itemRegistry.getNameForObject(Items.map) + ", 1; " +
+                GameData.blockRegistry.getNameForObject(Blocks.obsidian) + ", 4; " +
+                GameData.blockRegistry.getNameForObject(Blocks.ice) + ", 3;";
+        
     }
 }
