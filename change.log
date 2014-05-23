@@ -1,3 +1,6 @@
+1.7.2.r05 - 23-May-2014
+- categorized config
+- removed world gen delay to improve performance
 1.7.2.r04 - 25-Apr-2014
 - optimized block movements with regard to block notifications
 1.7.2.r03 - 18-Apr-2014
