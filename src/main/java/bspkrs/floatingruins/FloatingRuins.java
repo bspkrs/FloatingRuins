@@ -471,7 +471,8 @@ public final class FloatingRuins
         //Calculates the final random
         weightedInt = min + random.nextInt((int) Math.ceil(step));
         
-        return weightedInt;
+        // If crappy inputs are fed in, make sure we don't return a negative value!
+        return Math.abs(weightedInt);
     }
     
     public static int getWeightedIslandType(Random random)
