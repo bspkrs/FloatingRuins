@@ -1,3 +1,5 @@
+1.7.2.r06 - 8-Jun-2014
+- fixed crash due to non-positive method result
 1.7.2.r05 - 23-May-2014
 - categorized config
 - removed world gen delay to improve performance
