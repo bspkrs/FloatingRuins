@@ -12,11 +12,11 @@ import net.minecraft.init.Items;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.util.ForgeDirection;
 import bspkrs.floatingruins.fml.Reference;
 import bspkrs.util.CommonUtils;
 import bspkrs.util.Coord;
-import bspkrs.util.config.Configuration;
 import cpw.mods.fml.common.registry.GameData;
 
 // Test Seed: 5460896710218081688
