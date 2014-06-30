@@ -7,7 +7,7 @@ import bspkrs.floatingruins.FloatingRuins;
 import bspkrs.util.CommonUtils;
 import bspkrs.util.Const;
 import bspkrs.util.ModVersionChecker;
-import bspkrs.util.config.ConfigChangedEvent.OnConfigChangedEvent;
+import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;

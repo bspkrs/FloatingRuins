@@ -1,14 +1,10 @@
 package bspkrs.floatingruins;
 
-import static bspkrs.util.config.Property.Type.BIOME_LIST;
-import static bspkrs.util.config.Property.Type.BLOCK_LIST;
-import static bspkrs.util.config.Property.Type.BOOLEAN;
-import static bspkrs.util.config.Property.Type.DIMENSION_LIST;
-import static bspkrs.util.config.Property.Type.ENTITY_LIST;
-import static bspkrs.util.config.Property.Type.INTEGER;
-import static bspkrs.util.config.Property.Type.ITEMSTACK_LIST;
+import static net.minecraftforge.common.config.Property.Type.BOOLEAN;
+import static net.minecraftforge.common.config.Property.Type.INTEGER;
+import static net.minecraftforge.common.config.Property.Type.STRING;
+import net.minecraftforge.common.config.Property;
 import bspkrs.floatingruins.fml.Reference;
-import bspkrs.util.config.Property;
 
 public enum ConfigElement
 {
@@ -60,30 +56,30 @@ public enum ConfigElement
     NUMBER_OF_ITEMS("numberOfItems", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.numberOfItems",
             "The number of items in a ruin's chest.", INTEGER),
     BLOCK_ID_BLACKLIST("blockIDBlacklist", Reference.CTGY_GEN, "bspkrs.fr.configgui.blockIDBlacklist",
-            "Add block IDs to this list if you don't want them to be moved when a floating island is generated.  Format used: \",\" separates between id and metadata and \";\" separates between each block.", BLOCK_LIST),
+            "Add block IDs to this list if you don't want them to be moved when a floating island is generated.  Format used: \",\" separates between id and metadata and \";\" separates between each block.", STRING),
     DIMENSION_ID_BLACKLIST("dimensionIDBlacklist", Reference.CTGY_GEN, "bspkrs.fr.configgui.dimensionIDBlacklist",
-            "Add dimension IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each dimension ID.", DIMENSION_LIST),
+            "Add dimension IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each dimension ID.", STRING),
     BIOME_ID_BLACKLIST("biomeIDBlacklist", Reference.CTGY_GEN, "bspkrs.fr.configgui.biomeIDBlacklist",
-            "Add biome IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each biome ID.", BIOME_LIST),
+            "Add biome IDs where you do not want Floating Ruins to generate.  Format used: \";\" separates between each biome ID.", STRING),
     USE_CUSTOM_ITEM_LIST("useCustomItemList", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.useCustomItemList",
             "Whether or not to use the custom list of items. When true the custom list below will be used, when false items will be chosen from the various lists used to choose random chest items for regular dungeons/desert ruins/etc.", BOOLEAN),
     STRING_OF_IDS("stringOfIds", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.stringOfIds",
-            "The ids for items found in chests. Format used: \",\" separates between item id, quantity, and metadata and \";\" separates between each item.", ITEMSTACK_LIST),
+            "The ids for items found in chests. Format used: \",\" separates between item id, quantity, and metadata and \";\" separates between each item.", STRING),
     SPAWNER_DEFAULT("spawnerDefault", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerDefault",
-            "Mob spawners can be configured using the mobs' names, each separated by a comma. Using \"Default\" will make the specified biome use the same settings as 'spawnerDefault'.", ENTITY_LIST),
-    SPAWNER_DESERT("spawnerDesert", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerDesert", "", ENTITY_LIST),
-    SPAWNER_FOREST("spawnerForest", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerForest", "", ENTITY_LIST),
-    SPAWNER_PLAINS("spawnerPlains", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerPlains", "", ENTITY_LIST),
-    SPAWNER_SWAMPLAND("spawnerSwampland", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerSwampland", "", ENTITY_LIST),
-    SPAWNER_TAIGA("spawnerTaiga", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerTaiga", "", ENTITY_LIST),
-    SPAWNER_HILLS("spawnerHills", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerHills", "", ENTITY_LIST),
-    SPAWNER_OCEAN("spawnerOcean", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerOcean", "", ENTITY_LIST),
-    SPAWNER_RIVER("spawnerRiver", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerRiver", "", ENTITY_LIST),
-    SPAWNER_JUNGLE("spawnerJungle", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerJungle", "", ENTITY_LIST),
-    SPAWNER_ICE_BIOMES("spawnerIceBiomes", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerIceBiomes", "", ENTITY_LIST),
-    SPAWNER_MUSHROOM("spawnerMushroom", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerMushroom", "", ENTITY_LIST),
+            "Mob spawners can be configured using the mobs' names, each separated by a comma. Using \"Default\" will make the specified biome use the same settings as 'spawnerDefault'.", STRING),
+    SPAWNER_DESERT("spawnerDesert", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerDesert", "", STRING),
+    SPAWNER_FOREST("spawnerForest", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerForest", "", STRING),
+    SPAWNER_PLAINS("spawnerPlains", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerPlains", "", STRING),
+    SPAWNER_SWAMPLAND("spawnerSwampland", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerSwampland", "", STRING),
+    SPAWNER_TAIGA("spawnerTaiga", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerTaiga", "", STRING),
+    SPAWNER_HILLS("spawnerHills", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerHills", "", STRING),
+    SPAWNER_OCEAN("spawnerOcean", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerOcean", "", STRING),
+    SPAWNER_RIVER("spawnerRiver", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerRiver", "", STRING),
+    SPAWNER_JUNGLE("spawnerJungle", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerJungle", "", STRING),
+    SPAWNER_ICE_BIOMES("spawnerIceBiomes", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerIceBiomes", "", STRING),
+    SPAWNER_MUSHROOM("spawnerMushroom", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerMushroom", "", STRING),
     SPAWNER_NEAR_LAVA("spawnerNearLava", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerNearLava",
-            "If the dungeon is close enough to lava, the spawner will use these mobs.", ENTITY_LIST);
+            "If the dungeon is close enough to lava, the spawner will use these mobs.", STRING);
     
     private String        key;
     private String        ctgy;
