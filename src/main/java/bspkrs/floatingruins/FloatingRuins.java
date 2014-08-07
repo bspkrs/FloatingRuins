@@ -469,7 +469,7 @@ public final class FloatingRuins
         }
         
         //Calculates the final random
-        weightedInt = min + random.nextInt((int) Math.ceil(step));
+        weightedInt = min + random.nextInt(Math.abs((int) Math.ceil(step)));
         
         // If crappy inputs are fed in, make sure we don't return a negative value!
         return Math.abs(weightedInt);
@@ -492,43 +492,43 @@ public final class FloatingRuins
     
     static
     {
-        blockIDBlacklistDefault = GameData.blockRegistry.getNameForObject(Blocks.bedrock) + ";";
-        stringOfIdsDefault = GameData.itemRegistry.getNameForObject(Items.arrow) + ", 10; " +
-                GameData.itemRegistry.getNameForObject(Items.arrow) + ", 16; " +
-                GameData.itemRegistry.getNameForObject(Items.coal) + ", 6; " +
-                GameData.itemRegistry.getNameForObject(Items.diamond) + ", 1; " +
-                GameData.itemRegistry.getNameForObject(Items.iron_ingot) + ", 3; " +
-                GameData.itemRegistry.getNameForObject(Items.gold_ingot) + ", 2; " +
-                GameData.itemRegistry.getNameForObject(Items.mushroom_stew) + ", 2; " +
-                GameData.itemRegistry.getNameForObject(Items.feather) + ", 1; " +
-                GameData.itemRegistry.getNameForObject(Items.chainmail_helmet) + ", 1; " +
-                GameData.itemRegistry.getNameForObject(Items.chainmail_chestplate) + ", 1; " +
-                GameData.itemRegistry.getNameForObject(Items.chainmail_leggings) + ", 1; " +
-                GameData.itemRegistry.getNameForObject(Items.chainmail_boots) + ", 1; " +
-                GameData.itemRegistry.getNameForObject(Items.painting) + ", 2; " +
-                GameData.itemRegistry.getNameForObject(Items.painting) + ", 5; " +
-                GameData.itemRegistry.getNameForObject(Items.golden_apple) + ", 1; " +
-                GameData.itemRegistry.getNameForObject(Items.golden_apple) + ", 3; " +
-                GameData.itemRegistry.getNameForObject(Items.bucket) + ", 2; " +
-                GameData.itemRegistry.getNameForObject(Items.lava_bucket) + ", 1; " +
-                GameData.itemRegistry.getNameForObject(Items.milk_bucket) + ", 1; " +
-                GameData.itemRegistry.getNameForObject(Items.book) + ", 4; " +
-                GameData.itemRegistry.getNameForObject(Items.slime_ball) + ", 6; " +
-                GameData.itemRegistry.getNameForObject(Items.egg) + ", 4; " +
-                GameData.itemRegistry.getNameForObject(Items.egg) + ", 8; " +
-                GameData.itemRegistry.getNameForObject(Items.glowstone_dust) + ", 12; " +
-                GameData.itemRegistry.getNameForObject(Items.glowstone_dust) + ", 8; " +
-                GameData.itemRegistry.getNameForObject(Items.cooked_fished) + ", 3; " +
-                GameData.itemRegistry.getNameForObject(Items.dye) + ", 5, 0; " +
-                GameData.itemRegistry.getNameForObject(Items.cake) + ", 2; " +
-                GameData.itemRegistry.getNameForObject(Items.blaze_rod) + ", 2; " +
-                GameData.itemRegistry.getNameForObject(Items.nether_wart) + ", 6; " +
-                GameData.itemRegistry.getNameForObject(Items.emerald) + ", 4; " +
-                GameData.itemRegistry.getNameForObject(Items.emerald) + ", 6; " +
-                GameData.itemRegistry.getNameForObject(Items.quartz) + ", 6; " +
-                GameData.itemRegistry.getNameForObject(Items.map) + ", 1; " +
-                GameData.blockRegistry.getNameForObject(Blocks.obsidian) + ", 4; " +
-                GameData.blockRegistry.getNameForObject(Blocks.ice) + ", 3;";
+        blockIDBlacklistDefault = GameData.getBlockRegistry().getNameForObject(Blocks.bedrock) + ";";
+        stringOfIdsDefault = GameData.getItemRegistry().getNameForObject(Items.arrow) + ", 10; " +
+                GameData.getItemRegistry().getNameForObject(Items.arrow) + ", 16; " +
+                GameData.getItemRegistry().getNameForObject(Items.coal) + ", 6; " +
+                GameData.getItemRegistry().getNameForObject(Items.diamond) + ", 1; " +
+                GameData.getItemRegistry().getNameForObject(Items.iron_ingot) + ", 3; " +
+                GameData.getItemRegistry().getNameForObject(Items.gold_ingot) + ", 2; " +
+                GameData.getItemRegistry().getNameForObject(Items.mushroom_stew) + ", 2; " +
+                GameData.getItemRegistry().getNameForObject(Items.feather) + ", 1; " +
+                GameData.getItemRegistry().getNameForObject(Items.chainmail_helmet) + ", 1; " +
+                GameData.getItemRegistry().getNameForObject(Items.chainmail_chestplate) + ", 1; " +
+                GameData.getItemRegistry().getNameForObject(Items.chainmail_leggings) + ", 1; " +
+                GameData.getItemRegistry().getNameForObject(Items.chainmail_boots) + ", 1; " +
+                GameData.getItemRegistry().getNameForObject(Items.painting) + ", 2; " +
+                GameData.getItemRegistry().getNameForObject(Items.painting) + ", 5; " +
+                GameData.getItemRegistry().getNameForObject(Items.golden_apple) + ", 1; " +
+                GameData.getItemRegistry().getNameForObject(Items.golden_apple) + ", 3; " +
+                GameData.getItemRegistry().getNameForObject(Items.bucket) + ", 2; " +
+                GameData.getItemRegistry().getNameForObject(Items.lava_bucket) + ", 1; " +
+                GameData.getItemRegistry().getNameForObject(Items.milk_bucket) + ", 1; " +
+                GameData.getItemRegistry().getNameForObject(Items.book) + ", 4; " +
+                GameData.getItemRegistry().getNameForObject(Items.slime_ball) + ", 6; " +
+                GameData.getItemRegistry().getNameForObject(Items.egg) + ", 4; " +
+                GameData.getItemRegistry().getNameForObject(Items.egg) + ", 8; " +
+                GameData.getItemRegistry().getNameForObject(Items.glowstone_dust) + ", 12; " +
+                GameData.getItemRegistry().getNameForObject(Items.glowstone_dust) + ", 8; " +
+                GameData.getItemRegistry().getNameForObject(Items.cooked_fished) + ", 3; " +
+                GameData.getItemRegistry().getNameForObject(Items.dye) + ", 5, 0; " +
+                GameData.getItemRegistry().getNameForObject(Items.cake) + ", 2; " +
+                GameData.getItemRegistry().getNameForObject(Items.blaze_rod) + ", 2; " +
+                GameData.getItemRegistry().getNameForObject(Items.nether_wart) + ", 6; " +
+                GameData.getItemRegistry().getNameForObject(Items.emerald) + ", 4; " +
+                GameData.getItemRegistry().getNameForObject(Items.emerald) + ", 6; " +
+                GameData.getItemRegistry().getNameForObject(Items.quartz) + ", 6; " +
+                GameData.getItemRegistry().getNameForObject(Items.map) + ", 1; " +
+                GameData.getBlockRegistry().getNameForObject(Blocks.obsidian) + ", 4; " +
+                GameData.getBlockRegistry().getNameForObject(Blocks.ice) + ", 3;";
         
     }
 }

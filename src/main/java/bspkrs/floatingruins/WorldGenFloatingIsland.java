@@ -105,7 +105,6 @@ public class WorldGenFloatingIsland extends WorldGenerator
         int groundBlocksMoved = 0;
         int blockNotifications = 0;
         float range;
-        float sqrRange;
         String debug = "Floating Island: ";
         if (islandType == CONE)
             debug += "Cone ";
@@ -167,7 +166,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
                         int metadata = src.getBlockMetadata(world);
                         if (((y <= 0)
                                 || (!block.equals(Blocks.water) && !block.equals(Blocks.flowing_water)))
-                                && !CommonUtils.isIDInList(GameData.blockRegistry.getNameForObject(block), metadata, FloatingRuins.blockIDBlacklist))
+                                && !CommonUtils.isIDInList(GameData.getBlockRegistry().getNameForObject(block), metadata, FloatingRuins.blockIDBlacklist))
                         {
                             
                             Coord tgt = tgtOrigin.add(delta);

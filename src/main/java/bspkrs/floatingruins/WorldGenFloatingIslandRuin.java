@@ -354,10 +354,10 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.PLAINS))
             return Blocks.planks;
         
-        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.DESERT))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SANDY))
             return Blocks.sandstone;
         
-        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FROZEN))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SNOWY))
             return Blocks.snow;
         
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
@@ -403,7 +403,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     private ItemStack getItems(Random random)
     {
         String itemStack[] = stringOfIds.split(";")[random.nextInt(stringOfIds.split(";").length)].split(",");
-        String id = GameData.itemRegistry.getNameForObject(Items.egg);
+        String id = GameData.getItemRegistry().getNameForObject(Items.egg);
         int size = 1;
         int meta = 0;
         if (itemStack.length > 0)
@@ -415,7 +415,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (itemStack.length > 2)
             meta = CommonUtils.parseInt(itemStack[2].trim());
         
-        Item item = GameData.itemRegistry.getObject(id);
+        Item item = GameData.getItemRegistry().getObject(id);
         
         if (item == null)
             item = Items.egg;
@@ -434,13 +434,13 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.PLAINS))
             return getMobString(spawnerPlains, world, x, z);
         
-        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.DESERT))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SANDY))
             return getMobString(spawnerDesert, world, x, z);
         
-        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FROZEN) && BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SNOWY) && BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
             return getMobString(spawnerTaiga, world, x, z);
         
-        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FROZEN))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SNOWY))
             return getMobString(spawnerIceBiomes, world, x, z);
         
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
@@ -475,13 +475,13 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.PLAINS))
             return spawnerPlains.split(",");
         
-        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.DESERT))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SANDY))
             return spawnerDesert.split(",");
         
-        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FROZEN) && BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SNOWY) && BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
             return spawnerTaiga.split(",");
         
-        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FROZEN))
+        if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SNOWY))
             return spawnerIceBiomes.split(",");
         
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
