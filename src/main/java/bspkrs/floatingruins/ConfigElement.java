@@ -80,14 +80,14 @@ public enum ConfigElement
     SPAWNER_MUSHROOM("spawnerMushroom", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerMushroom", "", STRING),
     SPAWNER_NEAR_LAVA("spawnerNearLava", Reference.CTGY_DUNGEONS, "bspkrs.fr.configgui.spawnerNearLava",
             "If the dungeon is close enough to lava, the spawner will use these mobs.", STRING);
-    
+
     private String        key;
     private String        ctgy;
     private String        langKey;
     private String        desc;
     private Property.Type propertyType;
     private String[]      validStrings;
-    
+
     private ConfigElement(String key, String ctgy, String langKey, String desc, Property.Type propertyType, String[] validStrings)
     {
         this.key = key;
@@ -97,37 +97,37 @@ public enum ConfigElement
         this.propertyType = propertyType;
         this.validStrings = validStrings;
     }
-    
+
     private ConfigElement(String key, String ctgy, String langKey, String desc, Property.Type propertyType)
     {
         this(key, ctgy, langKey, desc, propertyType, new String[0]);
     }
-    
+
     public String key()
     {
         return key;
     }
-    
+
     public String ctgy()
     {
         return ctgy;
     }
-    
+
     public String languageKey()
     {
         return langKey;
     }
-    
+
     public String desc()
     {
         return desc;
     }
-    
+
     public Property.Type propertyType()
     {
         return propertyType;
     }
-    
+
     public String[] validStrings()
     {
         return validStrings;

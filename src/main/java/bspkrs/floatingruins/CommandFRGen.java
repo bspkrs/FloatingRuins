@@ -14,19 +14,19 @@ public class CommandFRGen extends CommandBase
     {
         return "frgen";
     }
-    
+
     @Override
     public String getCommandUsage(ICommandSender icommandsender)
     {
         return "commands.frgen.usage";
     }
-    
+
     @Override
     public int getRequiredPermissionLevel()
     {
         return 2;
     }
-    
+
     /*
      *  /frgen <x> <y> <z> [[<radius> <depth>] <shape>]
      *  /frgen random
@@ -66,7 +66,7 @@ public class CommandFRGen extends CommandBase
             // TODO: island gen with x, y, z, radius, depth, and shape
         }
     }
-    
+
     @Override
     public int compareTo(Object o)
     {

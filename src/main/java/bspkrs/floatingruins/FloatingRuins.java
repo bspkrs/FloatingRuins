@@ -107,13 +107,13 @@ public final class FloatingRuins
     public static String         spawnerMushroom              = spawnerMushroomDefault;
     private final static String  spawnerNearLavaDefault       = "Blaze, LavaSlime, WitherSkeleton, PigZombie";
     public static String         spawnerNearLava              = spawnerNearLavaDefault;
-    
+
     private static int           chunksToRetry                = 0;
-    
+
     public static void initConfig(File file)
     {
         Reference.config = new Configuration(file, Reference.CONFIG_VERSION);
-        
+
         if (!Reference.CONFIG_VERSION.equals(Reference.config.getLoadedConfigVersion()))
         {
             FRLog.info("Your FloatingRuins config file is out of date and will be altered.");
@@ -121,24 +121,24 @@ public final class FloatingRuins
                 if (Reference.config.moveProperty(Reference.CTGY_GEN, ce.key(), ce.ctgy()))
                     FRLog.debug("Property %s moved from %s to %s", ce.key(), Reference.CTGY_GEN, ce.ctgy());
         }
-        
+
         syncConfig(true);
     }
-    
+
     public static void syncConfig(boolean init)
     {
         if (!init)
             Reference.config.load();
-        
+
         Reference.config.setCategoryComment(Reference.CTGY_GEN, "ATTENTION: Editing this file manually is no longer necessary. \n" +
                 "On the Mods list screen select the entry for FloatingRuins, then click the Config button to modify these settings.");
-        
+
         HashMap<String, List<String>> orderedKeys = new HashMap<String, List<String>>();
         orderedKeys.put(Reference.CTGY_GEN, new ArrayList<String>());
         orderedKeys.put(Reference.CTGY_ISLANDS, new ArrayList<String>());
         orderedKeys.put(Reference.CTGY_ISLAND_SIZE, new ArrayList<String>());
         orderedKeys.put(Reference.CTGY_DUNGEONS, new ArrayList<String>());
-        
+
         enabled = Reference.config.getBoolean(ConfigElement.ENABLED.key(), ConfigElement.ENABLED.ctgy(), enabledDefault,
                 ConfigElement.ENABLED.desc(), ConfigElement.ENABLED.languageKey());
         orderedKeys.get(ConfigElement.ENABLED.ctgy()).add(ConfigElement.ENABLED.key());
@@ -263,16 +263,16 @@ public final class FloatingRuins
         spawnerNearLava = Reference.config.getString(ConfigElement.SPAWNER_NEAR_LAVA.key(), ConfigElement.SPAWNER_NEAR_LAVA.ctgy(), spawnerNearLavaDefault,
                 ConfigElement.SPAWNER_NEAR_LAVA.desc(), ConfigElement.SPAWNER_NEAR_LAVA.languageKey());
         orderedKeys.get(ConfigElement.SPAWNER_NEAR_LAVA.ctgy()).add(ConfigElement.SPAWNER_NEAR_LAVA.key());
-        
+
         for (Entry<String, List<String>> entry : orderedKeys.entrySet())
         {
             Reference.config.setCategoryPropertyOrder(entry.getKey(), entry.getValue());
             Reference.config.setCategoryLanguageKey(entry.getKey(), "bspkrs.fr.configgui.ctgy." + entry.getKey());
         }
-        
+
         Reference.config.save();
     }
-    
+
     /**
      * Method used during world generation that calculates all necessary generation variables and determines if this x,z location is
      * suitable for island generation. If conditions are met doGenerateSurface() is called.
@@ -285,15 +285,15 @@ public final class FloatingRuins
             {
                 random = getRandom(world, x, z);
                 int tgtY = getWeightedInt(heightMin, heightMean, heightMax, heightNorm, random);
-                
+
                 if (isWorldGen)
                 {
                     x += random.nextInt(16);
                     z += random.nextInt(16);
                 }
-                
+
                 WorldGenFloatingIsland islandGenerator = getFloatingIslandGenerator(world, random, x, tgtY, z);
-                
+
                 if (!isWorldGen || random.nextInt(rarity) == 0)
                 {
                     String debug = "";
@@ -344,7 +344,7 @@ public final class FloatingRuins
             }
         }
     }
-    
+
     /**
      * Accepts a WorldGenFloatingIsland object (or gets a new one) and executes the WorldGenFloatingIsland.generate() method
      */
@@ -352,10 +352,10 @@ public final class FloatingRuins
     {
         if (islandGenerator == null)
             islandGenerator = getFloatingIslandGenerator(world, random, x, tgtY, z);
-        
+
         return islandGenerator.generate(world, random, x, tgtY, z);
     }
-    
+
     /**
      * Randomly calculates the variables needed to create a WorldGenFloatingIsland object and returns a new WorldGenFloatingIsland object
      */
@@ -363,17 +363,17 @@ public final class FloatingRuins
     {
         int radius = getWeightedInt(radiusMin, radiusMean, radiusMax, radiusNorm, random);
         int yGround = CommonUtils.getHighestGroundBlock(world, x, tgtY, z);
-        
+
         int depth = getWeightedInt(depthMin, depthMean, depthMax, depthNorm, random);
         int islandType = getWeightedIslandType(random);
-        
+
         WorldType wt = world.getWorldInfo().getTerrainType();
         if (depth > yGround - (wt == WorldType.FLAT ? 1 : 5))
             depth = yGround - (wt == WorldType.FLAT ? 1 : 5);
-        
+
         return new WorldGenFloatingIsland(radius, depth, yGround, islandType);
     }
-    
+
     /**
      * Returns a new Random that's seeded based on the world seed and the x,z position
      */
@@ -385,7 +385,7 @@ public final class FloatingRuins
         random.setSeed(x * l + z * l1 ^ world.getSeed());
         return random;
     }
-    
+
     @SuppressWarnings("unchecked")
     public static boolean isVillageNearby(World world, int x, int y, int z, int radius)
     {
@@ -397,18 +397,18 @@ public final class FloatingRuins
             }
         return false;
     }
-    
+
     public static int getBlacklistBiomeIDWithinRange(World world, int x, int z, int radius)
     {
         float reciprocalRootOf2 = 0.70710678f;
         int adjRadius = Math.round(radius * reciprocalRootOf2);
         Coord pos = new Coord(x, 64, z);
         ForgeDirection[] NSEW = { ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST };
-        
+
         int biomeID = pos.getBiomeGenBase(world).biomeID;
         if (CommonUtils.isIDInList(biomeID, biomeIDBlacklist))
             return biomeID;
-        
+
         for (ForgeDirection fd : NSEW)
         {
             for (int i = radius; i > 0; i = i - 2)
@@ -418,7 +418,7 @@ public final class FloatingRuins
                     return biomeID;
             }
         }
-        
+
         for (int ns = 0; ns < 2; ns++)
             for (int ew = 2; ew < 4; ew++)
                 for (int r = adjRadius; r > 0; r = r - 2)
@@ -427,16 +427,16 @@ public final class FloatingRuins
                     if (CommonUtils.isIDInList(biomeID, biomeIDBlacklist))
                         return biomeID;
                 }
-        
+
         return -1;
     }
-    
+
     public static void debug(String msg, Object... args)
     {
         if (allowDebugLogging)
             FRLog.info("[DEBUG] " + msg, args);
     }
-    
+
     /**
      * Gets a random int that is weighted so as to create a bell curve like distribution lying between min and max 50% of ints will be
      * greater than the input mean, 50% of ints will be less than mean the higher the norm var is, the more likely output ints will be close
@@ -447,13 +447,13 @@ public final class FloatingRuins
         float deviation = 0.0f;
         float step;
         int weightedInt;
-        
+
         //The magic happens here. It creates a var (deviation) 0 - 99 that is weighted based on input norm
         for (int i = 0; i < norm; i++)
         {
             deviation += (float) random.nextInt(99) / (float) norm;
         }
-        
+
         //This here skews the data to account for mean not necessarily being in the middle of min and max
         if (deviation <= 50)
         {
@@ -463,23 +463,23 @@ public final class FloatingRuins
         else
         {
             deviation -= 50;
-            
+
             step = (max - mean) / 50F;
             min = mean + Math.round(step * (deviation));
         }
-        
+
         //Calculates the final random
         weightedInt = min + random.nextInt(Math.abs((int) Math.ceil(step)));
-        
+
         // If crappy inputs are fed in, make sure we don't return a negative value!
         return Math.abs(weightedInt);
     }
-    
+
     public static int getWeightedIslandType(Random random)
     {
         int totalWeight = shapeSpheroidWeight + shapeConeWeight + shapeJetsonsWeight + shapeStalactiteWeight;
         int choice = random.nextInt(totalWeight);
-        
+
         if (choice >= totalWeight - shapeStalactiteWeight)
             return WorldGenFloatingIsland.STALACTITE;
         else if (choice >= totalWeight - shapeStalactiteWeight - shapeJetsonsWeight)
@@ -489,7 +489,7 @@ public final class FloatingRuins
         else
             return WorldGenFloatingIsland.SPHEROID;
     }
-    
+
     static
     {
         blockIDBlacklistDefault = GameData.getBlockRegistry().getNameForObject(Blocks.bedrock) + ";";
@@ -518,7 +518,7 @@ public final class FloatingRuins
                 GameData.getItemRegistry().getNameForObject(Items.egg) + ", 8; " +
                 GameData.getItemRegistry().getNameForObject(Items.glowstone_dust) + ", 12; " +
                 GameData.getItemRegistry().getNameForObject(Items.glowstone_dust) + ", 8; " +
-                GameData.getItemRegistry().getNameForObject(Items.cooked_fished) + ", 3; " +
+                GameData.getItemRegistry().getNameForObject(Items.cooked_fish) + ", 3; " +
                 GameData.getItemRegistry().getNameForObject(Items.dye) + ", 5, 0; " +
                 GameData.getItemRegistry().getNameForObject(Items.cake) + ", 2; " +
                 GameData.getItemRegistry().getNameForObject(Items.blaze_rod) + ", 2; " +
@@ -529,6 +529,6 @@ public final class FloatingRuins
                 GameData.getItemRegistry().getNameForObject(Items.map) + ", 1; " +
                 GameData.getBlockRegistry().getNameForObject(Blocks.obsidian) + ", 4; " +
                 GameData.getBlockRegistry().getNameForObject(Blocks.ice) + ", 3;";
-        
+
     }
 }

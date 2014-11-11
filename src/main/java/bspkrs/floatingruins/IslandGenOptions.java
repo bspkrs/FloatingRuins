@@ -14,7 +14,7 @@ public final class IslandGenOptions
     public final int    x;
     public final int    y;
     public final int    z;
-    
+
     public IslandGenOptions(World world, Random random, int x, int y, int z, int radius, int depth, int islandType)
     {
         this.world = world;

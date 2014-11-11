@@ -28,23 +28,23 @@ public class FloatingRuinsMod
     public ModVersionChecker       versionChecker;
     private final String           versionURL = Const.VERSION_URL + "/Minecraft/" + Const.MCVERSION + "/floatingRuinsForge.version";
     private final String           mcfTopic   = "http://www.minecraftforum.net/topic/1009577-";
-    
+
     @Metadata(value = Reference.MODID)
     public static ModMetadata      metadata;
-    
+
     @Instance(value = Reference.MODID)
     public static FloatingRuinsMod instance;
-    
+
     @SidedProxy(clientSide = Reference.PROXY_CLIENT, serverSide = Reference.PROXY_COMMON)
     public static CommonProxy      proxy;
-    
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
         metadata = event.getModMetadata();
-        
+
         File file = event.getSuggestedConfigurationFile();
-        
+
         if (!CommonUtils.isObfuscatedEnv())
         { // debug settings for deobfuscated execution
           //            FloatingRuins.rarity = 44;
@@ -56,36 +56,36 @@ public class FloatingRuinsMod
           //            if (file.exists())
           //                file.delete();
         }
-        
+
         FloatingRuins.initConfig(file);
-        
+
         if (!CommonUtils.isObfuscatedEnv())
             FloatingRuins.allowDebugLogging = true;
     }
-    
+
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
         // hopefully a million is high enough to be last?
         GameRegistry.registerWorldGenerator(new FloatingRuinsWorldGenerator(), 1000000);
-        
+
         FMLCommonHandler.instance().bus().register(instance);
-        
+
         proxy.registerTickHandler();
-        
+
         if (bspkrsCoreMod.instance.allowUpdateCheck)
         {
             versionChecker = new ModVersionChecker(metadata.name, metadata.version, versionURL, mcfTopic);
             versionChecker.checkVersionWithLogging();
         }
     }
-    
+
     @EventHandler
     public void serverStarting(FMLServerStartingEvent event)
     {
         //event.registerServerCommand(new CommandFRGen());
     }
-    
+
     @SubscribeEvent
     public void onConfigChanged(OnConfigChangedEvent event)
     {
