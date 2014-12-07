@@ -1,0 +1,89 @@
+bspkrs.fr.configgui.allowDebugLogging.tooltip=Ustaw na 'true' jeśli chcesz, by FloatingRuins wypisywał informację o tym, co robi, 'false', by wyłączyć.
+bspkrs.fr.configgui.allowDebugLogging=Zezwól na wyjście debugowe
+bspkrs.fr.configgui.allowInSuperFlat.tooltip=Ustaw na 'true' by zezwoloć na generację latających ruin na superpłaskich mapach, 'false' by wyłączyć.
+bspkrs.fr.configgui.allowInSuperFlat=Zezwól w superpłaskich światach
+bspkrs.fr.configgui.allowMultiMobSpawners.tooltip=Gdy ustawione na 'true' przywoływacze będą mogły przywoływać jakiekolwiek moby z biomu w którym są one wygenerowane, ustaw na 'false' by użyć starej logiki losowego wybierania tylko jednego moba.
+bspkrs.fr.configgui.allowMultiMobSpawners=Zezwól na wielomobowe przywoływacze
+bspkrs.fr.configgui.biomeIDBlacklist.tooltip=Dodaj ID biomów, w których nie powinny generować się latające ruiny.  Format: ';' oddziela każde ID biomu.
+bspkrs.fr.configgui.biomeIDBlacklist=Czarna lista ID biomów
+bspkrs.fr.configgui.blockIDBlacklist.tooltip=Dodaj ID bloków do tej listy jeśli nie chcesz, by były one przesuwane gdy latająca wyspa jest generowana.  Format: ',' oddziela ID od metadanych i ';' oddziela każde bloki.
+bspkrs.fr.configgui.blockIDBlacklist=Czarna lista bloków
+bspkrs.fr.configgui.ctgy.general=Ustawienia generalne
+bspkrs.fr.configgui.ctgy.general.island_settings.tooltip=Ustawienia odnoszące się do samych latających wysp. Tu możesz zmienić ich rzadkość, prawdopodobieństwo różnych kształtów i kontrolować ich rozmiar.
+bspkrs.fr.configgui.ctgy.general.island_settings=Ustawienia latających wysp
+bspkrs.fr.configgui.ctgy.general.island_settings.island_size.tooltip=Ustawienia kontrlujące głebokość i szerokość wysp oraz to, jak wysoko wyspy będą podnoszone.
+bspkrs.fr.configgui.ctgy.general.island_settings.island_size=Ustawienia wielkośći wysp
+bspkrs.fr.configgui.ctgy.general.dungeon_settings.tooltip=Ustawienia związane z lochami pojawiającymi się na górze wysp. Tu możesz zmienić rzadkość pojawiania się lochów, jakie przedmioty mogą być dodane do skrzyń i jakie moby będą użyte w przywoływaczach w różnych biomach.
+bspkrs.fr.configgui.ctgy.general.dungeon_settings=Ustawienia lochów
+bspkrs.fr.configgui.depthMax.tooltip=Maksymalna głębokość/grubość wysp (Minimalne=`depthMean`, Maksymalne=`50`).
+bspkrs.fr.configgui.depthMax=Maksymalna głębokość wyspy
+bspkrs.fr.configgui.depthMean.tooltip=Średnia głębokość wyspy. Połowa wysp będzie płytsza od `depthMean`, połowa wyst będzie głębsza od `depthMean`.
+bspkrs.fr.configgui.depthMean=Średnia głębokość wyspy
+bspkrs.fr.configgui.depthMin.tooltip=Minimalna głębokość/grubość wyspy.
+bspkrs.fr.configgui.depthMin=Minimalna głębokość wyspy
+bspkrs.fr.configgui.depthNorm.tooltip=Jak bardzo głębokość wyspy powinna być zbliżona do `depthMean`.
+bspkrs.fr.configgui.depthNorm=Normalizator głębokości wysp
+bspkrs.fr.configgui.dimensionIDBlacklist.tooltip=Dodaj ID wymiarów w których nie chcesz, by generowane były latające ruiny.  Fromat: ";" oddziela każde ID wymiaru.
+bspkrs.fr.configgui.dimensionIDBlacklist=Czarna lista ID wymiarów
+bspkrs.fr.configgui.enabled.tooltip=Włącza i wyłącza generację latających ruin.
+bspkrs.fr.configgui.enabled=Włączone
+bspkrs.fr.configgui.harderDungeons.tooltip=Ustaw na 'true' ny generować trudniejsze lochy (sufit to bedrock, trudniej jest dostać się do skrzyni, moby pojawaiają się agresywniej), ustaw na 'false' by generować normalne lochy.
+bspkrs.fr.configgui.harderDungeons=Twórz trudniejsze lochy
+bspkrs.fr.configgui.heightMax.tooltip=Maksymalna wysokość latających ruin w świecie (Minimalne=`heightMean`, Maksymalne=`225`).
+bspkrs.fr.configgui.heightMax=Maksymalna wysokość wyspy
+bspkrs.fr.configgui.heightMean.tooltip=Średnia wysokość wyspy. Połowa wysp będzie poniżej `heightMean`, połowa wysp będzie powyżej `heightMean`. (Minimalne=`heightMin`, Maksymalne=`heightMax`).
+bspkrs.fr.configgui.heightMean=Średnia wysokość wyspy
+bspkrs.fr.configgui.heightMin.tooltip=Minimalna wysokość latających ruin (Minimalne=80, Maksymalne=`heightMax`).
+bspkrs.fr.configgui.heightMin=Minimalna wysokość wyspy
+bspkrs.fr.configgui.heightNorm.tooltip=Jak bardzo wysokość wyspy powinna być zbliżona do `heightMean`. (Minimalne=1, Maksymalne=10).
+bspkrs.fr.configgui.heightNorm=Normalizator wysokości wysp
+bspkrs.fr.configgui.numberOfItems.tooltip=Ilość przedmiotów w skrzyniach w ruinach.
+bspkrs.fr.configgui.numberOfItems=Minimalna ilość przedmiotów w skrzyniach
+bspkrs.fr.configgui.radiusMax.tooltip=Maksymalny promień każdej wyspy.  Ustawianie tej wartości na zbyt dużą sprawi, że bardzo duże fragmenty twojego świata staną się latającymi wyspami (Minimalne=`radiusMean`, Maksymalne=50).
+bspkrs.fr.configgui.radiusMax=Maksymalny promień wyspy
+bspkrs.fr.configgui.radiusMean.tooltip=Średni promień wyspy. Połowa wysp będzie mniejsza niż `radiusMean`, połowa wysp będzie większa niż radiusMean. (Minimalne=`radiusMin`, Maksymalne=`radiusMax`).
+bspkrs.fr.configgui.radiusMean=Średni promień wyspy
+bspkrs.fr.configgui.radiusMin.tooltip=Minimalny promień każdej wyspy.  Rekomenduję trzymać to na 7 lub więcej (Minimalne=5, Maksymalne=`radiusMean`).
+bspkrs.fr.configgui.radiusMin=Minimalny promień wyspy
+bspkrs.fr.configgui.radiusNorm.tooltip=Jak bardzo promień wyspy powinien być zbliżony do `radiusMean`. (Minimalne=1, Maksymalne=10).
+bspkrs.fr.configgui.radiusNorm=Normalizator promienia wyspy
+bspkrs.fr.configgui.rarity.tooltip=Co `rarity` chunków będzie wygenerowana latająca wyspa. Im wyższa ta liczba tym rzadsze są latające wyspy.
+bspkrs.fr.configgui.rarity=Rzadkość wysp
+bspkrs.fr.configgui.rarityDungeon.tooltip=Co `rarityDungeon` wysp będzie miało na sobie loch. Im większa ta liczba, lochy będą rzadsze.
+bspkrs.fr.configgui.rarityDungeon=Rzadkość pojawiania się lochów na wyspach
+bspkrs.fr.configgui.shapeConeWeight.tooltip=Relatywna szansa a to, że wyspa będzie miała kształt stożka.
+bspkrs.fr.configgui.shapeConeWeight=Szansa na stożek
+bspkrs.fr.configgui.shapeJetsonsWeight.tooltip=Relatywna szansa a to, że wyspa będzie miała kształt jetsonowy.
+bspkrs.fr.configgui.shapeJetsonsWeight=Szansa na kształt jetsonowy
+bspkrs.fr.configgui.shapeSpheroidWeight.tooltip=Relatywna szansa a to, że wyspa będzie sferoidą.
+bspkrs.fr.configgui.shapeSpheroidWeight=Szansa na sferoidę
+bspkrs.fr.configgui.spawnerDefault.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerDefault=Domyślne moby w przywoływaczach
+bspkrs.fr.configgui.spawnerDesert.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerDesert=Moby w przywoływaczach na pustyni
+bspkrs.fr.configgui.spawnerForest.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerForest=Moby w przywoływaczach w lesie
+bspkrs.fr.configgui.spawnerHills.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerHills=Moby w przywoływaczach we wzgórzach
+bspkrs.fr.configgui.spawnerIceBiomes.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerIceBiomes=Moby w przywoływaczach w biomie lodowym
+bspkrs.fr.configgui.spawnerJungle.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerJungle=Moby w przywoływaczach w dżungli
+bspkrs.fr.configgui.spawnerMushroom.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerMushroom=Moby w przywoływaczach w wyspie grzybokrów
+bspkrs.fr.configgui.spawnerNearLava.tooltip=Jeśli loch jest wystarczająco blosko lawy, przywoływacz użyje tych mobów.
+bspkrs.fr.configgui.spawnerNearLava=Moby w przywoływaczach na wyspach koło lawy
+bspkrs.fr.configgui.spawnerOcean.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerOcean=Moby w przywoływaczach w oceanie
+bspkrs.fr.configgui.spawnerPlains.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerPlains=Moby w przywoływaczach na równinach
+bspkrs.fr.configgui.spawnerRiver.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerRiver=Moby w przywoływaczach w rzece
+bspkrs.fr.configgui.spawnerSwampland.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerSwampland=Moby w przywoływaczach na bagnach
+bspkrs.fr.configgui.spawnerTaiga.tooltip=Przywoływacze mobów mogą być skonfigurowane nazwami mobów, każde oddzielone przecinkiem. Użycie "Default" sprawi, że wyspecyfikowany biom użyje takich samych ustawień jak `spawnerDefault`.
+bspkrs.fr.configgui.spawnerTaiga=Moby w przywoływaczach w taidze
+bspkrs.fr.configgui.stringOfIds.tooltip=ID przedmiotów znajdowanych w skrzyniach. Format: ',' oddziela ID przedmiotu, ilość i metadane oraz ';' oddziela przedmioty.
+bspkrs.fr.configgui.stringOfIds=Przedmioty mogące pojawiać się w skrzyniach
+bspkrs.fr.configgui.useCustomItemList.tooltip=Czy używać własnej listy przedmiotów? Gdy 'true' własna lista poniżej będze użyta, gdy 'false' przedmioty będą wybierane z różnych list używanych do wybierania losowych przedmiotów do skrzyń do normalnych lochów/pustynnych ruin/etc.
+bspkrs.fr.configgui.useCustomItemList=Używaj własnej listy przedmiotów
