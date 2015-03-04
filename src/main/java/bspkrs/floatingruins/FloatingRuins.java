@@ -9,15 +9,15 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.common.registry.GameData;
 import bspkrs.floatingruins.fml.Reference;
 import bspkrs.util.CommonUtils;
-import bspkrs.util.Coord;
-import cpw.mods.fml.common.registry.GameData;
 
 // Test Seed: 5460896710218081688
 // 1470679938 (large biomes)
@@ -107,8 +107,6 @@ public final class FloatingRuins
     public static String         spawnerMushroom              = spawnerMushroomDefault;
     private final static String  spawnerNearLavaDefault       = "Blaze, LavaSlime, WitherSkeleton, PigZombie";
     public static String         spawnerNearLava              = spawnerNearLavaDefault;
-
-    private static int           chunksToRetry                = 0;
 
     public static void initConfig(File file)
     {
@@ -279,11 +277,11 @@ public final class FloatingRuins
      */
     public static void generateSurface(World world, Random random, int x, int z, boolean isWorldGen)
     {
-        if ((world.getWorldInfo().getTerrainType() != WorldType.FLAT || allowInSuperFlat))
+        if (((world.getWorldInfo().getTerrainType() != WorldType.FLAT) || allowInSuperFlat))
         {
-            if (!CommonUtils.isIDInList(world.provider.dimensionId, dimensionIDBlacklist))
+            if (!CommonUtils.isIDInList(world.provider.getDimensionId(), dimensionIDBlacklist))
             {
-                random = getRandom(world, x, z);
+                random = getRandom(world, new BlockPos(x, 1, z));
                 int tgtY = getWeightedInt(heightMin, heightMean, heightMax, heightNorm, random);
 
                 if (isWorldGen)
@@ -292,53 +290,30 @@ public final class FloatingRuins
                     z += random.nextInt(16);
                 }
 
-                WorldGenFloatingIsland islandGenerator = getFloatingIslandGenerator(world, random, x, tgtY, z);
+                BlockPos tgt = new BlockPos(x, tgtY, z);
 
-                if (!isWorldGen || random.nextInt(rarity) == 0)
+                WorldGenFloatingIsland islandGenerator = getFloatingIslandGenerator(world, random, tgt);
+                BlockPos tgtGround = new BlockPos(x, islandGenerator.yGround, z);
+
+                if (!isWorldGen || (random.nextInt(rarity) == 0))
                 {
+                    FRLog.debug("Checking for region suitability...");
                     String debug = "";
                     int biomeID = getBlacklistBiomeIDWithinRange(world, x, z, islandGenerator.radius);
-                    if (isWorldGen && biomeID > -1)
+                    if (isWorldGen && (biomeID > -1))
                     {
                         debug = "Location %d,%d skipped due to proximity of a biomeID (%d) in the biomeIDBlackList";
-                        if (isWorldGen)
-                        {
-                            debug += ". \"Retry\" count incremented (%d).";
-                            chunksToRetry++;
-                        }
-                        debug(debug, x, z, biomeID, chunksToRetry);
+                        debug(debug, x, z, biomeID);
                     }
-                    else if (isWorldGen && isVillageNearby(world, x, islandGenerator.yGround, z, islandGenerator.radius))
+                    else if (isWorldGen && isVillageNearby(world, tgtGround, islandGenerator.radius))
                     {
                         debug = "Location %d, %d skipped due to a village being found nearby";
-                        if (isWorldGen)
-                        {
-                            debug += ". \"Retry\" count incremented (%d).";
-                            chunksToRetry++;
-                        }
-                        debug(debug, x, z, chunksToRetry);
+                        debug(debug, x, z);
                     }
-                    else if (!doGenerateSurface(world, random, x, tgtY, z, islandGenerator))
+                    else if (!doGenerateSurface(world, random, tgt, islandGenerator))
                     {
                         debug = "Location %d, %d failed during island generation";
-                        if (isWorldGen)
-                        {
-                            debug += ". \"Retry\" count incremented (%d).";
-                            chunksToRetry++;
-                        }
-                        debug(debug, x, z, chunksToRetry);
-                    }
-                }
-                else if (isWorldGen && chunksToRetry > 0 && random.nextInt(128) == 0)
-                {
-                    if (getBlacklistBiomeIDWithinRange(world, x, z, islandGenerator.radius) == -1
-                            && !isVillageNearby(world, x, islandGenerator.yGround, z, islandGenerator.radius))
-                    {
-                        if (doGenerateSurface(world, random, x, tgtY, z, islandGenerator))
-                        {
-                            chunksToRetry--;
-                            debug("Successfully generated a \"retry\" floating island at %d,%d. \"Retry\" count decremented (%d).", x, z, chunksToRetry);
-                        }
+                        debug(debug, x, z);
                     }
                 }
             }
@@ -348,27 +323,27 @@ public final class FloatingRuins
     /**
      * Accepts a WorldGenFloatingIsland object (or gets a new one) and executes the WorldGenFloatingIsland.generate() method
      */
-    public static boolean doGenerateSurface(World world, Random random, int x, int tgtY, int z, WorldGenFloatingIsland islandGenerator)
+    public static boolean doGenerateSurface(World world, Random random, BlockPos pos, WorldGenFloatingIsland islandGenerator)
     {
         if (islandGenerator == null)
-            islandGenerator = getFloatingIslandGenerator(world, random, x, tgtY, z);
+            islandGenerator = getFloatingIslandGenerator(world, random, pos);
 
-        return islandGenerator.generate(world, random, x, tgtY, z);
+        return islandGenerator.generate(world, random, pos);
     }
 
     /**
      * Randomly calculates the variables needed to create a WorldGenFloatingIsland object and returns a new WorldGenFloatingIsland object
      */
-    public static WorldGenFloatingIsland getFloatingIslandGenerator(World world, Random random, int x, int tgtY, int z)
+    public static WorldGenFloatingIsland getFloatingIslandGenerator(World world, Random random, BlockPos pos)
     {
         int radius = getWeightedInt(radiusMin, radiusMean, radiusMax, radiusNorm, random);
-        int yGround = CommonUtils.getHighestGroundBlock(world, x, tgtY, z);
+        int yGround = CommonUtils.getHighestGroundBlock(world, pos);
 
         int depth = getWeightedInt(depthMin, depthMean, depthMax, depthNorm, random);
         int islandType = getWeightedIslandType(random);
 
         WorldType wt = world.getWorldInfo().getTerrainType();
-        if (depth > yGround - (wt == WorldType.FLAT ? 1 : 5))
+        if (depth > (yGround - (wt == WorldType.FLAT ? 1 : 5)))
             depth = yGround - (wt == WorldType.FLAT ? 1 : 5);
 
         return new WorldGenFloatingIsland(radius, depth, yGround, islandType);
@@ -377,22 +352,23 @@ public final class FloatingRuins
     /**
      * Returns a new Random that's seeded based on the world seed and the x,z position
      */
-    public static Random getRandom(World world, int x, int z)
+    public static Random getRandom(World world, BlockPos pos)
     {
         Random random = new Random(world.getSeed());
-        long l = (random.nextLong() / 2L) * 2L + 1L;
-        long l1 = (random.nextLong() / 2L) * 2L + 1L;
-        random.setSeed(x * l + z * l1 ^ world.getSeed());
+        long l = ((random.nextLong() / 2L) * 2L) + 1L;
+        long l1 = ((random.nextLong() / 2L) * 2L) + 1L;
+        random.setSeed(((pos.getX() * l) + (pos.getZ() * l1)) ^ world.getSeed());
         return random;
     }
 
     @SuppressWarnings("unchecked")
-    public static boolean isVillageNearby(World world, int x, int y, int z, int radius)
+    public static boolean isVillageNearby(World world, BlockPos pos, int radius)
     {
+        FRLog.debug("Checking Villages...");
         if (world.villageCollectionObj != null)
             for (Village village : (List<Village>) world.villageCollectionObj.getVillageList())
             {
-                if (Math.sqrt(village.getCenter().getDistanceSquared(x, y, z)) < village.getVillageRadius() + radius)
+                if (Math.sqrt(village.getCenter().distanceSq(pos)) < (village.getVillageRadius() + radius))
                     return true;
             }
         return false;
@@ -400,20 +376,21 @@ public final class FloatingRuins
 
     public static int getBlacklistBiomeIDWithinRange(World world, int x, int z, int radius)
     {
+        FRLog.debug("Checking Biomes...");
         float reciprocalRootOf2 = 0.70710678f;
         int adjRadius = Math.round(radius * reciprocalRootOf2);
-        Coord pos = new Coord(x, 64, z);
-        ForgeDirection[] NSEW = { ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.EAST, ForgeDirection.WEST };
+        BlockPos pos = new BlockPos(x, 64, z);
+        EnumFacing[] NSEW = EnumFacing.values();
 
-        int biomeID = pos.getBiomeGenBase(world).biomeID;
+        int biomeID = world.getBiomeGenForCoords(pos).biomeID;
         if (CommonUtils.isIDInList(biomeID, biomeIDBlacklist))
             return biomeID;
 
-        for (ForgeDirection fd : NSEW)
+        for (EnumFacing fd : NSEW)
         {
             for (int i = radius; i > 0; i = i - 2)
             {
-                biomeID = pos.getOffsetCoord(fd, i).getBiomeGenBase(world).biomeID;
+                biomeID = world.getBiomeGenForCoords(pos.offset(fd, i)).biomeID;
                 if (CommonUtils.isIDInList(biomeID, biomeIDBlacklist))
                     return biomeID;
             }
@@ -423,7 +400,7 @@ public final class FloatingRuins
             for (int ew = 2; ew < 4; ew++)
                 for (int r = adjRadius; r > 0; r = r - 2)
                 {
-                    biomeID = pos.getOffsetCoord(NSEW[ns], r).getOffsetCoord(NSEW[ew], r).getBiomeGenBase(world).biomeID;
+                    biomeID = world.getBiomeGenForCoords(pos.offset(NSEW[ns], r).offset(NSEW[ew], r)).biomeID;
                     if (CommonUtils.isIDInList(biomeID, biomeIDBlacklist))
                         return biomeID;
                 }
@@ -480,11 +457,11 @@ public final class FloatingRuins
         int totalWeight = shapeSpheroidWeight + shapeConeWeight + shapeJetsonsWeight + shapeStalactiteWeight;
         int choice = random.nextInt(totalWeight);
 
-        if (choice >= totalWeight - shapeStalactiteWeight)
+        if (choice >= (totalWeight - shapeStalactiteWeight))
             return WorldGenFloatingIsland.STALACTITE;
-        else if (choice >= totalWeight - shapeStalactiteWeight - shapeJetsonsWeight)
+        else if (choice >= (totalWeight - shapeStalactiteWeight - shapeJetsonsWeight))
             return WorldGenFloatingIsland.JETSONS;
-        else if (choice >= totalWeight - shapeStalactiteWeight - shapeJetsonsWeight - shapeConeWeight)
+        else if (choice >= (totalWeight - shapeStalactiteWeight - shapeJetsonsWeight - shapeConeWeight))
             return WorldGenFloatingIsland.CONE;
         else
             return WorldGenFloatingIsland.SPHEROID;

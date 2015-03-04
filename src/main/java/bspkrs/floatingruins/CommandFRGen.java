@@ -6,6 +6,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.BlockPos;
 
 public class CommandFRGen extends CommandBase
 {
@@ -32,7 +33,7 @@ public class CommandFRGen extends CommandBase
      *  /frgen random
      */
     @Override
-    public void processCommand(ICommandSender sender, String[] args)
+    public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException
     {
         if (args.length == 1)
         {
@@ -42,7 +43,7 @@ public class CommandFRGen extends CommandBase
                 {
                     // TODO: fix apparent coordinate offset
                     EntityPlayer player = (EntityPlayer) sender;
-                    Random random = FloatingRuins.getRandom(player.worldObj, (int) player.posX, (int) player.posZ);
+                    Random random = FloatingRuins.getRandom(player.worldObj, new BlockPos((int) player.posX, 0, (int) player.posZ));
                     FloatingRuins.generateSurface(player.worldObj, random, (int) player.posX, (int) player.posZ, false);
                 }
             }

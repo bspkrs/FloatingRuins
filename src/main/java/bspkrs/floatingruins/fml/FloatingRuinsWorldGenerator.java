@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import bspkrs.floatingruins.FloatingRuins;
-import cpw.mods.fml.common.IWorldGenerator;
 
 public class FloatingRuinsWorldGenerator implements IWorldGenerator
 {
