@@ -1,3 +1,6 @@
+1.8.r01 - 06-Mar-2015
+- 1.8 update
+- removed retry attempts code (had potential to cause differing generation with the same seed on different world saves)
 1.7.10.r02 - 11-Nov-2014
 - fixed tooltip messages
 - removed dropbox URLs
