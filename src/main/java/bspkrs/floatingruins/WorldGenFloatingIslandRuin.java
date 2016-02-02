@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -418,7 +419,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (itemStack.length > 2)
             meta = CommonUtils.parseInt(itemStack[2].trim());
 
-        Item item = GameData.getItemRegistry().getObject(id);
+        Item item = GameData.getItemRegistry().getObject(new ResourceLocation(id));
 
         if (item == null)
             item = Items.egg;

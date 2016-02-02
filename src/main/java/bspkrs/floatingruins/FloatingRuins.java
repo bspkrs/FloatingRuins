@@ -366,7 +366,7 @@ public final class FloatingRuins
     {
         FRLog.debug("Checking Villages...");
         if (world.villageCollectionObj != null)
-            for (Village village : (List<Village>) world.villageCollectionObj.getVillageList())
+            for (Village village : world.villageCollectionObj.getVillageList())
             {
                 if (Math.sqrt(village.getCenter().distanceSq(pos)) < (village.getVillageRadius() + radius))
                     return true;

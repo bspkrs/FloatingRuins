@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 import bspkrs.floatingruins.FloatingRuins;
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
@@ -24,7 +24,7 @@ public class DelayedWorldGenTicker
         this.random = random;
         this.x = x;
         this.z = z;
-        FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @SubscribeEvent
@@ -36,7 +36,7 @@ public class DelayedWorldGenTicker
         if (--delayTicks == 0)
         {
             FloatingRuins.generateSurface(world, random, x, z, true);
-            FMLCommonHandler.instance().bus().unregister(this);
+            MinecraftForge.EVENT_BUS.unregister(this);
         }
     }
 }
