@@ -2,6 +2,11 @@ package bspkrs.floatingruins.fml;
 
 import java.io.File;
 
+import bspkrs.bspkrscore.fml.bspkrsCoreMod;
+import bspkrs.floatingruins.FloatingRuins;
+import bspkrs.util.CommonUtils;
+import bspkrs.util.Const;
+import bspkrs.util.ModVersionChecker;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
@@ -15,11 +20,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import bspkrs.bspkrscore.fml.bspkrsCoreMod;
-import bspkrs.floatingruins.FloatingRuins;
-import bspkrs.util.CommonUtils;
-import bspkrs.util.Const;
-import bspkrs.util.ModVersionChecker;
 
 @Mod(modid = Reference.MODID, name = Reference.NAME, version = "@MOD_VERSION@", dependencies = "required-after:bspkrsCore@[@BSCORE_VERSION@,)", useMetadata = true,
         guiFactory = "bspkrs.floatingruins.fml.gui.ModGuiFactoryHandler")

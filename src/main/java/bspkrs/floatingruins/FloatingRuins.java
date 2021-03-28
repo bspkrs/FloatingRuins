@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import bspkrs.floatingruins.fml.Reference;
+import bspkrs.util.CommonUtils;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.registry.GameData;
-import bspkrs.floatingruins.fml.Reference;
-import bspkrs.util.CommonUtils;
+import net.minecraftforge.registries.GameData;
 
 // Test Seed: 5460896710218081688
 // 1470679938 (large biomes)

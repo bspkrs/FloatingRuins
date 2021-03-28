@@ -3,8 +3,9 @@ package bspkrs.floatingruins;
 import static net.minecraftforge.common.config.Property.Type.BOOLEAN;
 import static net.minecraftforge.common.config.Property.Type.INTEGER;
 import static net.minecraftforge.common.config.Property.Type.STRING;
-import net.minecraftforge.common.config.Property;
+
 import bspkrs.floatingruins.fml.Reference;
+import net.minecraftforge.common.config.Property;
 
 public enum ConfigElement
 {

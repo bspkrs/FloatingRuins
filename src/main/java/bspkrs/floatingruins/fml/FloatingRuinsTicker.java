@@ -1,8 +1,8 @@
 package bspkrs.floatingruins.fml;
 
+import bspkrs.bspkrscore.fml.bspkrsCoreMod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
-import bspkrs.bspkrscore.fml.bspkrsCoreMod;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

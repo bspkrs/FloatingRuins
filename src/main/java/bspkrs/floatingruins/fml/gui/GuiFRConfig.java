@@ -1,10 +1,10 @@
 package bspkrs.floatingruins.fml.gui;
 
+import bspkrs.floatingruins.fml.Reference;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.config.GuiConfig;
-import bspkrs.floatingruins.fml.Reference;
 
 public class GuiFRConfig extends GuiConfig
 {

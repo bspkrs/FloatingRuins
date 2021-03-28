@@ -2,10 +2,10 @@ package bspkrs.floatingruins.fml;
 
 import java.util.Random;
 
+import bspkrs.floatingruins.FloatingRuins;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import bspkrs.floatingruins.FloatingRuins;
 
 public class FloatingRuinsWorldGenerator implements IWorldGenerator
 {
