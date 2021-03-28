@@ -20,6 +20,17 @@ archivesBaseName = 'modid'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
+// TODO: this does not work. will need to add deobf to ivy repo, or convert to github call. currently have to manually add bspkrsCore as dep
+//repositories {
+//    ivy {
+//        url "http://bspk.rs/MC"
+//        layout "pattern", {
+//            artifact "[module]/deobf/%5B1.12.2%5D[module]-deobf-[revision].[ext]"
+//            artifact "[module]/deobf/[1.12.2][module]-deobf-[revision].[ext]"
+//        }
+//    }
+//}
+
 minecraft {
     // The mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   Snapshot are built nightly.
@@ -28,6 +39,7 @@ minecraft {
     // Simply re-run your setup task after changing the mappings to update your workspace.
     //mappings channel: 'snapshot', version: '20171003-1.12'
     mappings channel: 'snapshot', version: '20171003-1.12'
+//    compile name: 'bspkrsCore', version: "8.0.1", ext: 'jar'
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
