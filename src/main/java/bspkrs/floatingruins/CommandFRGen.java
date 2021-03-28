@@ -3,21 +3,23 @@ package bspkrs.floatingruins;
 import java.util.Random;
 
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
 public class CommandFRGen extends CommandBase
 {
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "frgen";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender icommandsender)
+    public String getUsage(ICommandSender icommandsender)
     {
         return "commands.frgen.usage";
     }
@@ -33,7 +35,7 @@ public class CommandFRGen extends CommandBase
      *  /frgen random
      */
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws WrongUsageException
     {
         if (args.length == 1)
         {
@@ -43,8 +45,8 @@ public class CommandFRGen extends CommandBase
                 {
                     // TODO: fix apparent coordinate offset
                     EntityPlayer player = (EntityPlayer) sender;
-                    Random random = FloatingRuins.getRandom(player.worldObj, new BlockPos((int) player.posX, 0, (int) player.posZ));
-                    FloatingRuins.generateSurface(player.worldObj, random, (int) player.posX, (int) player.posZ, false);
+                    Random random = FloatingRuins.getRandom(player.world, new BlockPos((int) player.posX, 0, (int) player.posZ));
+                    FloatingRuins.generateSurface(player.world, random, (int) player.posX, (int) player.posZ, false);
                 }
             }
             else
@@ -69,7 +71,7 @@ public class CommandFRGen extends CommandBase
     }
 
     @Override
-    public int compareTo(Object o)
+    public int compareTo(ICommand p_compareTo_1_)
     {
         // TODO Auto-generated method stub
         return 0;
