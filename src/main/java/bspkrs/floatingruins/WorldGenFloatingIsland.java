@@ -10,7 +10,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.registries.GameData;
+//import net.minecraftforge.registries.GameData;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+//old: import net.minecraftforge.fml.common.registry.GameData;
 
 public class WorldGenFloatingIsland extends WorldGenerator
 {
@@ -100,10 +102,10 @@ public class WorldGenFloatingIsland extends WorldGenerator
         if (!world.isBlockLoaded(tgt, false))
             failureReason = "Chunk does not exist.";
         else if (!world.isAirBlock(tgt)
-                && !(allowNonAirSpecialBlocks && block.equals(Blocks.water))
+                && !(allowNonAirSpecialBlocks && block.equals(Blocks.WATER))
                 && !(allowNonAirSpecialBlocks && !world.isBlockNormalCube(tgt, true))
                 && !(allowNonAirSpecialBlocks && block.isWood(world, tgt))
-                && !(allowNonAirSpecialBlocks && block.isLeaves(world, tgt)))
+                && !(allowNonAirSpecialBlocks && block.isLeaves(state, world, tgt)))
             failureReason = "Block at target is not replaceable.";
 
         return failureReason.isEmpty();
@@ -174,14 +176,15 @@ public class WorldGenFloatingIsland extends WorldGenerator
 
                         BlockPos tgt = tgtOrigin.add(delta);
                         if (((y <= 0)
-                                || (!block.equals(Blocks.water) && !block.equals(Blocks.flowing_water)))
+                                || (!block.equals(Blocks.WATER) && !block.equals(Blocks.FLOWING_WATER)))
+                        		//TODO: again, have to fix getBlockRegistry
                                 && !CommonUtils.isIDInList(GameData.getBlockRegistry().getNameForObject(block).toString(), metadata, FloatingRuins.blockIDBlacklist))
                         {
-                            if (block.equals(Blocks.mob_spawner))
+                            if (block.equals(Blocks.MOB_SPAWNER))
                                 debug += "+S(" + tgt + ") ";
-                            else if (block.equals(Blocks.chest))
+                            else if (block.equals(Blocks.CHEST))
                                 debug += "+C(" + tgt + ") ";
-                            else if ((y >= -8) && !isLavaNearby && (block.equals(Blocks.lava) || block.equals(Blocks.flowing_lava)))
+                            else if ((y >= -8) && !isLavaNearby && (block.equals(Blocks.LAVA) || block.equals(Blocks.FLOWING_LAVA)))
                             {
                                 isLavaNearby = true;
                                 debug += "+L ";
@@ -204,7 +207,7 @@ public class WorldGenFloatingIsland extends WorldGenerator
 
                             blocksMoved++;
                         }
-                        if ((random.nextInt(3) == 0) && block.equals(Blocks.stone) && (Math.abs(x) <= 1) && (Math.abs(z) <= 1) && (Math.abs(y + (depth / 4)) <= 2))
+                        if ((random.nextInt(3) == 0) && block.equals(Blocks.STONE) && (Math.abs(x) <= 1) && (Math.abs(z) <= 1) && (Math.abs(y + (depth / 4)) <= 2))
                             world.setBlockState(tgt, specialOre.getDefaultState(), BlockNotifyType.NONE);
                     }
                 }
@@ -219,13 +222,13 @@ public class WorldGenFloatingIsland extends WorldGenerator
                     IBlockState state = world.getBlockState(tgt);
                     Block block = state.getBlock();
                     if (!world.isAirBlock(tgt) && world.isAirBlock(tgt.down()))
-                        if (block.equals(Blocks.gravel))
-                            world.setBlockState(tgt, Blocks.stone.getDefaultState(), BlockNotifyType.ALL);
-                        else if (block.equals(Blocks.sand))
+                        if (block.equals(Blocks.GRAVEL))
+                            world.setBlockState(tgt, Blocks.STONE.getDefaultState(), BlockNotifyType.ALL);
+                        else if (block.equals(Blocks.SAND))
                             if (block.getMetaFromState(state) == 1)
-                                world.setBlockState(tgt, Blocks.hardened_clay.getDefaultState(), BlockNotifyType.ALL);
+                                world.setBlockState(tgt, Blocks.HARDENED_CLAY.getDefaultState(), BlockNotifyType.ALL);
                             else
-                                world.setBlockState(tgt, Blocks.sandstone.getDefaultState(), BlockNotifyType.ALL);
+                                world.setBlockState(tgt, Blocks.SANDSTONE.getDefaultState(), BlockNotifyType.ALL);
                 }
 
         debug += "Blocks Moved: " + blocksMoved + " (" + groundBlocksMoved + " at or below origin, " + blockNotifications + " block notifications)";
@@ -274,26 +277,26 @@ public class WorldGenFloatingIsland extends WorldGenerator
         switch (random.nextInt(8))
         {
             case 0:
-                return Blocks.diamond_ore;
+                return Blocks.DIAMOND_ORE;
 
             case 1:
-                return Blocks.gold_ore;
+                return Blocks.GOLD_ORE;
 
             case 2:
-                return Blocks.iron_ore;
+                return Blocks.IRON_ORE;
 
             case 3:
-                return Blocks.lapis_ore;
+                return Blocks.LAPIS_ORE;
 
             case 4:
-                return Blocks.redstone_ore;
+                return Blocks.REDSTONE_ORE;
 
             case 5:
-                return Blocks.emerald_ore;
+                return Blocks.EMERALD_ORE;
 
             case 6:
-                return Blocks.iron_ore;
+                return Blocks.IRON_ORE;
         }
-        return Blocks.coal_ore;
+        return Blocks.COAL_ORE;
     }
 }
