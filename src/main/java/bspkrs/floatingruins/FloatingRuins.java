@@ -16,8 +16,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.village.Village;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.registries.GameData;
+//import net.minecraftforge.registries.GameData;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+//old: import net.minecraftforge.fml.common.registry.GameData;
 
 // Test Seed: 5460896710218081688
 // 1470679938 (large biomes)
@@ -279,7 +282,7 @@ public final class FloatingRuins
     {
         if (((world.getWorldInfo().getTerrainType() != WorldType.FLAT) || allowInSuperFlat))
         {
-            if (!CommonUtils.isIDInList(world.provider.getDimensionId(), dimensionIDBlacklist))
+            if (!CommonUtils.isIDInList(world.provider.getDimension(), dimensionIDBlacklist))
             {
                 random = getRandom(world, new BlockPos(x, 1, z));
                 int tgtY = getWeightedInt(heightMin, heightMean, heightMax, heightNorm, random);
@@ -365,8 +368,8 @@ public final class FloatingRuins
     public static boolean isVillageNearby(World world, BlockPos pos, int radius)
     {
         FRLog.debug("Checking Villages...");
-        if (world.villageCollectionObj != null)
-            for (Village village : (List<Village>) world.villageCollectionObj.getVillageList())
+        if (world.villageCollection != null)
+            for (Village village : (List<Village>) world.villageCollection.getVillageList())
             {
                 if (Math.sqrt(village.getCenter().distanceSq(pos)) < (village.getVillageRadius() + radius))
                     return true;
@@ -382,7 +385,7 @@ public final class FloatingRuins
         BlockPos pos = new BlockPos(x, 64, z);
         EnumFacing[] NSEW = EnumFacing.values();
 
-        int biomeID = world.getBiomeGenForCoords(pos).biomeID;
+        int biomeID = Biome.getIdForBiome(world.getBiome(pos));
         if (CommonUtils.isIDInList(biomeID, biomeIDBlacklist))
             return biomeID;
 
@@ -390,7 +393,7 @@ public final class FloatingRuins
         {
             for (int i = radius; i > 0; i = i - 2)
             {
-                biomeID = world.getBiomeGenForCoords(pos.offset(fd, i)).biomeID;
+                biomeID = Biome.getIdForBiome(world.getBiome(pos.offset(fd, i)));
                 if (CommonUtils.isIDInList(biomeID, biomeIDBlacklist))
                     return biomeID;
             }
@@ -400,7 +403,7 @@ public final class FloatingRuins
             for (int ew = 2; ew < 4; ew++)
                 for (int r = adjRadius; r > 0; r = r - 2)
                 {
-                    biomeID = world.getBiomeGenForCoords(pos.offset(NSEW[ns], r).offset(NSEW[ew], r)).biomeID;
+                    biomeID = Biome.getIdForBiome(world.getBiome(pos.offset(NSEW[ns], r).offset(NSEW[ew], r)));
                     if (CommonUtils.isIDInList(biomeID, biomeIDBlacklist))
                         return biomeID;
                 }
@@ -467,6 +470,7 @@ public final class FloatingRuins
             return WorldGenFloatingIsland.SPHEROID;
     }
 
+    //TODO: i need to rework this entire section. need to switch this all over to modname:blockname possibly see net.minecraftforge.fml.common.registry.GameRegistry.findRegistry
     static
     {
         blockIDBlacklistDefault = GameData.getBlockRegistry().getNameForObject(Blocks.bedrock) + ";";
