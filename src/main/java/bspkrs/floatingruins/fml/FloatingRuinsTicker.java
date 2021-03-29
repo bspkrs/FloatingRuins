@@ -2,7 +2,7 @@ package bspkrs.floatingruins.fml;
 
 import bspkrs.bspkrscore.fml.bspkrsCoreMod;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -30,14 +30,14 @@ public class FloatingRuinsTicker
         if (event.phase.equals(Phase.START))
             return;
 
-        boolean keepTicking = !(mcClient != null && mcClient.thePlayer != null && mcClient.theWorld != null);
+        boolean keepTicking = !(mcClient != null && mcClient.player != null && mcClient.world != null);
 
         if (!keepTicking && isRegistered)
         {
             if (bspkrsCoreMod.instance.allowUpdateCheck && FloatingRuinsMod.instance.versionChecker != null)
                 if (!FloatingRuinsMod.instance.versionChecker.isCurrentVersion())
                     for (String msg : FloatingRuinsMod.instance.versionChecker.getInGameMessage())
-                        mcClient.thePlayer.addChatMessage(new ChatComponentText(msg));
+                        mcClient.player.sendMessage(new TextComponentString(msg));
 
             FMLCommonHandler.instance().bus().unregister(this);
             isRegistered = false;
