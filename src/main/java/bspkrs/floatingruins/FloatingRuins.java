@@ -19,7 +19,7 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Configuration;
 //import net.minecraftforge.registries.GameData;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+//proper?: import net.minecraftforge.fml.common.registry.GameRegistry;
 //old: import net.minecraftforge.fml.common.registry.GameData;
 
 // Test Seed: 5460896710218081688
@@ -471,45 +471,46 @@ public final class FloatingRuins
     }
 
     //TODO: i need to rework this entire section. need to switch this all over to modname:blockname possibly see net.minecraftforge.fml.common.registry.GameRegistry.findRegistry
+    // dont know if this works, but i hope it does
     static
     {
-        blockIDBlacklistDefault = GameData.getBlockRegistry().getNameForObject(Blocks.bedrock) + ";";
-        stringOfIdsDefault = GameData.getItemRegistry().getNameForObject(Items.arrow) + ", 10; " +
-                GameData.getItemRegistry().getNameForObject(Items.arrow) + ", 16; " +
-                GameData.getItemRegistry().getNameForObject(Items.coal) + ", 6; " +
-                GameData.getItemRegistry().getNameForObject(Items.diamond) + ", 1; " +
-                GameData.getItemRegistry().getNameForObject(Items.iron_ingot) + ", 3; " +
-                GameData.getItemRegistry().getNameForObject(Items.gold_ingot) + ", 2; " +
-                GameData.getItemRegistry().getNameForObject(Items.mushroom_stew) + ", 2; " +
-                GameData.getItemRegistry().getNameForObject(Items.feather) + ", 1; " +
-                GameData.getItemRegistry().getNameForObject(Items.chainmail_helmet) + ", 1; " +
-                GameData.getItemRegistry().getNameForObject(Items.chainmail_chestplate) + ", 1; " +
-                GameData.getItemRegistry().getNameForObject(Items.chainmail_leggings) + ", 1; " +
-                GameData.getItemRegistry().getNameForObject(Items.chainmail_boots) + ", 1; " +
-                GameData.getItemRegistry().getNameForObject(Items.painting) + ", 2; " +
-                GameData.getItemRegistry().getNameForObject(Items.painting) + ", 5; " +
-                GameData.getItemRegistry().getNameForObject(Items.golden_apple) + ", 1; " +
-                GameData.getItemRegistry().getNameForObject(Items.golden_apple) + ", 3; " +
-                GameData.getItemRegistry().getNameForObject(Items.bucket) + ", 2; " +
-                GameData.getItemRegistry().getNameForObject(Items.lava_bucket) + ", 1; " +
-                GameData.getItemRegistry().getNameForObject(Items.milk_bucket) + ", 1; " +
-                GameData.getItemRegistry().getNameForObject(Items.book) + ", 4; " +
-                GameData.getItemRegistry().getNameForObject(Items.slime_ball) + ", 6; " +
-                GameData.getItemRegistry().getNameForObject(Items.egg) + ", 4; " +
-                GameData.getItemRegistry().getNameForObject(Items.egg) + ", 8; " +
-                GameData.getItemRegistry().getNameForObject(Items.glowstone_dust) + ", 12; " +
-                GameData.getItemRegistry().getNameForObject(Items.glowstone_dust) + ", 8; " +
-                GameData.getItemRegistry().getNameForObject(Items.cooked_fish) + ", 3; " +
-                GameData.getItemRegistry().getNameForObject(Items.dye) + ", 5, 0; " +
-                GameData.getItemRegistry().getNameForObject(Items.cake) + ", 2; " +
-                GameData.getItemRegistry().getNameForObject(Items.blaze_rod) + ", 2; " +
-                GameData.getItemRegistry().getNameForObject(Items.nether_wart) + ", 6; " +
-                GameData.getItemRegistry().getNameForObject(Items.emerald) + ", 4; " +
-                GameData.getItemRegistry().getNameForObject(Items.emerald) + ", 6; " +
-                GameData.getItemRegistry().getNameForObject(Items.quartz) + ", 6; " +
-                GameData.getItemRegistry().getNameForObject(Items.map) + ", 1; " +
-                GameData.getBlockRegistry().getNameForObject(Blocks.obsidian) + ", 4; " +
-                GameData.getBlockRegistry().getNameForObject(Blocks.ice) + ", 3;";
+        blockIDBlacklistDefault = Blocks.BEDROCK.toString() + ";";
+        stringOfIdsDefault = Items.ARROW.toString() + ", 10; " +
+                Items.ARROW.toString() + ", 16; " +
+                Items.COAL.toString() + ", 6; " +
+                Items.DIAMOND.toString() + ", 1; " +
+                Items.IRON_INGOT.toString() + ", 3; " +
+                Items.GOLD_INGOT.toString() + ", 2; " +
+                Items.MUSHROOM_STEW.toString() + ", 2; " +
+                Items.FEATHER.toString() + ", 1; " +
+                Items.CHAINMAIL_HELMET.toString() + ", 1; " +
+                Items.CHAINMAIL_CHESTPLATE.toString() + ", 1; " +
+                Items.CHAINMAIL_LEGGINGS.toString() + ", 1; " +
+                Items.CHAINMAIL_BOOTS.toString() + ", 1; " +
+                Items.PAINTING.toString() + ", 2; " +
+                Items.PAINTING.toString() + ", 5; " +
+                Items.GOLDEN_APPLE.toString() + ", 1; " +
+                Items.GOLDEN_APPLE.toString() + ", 3; " +
+                Items.BUCKET.toString() + ", 2; " +
+                Items.LAVA_BUCKET.toString() + ", 1; " +
+                Items.MILK_BUCKET.toString() + ", 1; " +
+                Items.BOOK.toString() + ", 4; " +
+                Items.SLIME_BALL.toString() + ", 6; " +
+                Items.EGG.toString() + ", 4; " +
+                Items.EGG.toString() + ", 8; " +
+                Items.GLOWSTONE_DUST.toString() + ", 12; " +
+                Items.GLOWSTONE_DUST.toString() + ", 8; " +
+                Items.COOKED_FISH.toString() + ", 3; " +
+                Items.DYE.toString() + ", 5, 0; " +
+                Items.CAKE.toString() + ", 2; " +
+                Items.BLAZE_ROD.toString() + ", 2; " +
+                Items.NETHER_WART.toString() + ", 6; " +
+                Items.EMERALD.toString() + ", 4; " +
+                Items.EMERALD.toString() + ", 6; " +
+                Items.QUARTZ.toString() + ", 6; " +
+                Items.MAP.toString() + ", 1; " +
+                Blocks.OBSIDIAN.toString() + ", 4; " +
+                Blocks.ICE.toString() + ", 3;";
 
     }
 }

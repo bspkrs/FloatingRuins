@@ -11,7 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 //import net.minecraftforge.registries.GameData;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+//proper?: import net.minecraftforge.fml.common.registry.GameRegistry;
 //old: import net.minecraftforge.fml.common.registry.GameData;
 
 public class WorldGenFloatingIsland extends WorldGenerator
@@ -173,12 +173,14 @@ public class WorldGenFloatingIsland extends WorldGenerator
                         IBlockState state = world.getBlockState(src);
                         Block block = state.getBlock();
                         int metadata = block.getMetaFromState(state);
+                        String SBlock = block.toString();
 
                         BlockPos tgt = tgtOrigin.add(delta);
                         if (((y <= 0)
                                 || (!block.equals(Blocks.WATER) && !block.equals(Blocks.FLOWING_WATER)))
                         		//TODO: again, have to fix getBlockRegistry
-                                && !CommonUtils.isIDInList(GameData.getBlockRegistry().getNameForObject(block).toString(), metadata, FloatingRuins.blockIDBlacklist))
+                        		// i think it is fixed, i need to test it once i can compile
+                                && !CommonUtils.isIDInList(SBlock, metadata, FloatingRuins.blockIDBlacklist))
                         {
                             if (block.equals(Blocks.MOB_SPAWNER))
                                 debug += "+S(" + tgt + ") ";

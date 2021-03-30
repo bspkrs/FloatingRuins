@@ -406,7 +406,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     private ItemStack getItems(Random random)
     {
         String itemStack[] = stringOfIds.split(";")[random.nextInt(stringOfIds.split(";").length)].split(",");
-        String id = GameData.getItemRegistry().getNameForObject(Items.EGG).toString();
+        String id = Items.EGG.toString();
         int size = 1;
         int meta = 0;
         if (itemStack.length > 0)
@@ -418,7 +418,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (itemStack.length > 2)
             meta = CommonUtils.parseInt(itemStack[2].trim());
 
-        Item item = GameData.getItemRegistry().getObject(id);
+        Item item = Item.getByNameOrId(id);
 
         if (item == null)
             item = Items.EGG;
