@@ -1,8 +1,16 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
+        maven {
+            url "https://www.cursemaven.com"
+        }
+//        maven {
+//            name = "CurseForge"
+//            url = "https://minecraft.curseforge.com/api/maven/"
+//        }
         jcenter()
         mavenCentral()
+        
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
@@ -39,7 +47,7 @@ minecraft {
     // Simply re-run your setup task after changing the mappings to update your workspace.
     //mappings channel: 'snapshot', version: '20171003-1.12'
     mappings channel: 'snapshot', version: '20171003-1.12'
-//    compile name: 'bspkrsCore', version: "8.0.1", ext: 'jar'
+
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
     
     // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -81,7 +89,8 @@ dependencies {
     // Real examples
     // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
+    compile 'curse.maven:bspkrscore-59218:2996325'
+//    compile 'bspkrscore:[1.12.2]bspkrscore:8.0.1'
     // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
     // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
 
