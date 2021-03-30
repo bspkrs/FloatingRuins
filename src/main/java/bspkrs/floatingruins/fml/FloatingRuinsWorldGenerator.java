@@ -2,10 +2,11 @@ package bspkrs.floatingruins.fml;
 
 import java.util.Random;
 
+import bspkrs.floatingruins.FloatingRuins;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import bspkrs.floatingruins.FloatingRuins;
 
 public class FloatingRuinsWorldGenerator implements IWorldGenerator
 {
@@ -13,11 +14,11 @@ public class FloatingRuinsWorldGenerator implements IWorldGenerator
     {}
 
     @Override
-    public void generate(Random random, int x, int z, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
         if (FloatingRuins.enabled)
-            FloatingRuins.generateSurface(world, random, x << 4, z << 4, true);
-        //new DelayedWorldGenTicker(10, world, random, x << 4, z << 4);
+            FloatingRuins.generateSurface(world, random, chunkX << 4, chunkZ << 4, true);
+        //new DelayedWorldGenTicker(10, world, random, chunkX << 4, chunkZ << 4);
     }
 
 }

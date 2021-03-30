@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
+import bspkrs.util.BlockNotifyType;
+import bspkrs.util.CommonUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntitySlime;
 import net.minecraft.init.Blocks;
@@ -15,16 +17,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+//import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.common.ChestGenHooks;
-import net.minecraftforge.fml.common.registry.GameData;
-import bspkrs.util.BlockNotifyType;
-import bspkrs.util.CommonUtils;
+import net.minecraftforge.registries.GameData;
 
 public class WorldGenFloatingIslandRuin extends WorldGenerator
 {
@@ -105,11 +105,11 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     {
         BiomeGenBase biomegenbase = world.getWorldChunkManager().getBiomeGenerator(pos);
         IBlockState dungeonBlock = getDungeonBlock(biomegenbase);
-        if (dungeonBlock.equals(Blocks.snow.getDefaultState()))
+        if (dungeonBlock.equals(Blocks.SNOW.getDefaultState()))
             setIgloo(world, pos, 5, dungeonBlock);
-        else if (dungeonBlock.equals(Blocks.sandstone.getDefaultState()))
+        else if (dungeonBlock.equals(Blocks.SANDSTONE.getDefaultState()))
             setPyramid(world, pos, 6, dungeonBlock);
-        else if (dungeonBlock.equals(Blocks.red_mushroom_block.getDefaultState()))
+        else if (dungeonBlock.equals(Blocks.RED_MUSHROOM_BLOCK.getDefaultState()))
             CommonUtils.setHugeMushroom(world, random, pos, dungeonBlock);
         else
             setBox(world, random, pos, 4, 4, getDungeonBlock(biomegenbase));
@@ -120,11 +120,11 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
 
     private void setChest(World world, Random random, BlockPos pos)
     {
-        world.setBlockState(pos, Blocks.chest.getDefaultState(), BlockNotifyType.ALL);
+        world.setBlockState(pos, Blocks.CHEST.getDefaultState(), BlockNotifyType.ALL);
         TileEntityChest tileentitychest = (TileEntityChest) world.getTileEntity(pos);
         addItems(tileentitychest, random);
 
-        IBlockState blockingBlock = (FloatingRuins.harderDungeons ? Blocks.bedrock.getDefaultState() : Blocks.obsidian.getDefaultState());
+        IBlockState blockingBlock = (FloatingRuins.harderDungeons ? Blocks.BEDROCK.getDefaultState() : Blocks.OBSIDIAN.getDefaultState());
 
         world.setBlockState(pos.north(), blockingBlock, BlockNotifyType.ALL);
         world.setBlockState(pos.south(), blockingBlock, BlockNotifyType.ALL);
@@ -133,15 +133,15 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         world.setBlockState(pos.down(), blockingBlock, BlockNotifyType.ALL);
 
         if (FloatingRuins.harderDungeons)
-            world.setBlockState(pos.up(), Blocks.obsidian.getDefaultState(), BlockNotifyType.ALL);
+            world.setBlockState(pos.up(), Blocks.OBSIDIAN.getDefaultState(), BlockNotifyType.ALL);
         else
-            world.setBlockState(pos.up(), Blocks.cobblestone.getDefaultState(), BlockNotifyType.ALL);
+            world.setBlockState(pos.up(), Blocks.COBBLESTONE.getDefaultState(), BlockNotifyType.ALL);
     }
 
     private void setSpawner(World world, BiomeGenBase biomegenbase, BlockPos pos)
     {
-        world.setBlockState(pos, Blocks.mob_spawner.getDefaultState(), BlockNotifyType.ALL);
-        IBlockState block = Blocks.obsidian.getDefaultState();
+        world.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState(), BlockNotifyType.ALL);
+        IBlockState block = Blocks.OBSIDIAN.getDefaultState();
 
         world.setBlockState(pos.north(), block, BlockNotifyType.ALL);
         world.setBlockState(pos.south(), block, BlockNotifyType.ALL);
@@ -150,8 +150,8 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         world.setBlockState(pos.down(), block, BlockNotifyType.ALL);
         if (FloatingRuins.harderDungeons)
         {
-            world.setBlockState(pos.down(), Blocks.obsidian.getDefaultState(), BlockNotifyType.ALL);
-            world.setBlockState(pos.up(), Blocks.obsidian.getDefaultState(), BlockNotifyType.ALL);
+            world.setBlockState(pos.down(), Blocks.OBSIDIAN.getDefaultState(), BlockNotifyType.ALL);
+            world.setBlockState(pos.up(), Blocks.OBSIDIAN.getDefaultState(), BlockNotifyType.ALL);
         }
 
         TileEntityMobSpawner tileEntityMobSpawner = (TileEntityMobSpawner) world.getTileEntity(pos);
@@ -355,36 +355,36 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     private IBlockState getDungeonBlock(BiomeGenBase biomegenbase)
     {
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.PLAINS))
-            return Blocks.planks.getDefaultState();
+            return Blocks.PLANKS.getDefaultState();
 
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SANDY))
-            return Blocks.sandstone.getDefaultState();
+            return Blocks.SANDSTONE.getDefaultState();
 
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SNOWY))
-            return Blocks.snow.getDefaultState();
+            return Blocks.SNOW.getDefaultState();
 
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.FOREST))
-            return Blocks.cobblestone.getDefaultState();
+            return Blocks.COBBLESTONE.getDefaultState();
 
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.JUNGLE))
-            return Blocks.mossy_cobblestone.getDefaultState();
+            return Blocks.MOSSY_COBBLESTONE.getDefaultState();
 
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.SWAMP))
-            return Blocks.mossy_cobblestone.getDefaultState();
+            return Blocks.MOSSY_COBBLESTONE.getDefaultState();
 
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.MOUNTAIN) || BiomeDictionary.isBiomeOfType(biomegenbase, Type.HILLS))
-            return Blocks.stone.getDefaultState();
+            return Blocks.STONE.getDefaultState();
 
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.WATER))
             if (biomegenbase.getClass().getSimpleName().toLowerCase(Locale.US).contains("ocean"))
-                return Blocks.stonebrick.getDefaultState();
+                return Blocks.STONEBRICK.getDefaultState();
             else
-                return Blocks.planks.getDefaultState();
+                return Blocks.PLANKS.getDefaultState();
 
         if (BiomeDictionary.isBiomeOfType(biomegenbase, Type.MUSHROOM))
-            return Blocks.red_mushroom_block.getDefaultState();
+            return Blocks.RED_MUSHROOM_BLOCK.getDefaultState();
         else
-            return Blocks.brick_block.getDefaultState();
+            return Blocks.BRICK_BLOCK.getDefaultState();
     }
 
     private void addItems(TileEntityChest tileentitychest, Random random)
@@ -406,7 +406,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
     private ItemStack getItems(Random random)
     {
         String itemStack[] = stringOfIds.split(";")[random.nextInt(stringOfIds.split(";").length)].split(",");
-        String id = GameData.getItemRegistry().getNameForObject(Items.egg).toString();
+        String id = Items.EGG.toString();
         int size = 1;
         int meta = 0;
         if (itemStack.length > 0)
@@ -418,10 +418,10 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
         if (itemStack.length > 2)
             meta = CommonUtils.parseInt(itemStack[2].trim());
 
-        Item item = GameData.getItemRegistry().getObject(id);
+        Item item = Item.getByNameOrId(id);
 
         if (item == null)
-            item = Items.egg;
+            item = Items.EGG;
 
         if (!item.getHasSubtypes() && (meta != 0))
             meta = 0;
@@ -540,8 +540,8 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     BlockPos delta = pos.add(new BlockPos(x, y, z));
                     if ((y == height) || ((Math.abs(x) == width) && (Math.abs(z) == width) && (y >= 0)))
                     {
-                        world.setBlockState(delta, Blocks.stonebrick.getDefaultState(), BlockNotifyType.ALL);
-                        world.setBlockState(delta.up(), (FloatingRuins.harderDungeons ? Blocks.bedrock.getDefaultState() : Blocks.stonebrick.getDefaultState()), BlockNotifyType.ALL);
+                        world.setBlockState(delta, Blocks.STONEBRICK.getDefaultState(), BlockNotifyType.ALL);
+                        world.setBlockState(delta.up(), (FloatingRuins.harderDungeons ? Blocks.BEDROCK.getDefaultState() : Blocks.STONEBRICK.getDefaultState()), BlockNotifyType.ALL);
                     }
 
                     if ((y >= 1) && ((Math.abs(x) == width) ^ (Math.abs(z) == width)))
@@ -551,13 +551,13 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         world.setBlockToAir(delta);
 
                     if ((y == -1) || (y == 0))
-                        world.setBlockState(delta, Blocks.stonebrick.getDefaultState(), BlockNotifyType.ALL);
+                        world.setBlockState(delta, Blocks.STONEBRICK.getDefaultState(), BlockNotifyType.ALL);
 
                     if (y < -1)
                     {
                         int yg = CommonUtils.getHighestGroundBlock(world, delta);
                         if (((Math.abs(x) == width) || (Math.abs(z) == width)) && !world.isBlockNormalCube(delta, false) && (yg < (y + pos.getY())) && (yg >= (pos.getY() - height)))
-                            world.setBlockState(delta, Blocks.stonebrick.getDefaultState(), BlockNotifyType.ALL);
+                            world.setBlockState(delta, Blocks.STONEBRICK.getDefaultState(), BlockNotifyType.ALL);
                     }
                 }
     }
@@ -575,17 +575,17 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                         if (y >= 0)
                         {
                             if (dist == range)
-                                world.setBlockState(delta, (FloatingRuins.harderDungeons && (y > 2) ? Blocks.bedrock.getDefaultState() : block), BlockNotifyType.ALL);
+                                world.setBlockState(delta, (FloatingRuins.harderDungeons && (y > 2) ? Blocks.BEDROCK.getDefaultState() : block), BlockNotifyType.ALL);
 
                             // For wolves
                             if ((y == 0) && (dist < range))
-                                world.setBlockState(delta, Blocks.grass.getDefaultState(), BlockNotifyType.ALL);
+                                world.setBlockState(delta, Blocks.GRASS.getDefaultState(), BlockNotifyType.ALL);
 
                             if ((y > 0) && (dist < range))
                             {
                                 world.setBlockToAir(delta);
                                 if (y == 1)
-                                    world.setBlockState(delta, Blocks.snow_layer.getDefaultState(), BlockNotifyType.ALL);
+                                    world.setBlockState(delta, Blocks.SNOW_LAYER.getDefaultState(), BlockNotifyType.ALL);
                             }
                         }
                         else
@@ -611,7 +611,7 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
                     if (y >= 0)
                     {
                         if (((Math.abs(x) == (range - y)) && (Math.abs(x) >= Math.abs(z))) || ((Math.abs(z) == (range - y)) && (Math.abs(z) >= Math.abs(x))) || (y == 0))
-                            world.setBlockState(delta, (FloatingRuins.harderDungeons && (y > 2) ? Blocks.bedrock.getDefaultState() : block), BlockNotifyType.ALL);
+                            world.setBlockState(delta, (FloatingRuins.harderDungeons && (y > 2) ? Blocks.BEDROCK.getDefaultState() : block), BlockNotifyType.ALL);
                         else if (((Math.abs(x) < (range - y)) && (Math.abs(x) >= Math.abs(z))) || ((Math.abs(z) < (range - y)) && (Math.abs(z) >= Math.abs(x))))
                             world.setBlockToAir(delta);
                     }
@@ -629,40 +629,40 @@ public class WorldGenFloatingIslandRuin extends WorldGenerator
 
     static
     {
-        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_helmet, 1, 0), 3));
-        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_helmet, 1, 0), 7));
-        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_helmet, 1, 0), 9));
-        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_helmet, 1, 0), 12));
-        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_helmet, 1, 0), 16));
+        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.LEATHER_HELMET, 1, 0), 3));
+        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.IRON_HELMET, 1, 0), 7));
+        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.CHAINMAIL_HELMET, 1, 0), 9));
+        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.GOLDEN_HELMET, 1, 0), 12));
+        helmWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.DIAMOND_HELMET, 1, 0), 16));
 
-        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_chestplate, 1, 0), 3));
-        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_chestplate, 1, 0), 7));
-        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_chestplate, 1, 0), 9));
-        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_chestplate, 1, 0), 12));
-        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_chestplate, 1, 0), 16));
+        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.LEATHER_CHESTPLATE, 1, 0), 3));
+        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.IRON_CHESTPLATE, 1, 0), 7));
+        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.CHAINMAIL_CHESTPLATE, 1, 0), 9));
+        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.GOLDEN_CHESTPLATE, 1, 0), 12));
+        plateWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.DIAMOND_CHESTPLATE, 1, 0), 16));
 
-        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_leggings, 1, 0), 3));
-        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_leggings, 1, 0), 7));
-        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_leggings, 1, 0), 9));
-        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_leggings, 1, 0), 12));
-        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_leggings, 1, 0), 16));
+        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.LEATHER_LEGGINGS, 1, 0), 3));
+        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.IRON_LEGGINGS, 1, 0), 7));
+        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.CHAINMAIL_LEGGINGS, 1, 0), 9));
+        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.GOLDEN_LEGGINGS, 1, 0), 12));
+        leggingWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.DIAMOND_LEGGINGS, 1, 0), 16));
 
-        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.leather_boots, 1, 0), 3));
-        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_boots, 1, 0), 7));
-        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.chainmail_boots, 1, 0), 9));
-        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_boots, 1, 0), 12));
-        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_boots, 1, 0), 16));
+        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.LEATHER_BOOTS, 1, 0), 3));
+        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.IRON_BOOTS, 1, 0), 7));
+        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.CHAINMAIL_BOOTS, 1, 0), 9));
+        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.GOLDEN_BOOTS, 1, 0), 12));
+        bootWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.DIAMOND_BOOTS, 1, 0), 16));
 
-        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.bow, 1, 0), 46));
-        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_sword, 1, 0), 11));
-        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_sword, 1, 0), 2));
-        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_sword, 1, 0), 5));
+        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.BOW, 1, 0), 46));
+        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.IRON_SWORD, 1, 0), 11));
+        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.DIAMOND_SWORD, 1, 0), 2));
+        skelWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.GOLDEN_SWORD, 1, 0), 5));
 
-        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.stone_sword, 1, 0), 10));
-        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.diamond_sword, 1, 0), 4));
-        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.golden_sword, 1, 0), 10));
-        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.wooden_sword, 1, 0), 5));
-        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.iron_sword, 1, 0), 11));
+        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.STONE_SWORD, 1, 0), 10));
+        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.DIAMOND_SWORD, 1, 0), 4));
+        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.GOLDEN_SWORD, 1, 0), 10));
+        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.WOODEN_SWORD, 1, 0), 5));
+        zombWeapWeights.add(new SimpleEntry<ItemStack, Integer>(new ItemStack(Items.IRON_SWORD, 1, 0), 11));
 
         allowedCtgys = new String[] {
             // ChestGenHooks.BONUS_CHEST,

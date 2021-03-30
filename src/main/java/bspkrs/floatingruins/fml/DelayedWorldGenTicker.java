@@ -2,8 +2,8 @@ package bspkrs.floatingruins.fml;
 
 import java.util.Random;
 
-import net.minecraft.world.World;
 import bspkrs.floatingruins.FloatingRuins;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
