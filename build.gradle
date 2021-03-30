@@ -1,12 +1,8 @@
 buildscript {
     repositories {
         maven { url = 'https://files.minecraftforge.net/maven' }
-        maven {
-            url "https://www.cursemaven.com"
-        }
 //        maven {
-//            name = "CurseForge"
-//            url = "https://minecraft.curseforge.com/api/maven/"
+//            url "https://www.cursemaven.com"
 //        }
         jcenter()
         mavenCentral()
@@ -15,6 +11,10 @@ buildscript {
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
+}
+// this adds support for grabbing bspkrscore from curse
+plugins {
+id "com.wynprice.cursemaven" version "2.1.1"
 }
         
 apply plugin: 'net.minecraftforge.gradle'
@@ -89,8 +89,8 @@ dependencies {
     // Real examples
     // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
     // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-    compile 'curse.maven:bspkrscore-59218:2996325'
-//    compile 'bspkrscore:[1.12.2]bspkrscore:8.0.1'
+    compile "curse.maven:bspkrscore-59218:2996325"
+    
     // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
     // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
 
